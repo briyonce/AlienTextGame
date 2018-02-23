@@ -1,10 +1,9 @@
-
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
-	
+
 	static int num_stimpaks = 4;
 	static int stimpak_regen = 40; // The amount of health regenerated from a stimpak
 	static int stimpak_drop_chance = 60;
@@ -13,26 +12,26 @@ public class Main {
 	static int player_atkdmg = 15;
 	static Random rand = new Random();
 	static Scanner in = new Scanner(System.in);
-	
+
 	public static void main (String[] args) {
-		
-		
-		
+
+
+
 		//Game Variables
 		String[] enemies = {"Facehugger", "Chest-Burster", "Xenomorph", "Bloodburster", "Neomorph"};
 		String[] xeno_castes = {"Queen", "Praetorian", "Predalien", "Spitter", "Lurker", "Runner", "Warrior"};
 		int max_enemy_health = 300;
 		int max_enemy_atkdmg = 50;
-		
+
 		//Player Variables
+		boolean jessie_alive = true;
 
 
-		
-		boolean running = true; 
-		
+		boolean running = true;
+
 		System.out.println("Good Morning, private.");
-		
-		GAME: 
+
+		GAME:
 		while (running) {
 			try {
 			System.out.println("-------------------------------------");
@@ -45,7 +44,7 @@ public class Main {
 			}
 			System.out.println("...you hear something rustling about the room.");
 			System.out.println("\"COMPUTER?\"");
-			
+
 			int fh_health = 30;
 			String enemy = "Facehugger";
 			for (int i = 0; i < 2; ++i) {
@@ -58,35 +57,43 @@ public class Main {
 			System.out.println("QUICK!!!");
 			System.out.println("Your crewmate is being attacked by a " + enemy + "!!!!");
 			boolean valid_input = false;
-			String action = "";
+			String answer = "";
 			while (!valid_input) {
-				System.out.println("What do you do? Run or attack?");
+				System.out.println("Will you run? Y/N");
 				if (in.hasNextLine()) {
-					action = in.nextLine();
+					answer = in.nextLine();
 				}
-				if ((action.toLowerCase().equals("run")) || (action.toLowerCase().equals("attack"))) {
+				if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n")) {
 					valid_input = true;
 				}
 			}
-			action = action.toLowerCase();
-			System.out.println("You decide to " + action + ".");
+
+			answer = answer.toLowerCase();
 			int luck = rand.nextInt(100);
 			int result = 2;
-			if (action.equals("run")) {
+			if (answer.equals("y")) {
 				if (luck > 60) {
 					System.out.println("You were able to escape the " + enemy + "...");
 					System.out.println("This time.");
 				} else {
-					System.out.println("The " + enemy + " has blocked your way! You can't escape!");
+					System.out.println("The " + enemy + " has blocked your way! You can't escape!\n");
 				}
-			} 
-			
-			if (luck <= 60 || action.equals("attack")) {
+			}
+
+			if (luck <= 60 || answer.equals("n")) {
 				//engage combat
 				result = encounter(enemy, fh_health, 20); // -1: death, 0: escape, 1: victory
 				if (result < 0) { // death case
+					System.out.println("You fall to the floor and watch as your crewmate is overtaken by the creature...");
+					System.out.println("\"Jessie....\" You remember her name.");
+					System.out.println("She slowly sinks to the floor, the Facehugger doing what it does best.");
+					System.out.println("The room falls silent as you breathe your last breath...\n");
+					System.out.println();
+					System.out.println("You have died... Death comes and grasps you with its cold, bony claws...");
+					System.out.println("...in another time... in another life...\n");
+					jessie_alive = false;
 					valid_input = false;
-					String answer = "";
+					answer = "";
 					while (!valid_input) {
 						System.out.println("Try again? Y/N \n");
 						if (in.hasNextLine()) {
@@ -94,7 +101,7 @@ public class Main {
 						}
 						if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n")) {
 							valid_input = true;
-						} 
+						}
 					}
 					answer = answer.toLowerCase();
 					if (answer.equals("y")) {
@@ -109,33 +116,35 @@ public class Main {
 					break;
 				}
 			}
-			
+
 			if (luck > 60 || result == 0) {
 				System.out.println("You were able to escape the room...");
 				System.out.println("You close the door and watch as your crewmate is overtaken by the creature...");
 				System.out.println("\"Jessie....\" You remember her name.");
 				System.out.println("She slowly sinks to the floor, the Facehugger doing what it does best.");
 				System.out.println("The room falls silent.... what have you done?");
-				
+				jessie_alive = false;
+
 			}
-			
-			
-				
-			
-			
-			
+
+
+
+
+
+
 			} catch(InterruptedException ex) {
 				Thread.currentThread().interrupt();
 			}
 			break;
 		}
 	}
-	
+
 	public static int encounter(String enemy, int enemy_health, int enemy_dmg) {
 		String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!", "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
 		while (enemy_health > 0 && health > 0){
 			//in combat
 			//Player's Turn
+			System.out.println();
 			System.out.println("-------------------------------------");
 			System.out.println("\t Current Health: " + health);
 			System.out.println("\t " + enemy + " HP: " + enemy_health + "\n");
@@ -183,12 +192,19 @@ public class Main {
 				int luck = rand.nextInt(100);
 				if (luck > 60) {
 					System.out.println("You were able to escape the " + enemy + "...");
-					return 0; 
+					return 0;
 				} else {
-					System.out.println("The " + enemy + " has blocked your way! You can't escape!");
+					System.out.println("The " + enemy + " has blocked your way! You can't escape!\n");
 				}
 			}
+			System.out.println("...");
+			System.out.println("...");
+			System.out.println("...");
 			// Enemy's Turn
+			if (enemy_health < 1) {
+				System.out.println("VICTORY! You have defeated the " + enemy + ". Death comes another day.");
+				return 1;
+			}
 			int luck = rand.nextInt(100);
 			if (luck > 60) {
 				// the attack lands
@@ -197,7 +213,7 @@ public class Main {
 					System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
 					System.out.println("It scurries away before you can retaliate.\n");
 				}
-				System.out.println("You take " + enemy_dmg_dealt + " damage!");
+				System.out.println("You take " + enemy_dmg_dealt + " damage!\n");
 				health -= enemy_dmg_dealt;
 			} else {
 				if (enemy.equals("Facehugger")) {
@@ -208,14 +224,7 @@ public class Main {
 				}
 			}
 		}
-		// Either the protagonist or the enemy has fallen
-		if (enemy_health < 1) {
-			System.out.println("VICTORY! You have defeated the " + enemy + ". Death comes another day.");
-			return 1;
-		} else {
-			System.out.println("You have died... Death comes and grasps you with its cold, bony claws...");
-			System.out.println("...in another time... in another life...\n");
-			return -1;
-		}
+		// the protagonist has fallen
+		return -1;
 	}
 }
