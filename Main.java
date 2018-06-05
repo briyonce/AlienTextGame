@@ -17,7 +17,7 @@ public class Main {
 	static ArrayList<String> inventory = new ArrayList<String>();
 	static int max_inv_size = 10;
 	static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
-	
+
 	public static void main (String[] args) {
 
 
@@ -25,7 +25,7 @@ public class Main {
 		//Game Variables
 		String[] enemies = {"Facehugger", "Chest-Burster", "Xenomorph", "Bloodburster", "Neomorph"};
 		String[] xeno_castes = {"Queen", "Praetorian", "Predalien", "Spitter", "Lurker", "Runner", "Warrior"};
-		
+
 		int max_enemy_health = 300;
 		int max_enemy_atkdmg = 50;
 
@@ -34,9 +34,25 @@ public class Main {
 
 
 		boolean running = true;
+		Xeno x = new Xeno();
+		System.out.println(x.getName());
+		System.out.println();
 
-		System.out.println("Good Morning, private.");
-
+		Party p = new Party();
+		Human h = new Human();
+		p.addMember(h);
+		System.out.println(h.getName());
+		h.acquire("steak");
+		h.acquire("lighter");
+		h.acquire("pair of glasses");
+		h.acquire("egg");
+		h.ShowInventory();
+		Human james = new Human("James");
+		p.addMember(james);
+		p.printParty();
+		// System.out.println("Good Morning, private.");
+	}
+		/*
 		GAME:
 		while (running) {
 			try {
@@ -50,7 +66,7 @@ public class Main {
 				}
 				System.out.println("...you hear something rustling about the room.");
 				System.out.println("\"COMPUTER?\"");
-	
+
 				int fh_health = 30;
 				String enemy = "Facehugger";
 				for (int i = 0; i < 2; ++i) {
@@ -73,9 +89,9 @@ public class Main {
 						valid_input = true;
 					}
 				}
-	
+
 				answer = answer.toLowerCase();
-				int luck = 0; 
+				int luck = 0;
 				int result = 2;
 				if (answer.equals("y")) {
 					luck = rand.nextInt(100);
@@ -86,7 +102,7 @@ public class Main {
 						System.out.println("The " + enemy + " has blocked your way! You can't escape!\n");
 					}
 				}
-	
+
 				if (luck <= 60 || answer.equals("n")) {
 					//engage combat
 					result = encounter(enemy, fh_health, 20); // -1: death, 0: escape, 1: victory
@@ -121,7 +137,7 @@ public class Main {
 					} else if (result == 1) {
 						System.out.println("Congratulations! You are able to save your crewmate.");
 					}
-					
+
 				} if (luck > 60 || result == 0) {
 					System.out.println("You were able to escape the room...");
 					System.out.println("You close the door and watch as your crewmate is overtaken by the creature...");
@@ -130,7 +146,7 @@ public class Main {
 					System.out.println("The room falls silent.... what have you done?\n");
 					jessie_alive = false;
 				}
-	
+
 				// After initial combat scene
 				if (jessie_alive) {
 					System.out.println("JESSIE!");
@@ -146,7 +162,7 @@ public class Main {
 					System.out.println("She is obviously very shaken by the whole experience. The salt from her tears stains her cheeks.\n");
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("The two of you exit the room. Never to return.");
-					TimeUnit.MILLISECONDS.sleep(800);	
+					TimeUnit.MILLISECONDS.sleep(800);
 				} else {
 					// Face the reality of what you've done
 					TimeUnit.MILLISECONDS.sleep(1500);
@@ -166,7 +182,7 @@ public class Main {
 			break;
 		}
 	}
-
+  */
 	public static int encounter(String enemy, int enemy_health, int enemy_dmg) {
 		try {
 		String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!", "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
@@ -277,7 +293,7 @@ public class Main {
 				}
 			}
 			TimeUnit.MILLISECONDS.sleep(800);
-		} 
+		}
 		// the protagonist has fallen
 		return -1;
 		} catch(InterruptedException ex) {

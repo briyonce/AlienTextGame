@@ -1,7 +1,11 @@
 // Specified class for Xenomorph-type creatures
 
-Public class Xeno extends Enemy {
-  Public Xeno () {
+public class Xeno extends Enemy {
+  public static void main(String[] args) {
 
+  }
+
+  public Xeno () {
+    super.name = "Xenomorph";
   }
 }

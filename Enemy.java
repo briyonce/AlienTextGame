@@ -2,14 +2,23 @@
 import java.util.Random;
 
 public class Enemy {
-    public static void Enemy(String[] args){}
+    public static void main(String[] args){}
 
     static int MAX_HEALTH = 300;
     static int MAX_DAMAGE = 50;
 
-    int health;
-    int maxDamage;
-    String name;
+    protected int health;
+    private int maxDamage;
+    protected String name;
+
+
+
+    public Enemy () {
+      Random r = new Random();
+      this.health = r.nextInt(MAX_HEALTH);
+      this.maxDamage = r.nextInt(MAX_DAMAGE);
+      this.name = "new";
+    }
 
     public Enemy(String n){
       Random r = new Random();
@@ -36,7 +45,7 @@ public class Enemy {
     }
 
     String getName() {
-      return "";
+      return this.name;
     }
 
     int getHealth() {
