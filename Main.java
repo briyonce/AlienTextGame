@@ -17,42 +17,36 @@ public class Main {
 	static ArrayList<String> inventory = new ArrayList<String>();
 	static int max_inv_size = 10;
 	static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
+	static Human player = new Human();
 
 	public static void main (String[] args) {
 
 
 
 		//Game Variables
-		String[] enemies = {"Facehugger", "Chest-Burster", "Xenomorph", "Bloodburster", "Neomorph"};
-		String[] xeno_castes = {"Queen", "Praetorian", "Predalien", "Spitter", "Lurker", "Runner", "Warrior"};
-
-		int max_enemy_health = 300;
-		int max_enemy_atkdmg = 50;
-
-		//Player Variables
 		boolean jessie_alive = true;
 
 
-		boolean running = true;
-		Xeno x = new Xeno();
-		System.out.println(x.getName());
-		System.out.println();
+		//Player Variables
+		String playerName = "";
 
-		Party p = new Party();
-		Human h = new Human();
-		p.addMember(h);
-		System.out.println(h.getName());
-		h.acquire("steak");
-		h.acquire("lighter");
-		h.acquire("pair of glasses");
-		h.acquire("egg");
-		h.ShowInventory();
-		Human james = new Human("James");
-		p.addMember(james);
-		p.printParty();
-		// System.out.println("Good Morning, private.");
-	}
-		/*
+
+
+		System.out.println("Welcome to *GAME TITLE*");
+		System.out.println("What is your name?");
+		if (in.hasNextLine()) {
+			playerName = in.nextLine();
+		}
+
+		player.setName(playerName);
+
+		boolean running = true;
+
+		for (int i = 0; i < 15; ++i)
+			System.out.println();
+
+		System.out.println("Good Morning, private.");
+
 		GAME:
 		while (running) {
 			try {
@@ -66,9 +60,7 @@ public class Main {
 				}
 				System.out.println("...you hear something rustling about the room.");
 				System.out.println("\"COMPUTER?\"");
-
-				int fh_health = 30;
-				String enemy = "Facehugger";
+				Xeno enemy = new Xeno("Facehugger", 30, 20);
 				for (int i = 0; i < 2; ++i) {
 					TimeUnit.SECONDS.sleep(2);
 					System.out.println("....");
@@ -77,7 +69,7 @@ public class Main {
 				TimeUnit.SECONDS.sleep(2);
 				//Very first encounter
 				System.out.println("QUICK!!!");
-				System.out.println("Your crewmate is being attacked by a " + enemy + "!!!!");
+				System.out.println("Your crewmate is being attacked by a " + enemy.getName() + "!!!!");
 				boolean valid_input = false;
 				String answer = "";
 				while (!valid_input) {
@@ -96,16 +88,16 @@ public class Main {
 				if (answer.equals("y")) {
 					luck = rand.nextInt(100);
 					if (luck > 60) {
-						System.out.println("You were able to escape the " + enemy + "...");
+						System.out.println("You were able to escape the " + enemy.getName() + "...");
 						System.out.println("This time.");
 					} else {
-						System.out.println("The " + enemy + " has blocked your way! You can't escape!\n");
+						System.out.println("The " + enemy.getName() + " has blocked your way! You can't escape!\n");
 					}
 				}
 
 				if (luck <= 60 || answer.equals("n")) {
 					//engage combat
-					result = encounter(enemy, fh_health, 20); // -1: death, 0: escape, 1: victory
+					result = encounter(enemy); // -1: death, 0: escape, 1: victory
 					if (result < 0) { // death case
 						System.out.println("You fall to the floor and watch as your crewmate is overtaken by the creature...");
 						System.out.println("\"Jessie....\" You remember her name.");
@@ -182,17 +174,17 @@ public class Main {
 			break;
 		}
 	}
-  */
-	public static int encounter(String enemy, int enemy_health, int enemy_dmg) {
+
+	public static int encounter(Enemy enemy) {
 		try {
-		String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!", "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
-		while (enemy_health > 0 && health > 0){
+		String[] attack_sounds = {"You lunge for the " + enemy.getName() + "! Slash! Bam!", "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
+		while (enemy.getHealth() > 0 && health > 0){
 			//in combat
 			//Player's Turn
 			System.out.println();
 			System.out.println("-------------------------------------");
 			System.out.println("\t Current Health: " + health);
-			System.out.println("\t " + enemy + " HP: " + enemy_health + "\n");
+			System.out.println("\t " + enemy.getName() + " HP: " + enemy.getHealth() + "\n");
 			System.out.println("What do you want to do?");
 			System.out.println("\t 1. Attack");
 			System.out.println("\t 2. Use Stimpak");
@@ -215,7 +207,7 @@ public class Main {
 				int atk_choice = rand.nextInt(attack_sounds.length);
 				String attack_sequence = attack_sounds[atk_choice];
 				System.out.println(attack_sequence +"\n");
-				enemy_health -= damage_dealt;
+				enemy.takeDamage(damage_dealt);
 				System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
 				TimeUnit.MILLISECONDS.sleep(800);
 			} else if (action.equals("2")) { //Heal up
@@ -237,21 +229,7 @@ public class Main {
 				}
 				TimeUnit.MILLISECONDS.sleep(800);
 			} else if (action.equals("3")) { //View inventory
-				if (inventory.size() > 0) {
-					for (int i = 0; i < inventory.size() - 1; ++i) {
-						System.out.print(inventory.get(i) + ", ");
-					}
-					String last_item = inventory.get(inventory.size() - 1);
-					char first_letter = last_item.toLowerCase().charAt(0);
-					if (Arrays.asList(vowels).contains(first_letter)){
-						System.out.println("and an " + last_item + ".");
-					} else {
-						System.out.println("and a " + last_item + ".");
-					}
-				} else {
-					System.out.println("You own nothing. Keep searching.");
-				}
-				TimeUnit.MILLISECONDS.sleep(800);
+				player.ShowInventory();
 				continue;
 			} else if (action.equals("4")) { // Run!
 				int luck = rand.nextInt(100);
@@ -269,7 +247,7 @@ public class Main {
 			System.out.println("...");
 			TimeUnit.MILLISECONDS.sleep(800);
 			// Enemy's Turn
-			if (enemy_health < 1) {
+			if (enemy.getHealth() < 1) {
 				System.out.println("VICTORY! You have defeated the " + enemy + ". Death comes another day.");
 				TimeUnit.MILLISECONDS.sleep(800);
 				return 1;
@@ -277,15 +255,15 @@ public class Main {
 			int luck = rand.nextInt(100);
 			if (luck > 60) {
 				// the attack lands
-				int enemy_dmg_dealt = rand.nextInt(enemy_dmg);
-				if (enemy.equals("Facehugger")) {
+				int enemy_dmg_dealt = enemy.getAttack();
+				if (enemy.getName().equals("Facehugger")) {
 					System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
 					System.out.println("It scurries away before you can retaliate.\n");
 				}
 				System.out.println("You take " + enemy_dmg_dealt + " damage!\n");
 				health -= enemy_dmg_dealt;
 			} else {
-				if (enemy.equals("Facehugger")) {
+				if (enemy.getName().equals("Facehugger")) {
 					System.out.println("The tiny abomination lunges to attack you but you back away just in time.");
 					System.out.println("It scurries away before you can retaliate.\n");
 					System.out.println("You've escaped your inevitable death for another brief moment.");

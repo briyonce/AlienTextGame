@@ -42,6 +42,10 @@ public class Human {
     return health;
   }
 
+  boolean isAlive() {
+    return health > 0;
+  }
+
   void acquire(String item) {
     inventory.add(item);
   }
@@ -96,5 +100,9 @@ public class Human {
       }
     }
     return false;
+  }
+
+  void setName(String n) {
+    name = n;
   }
 }

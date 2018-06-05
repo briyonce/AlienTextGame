@@ -40,8 +40,9 @@ public class Enemy {
       this.maxDamage = d;
     }
 
-    String getAttack() {
-      return "";
+    int getAttack() {
+      Random r = new Random();
+      return r.nextInt(maxDamage);
     }
 
     String getName() {
@@ -50,5 +51,13 @@ public class Enemy {
 
     int getHealth() {
       return this.health;
+    }
+
+    void takeDamage(int d) {
+      health -= d;
+    }
+
+    protected void alterName(String n) {
+      name = n;
     }
 }
