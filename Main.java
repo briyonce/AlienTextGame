@@ -151,7 +151,7 @@ public class Main {
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("J: \"Okay...\"\n");
 					TimeUnit.MILLISECONDS.sleep(800);
-					System.out.println("She is obviously very shaken by the whole experience. The salt from her tears stains her cheeks.\n");
+					System.out.println("She is obviously very shaken by the whole experience. The salt from her tears stain her cheeks.\n");
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("The two of you exit the room. Never to return.");
 					TimeUnit.MILLISECONDS.sleep(800);
@@ -248,7 +248,7 @@ public class Main {
 			TimeUnit.MILLISECONDS.sleep(800);
 			// Enemy's Turn
 			if (enemy.getHealth() < 1) {
-				System.out.println("VICTORY! You have defeated the " + enemy + ". Death comes another day.");
+				System.out.println("VICTORY! You have defeated the " + enemy.getName() + ". Death comes another day.");
 				TimeUnit.MILLISECONDS.sleep(800);
 				return 1;
 			}
@@ -256,6 +256,9 @@ public class Main {
 			if (luck > 60) {
 				// the attack lands
 				int enemy_dmg_dealt = enemy.getAttack();
+				while (!enemy_dmg_dealt){
+					enemy_dmg_dealt = enemy.getAttack();
+				}
 				if (enemy.getName().equals("Facehugger")) {
 					System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
 					System.out.println("It scurries away before you can retaliate.\n");
