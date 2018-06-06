@@ -256,7 +256,7 @@ public class Main {
 			if (luck > 60) {
 				// the attack lands
 				int enemy_dmg_dealt = enemy.getAttack();
-				while (!enemy_dmg_dealt){
+				while (enemy_dmg_dealt < 1){
 					enemy_dmg_dealt = enemy.getAttack();
 				}
 				if (enemy.getName().equals("Facehugger")) {
