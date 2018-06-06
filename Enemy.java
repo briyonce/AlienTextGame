@@ -40,9 +40,25 @@ public class Enemy {
       this.maxDamage = d;
     }
 
-    int getAttack() {
+    int attack() {
       Random r = new Random();
       return r.nextInt(maxDamage);
+    }
+
+    void landAttack() {
+      if (this.name.equals("Facehugger")) {
+        System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
+        System.out.println("It scurries away before you can retaliate.\n");
+      }
+    }
+
+    void missAttack() {
+      if (this.name.equals("Facehugger")) {
+        System.out.println("The tiny abomination lunges to attack you but you back away just in time.");
+        System.out.println("It scurries away before you can retaliate.\n");
+        System.out.println("You've escaped your inevitable death for another brief moment.");
+        System.out.println("Time to gamble yet again.");
+      }
     }
 
     String getName() {

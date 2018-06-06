@@ -40,6 +40,11 @@ public class Main {
 
 		player.setName(playerName);
 
+		player.acquire("stimpak");
+		player.acquire("stimpak");
+		player.acquire("stimpak");
+		player.acquire("stimpak");
+
 		boolean running = true;
 
 		for (int i = 0; i < 15; ++i)
@@ -177,104 +182,93 @@ public class Main {
 
 	public static int encounter(Enemy enemy) {
 		try {
-		String[] attack_sounds = {"You lunge for the " + enemy.getName() + "! Slash! Bam!", "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
-		while (enemy.getHealth() > 0 && health > 0){
-			//in combat
-			//Player's Turn
-			System.out.println();
-			System.out.println("-------------------------------------");
-			System.out.println("\t Current Health: " + health);
-			System.out.println("\t " + enemy.getName() + " HP: " + enemy.getHealth() + "\n");
-			System.out.println("What do you want to do?");
-			System.out.println("\t 1. Attack");
-			System.out.println("\t 2. Use Stimpak");
-			System.out.println("\t 3. View Inventory");
-			System.out.println("\t 4. Run!");
-			boolean valid_input = false;
-			String action = "";
-			while (!valid_input) {
-				if (in.hasNextLine()) {
-					action = in.nextLine();
-				}
-				if (action.equals("1") || action.equals("2") || action.equals("3") || action.equals("4")){
-					valid_input = true;
-				} else {
-					System.out.println("Invalid option! Please choose a valid course of action\n");
-				}
-			}
-			if (action.equals("1")) { //Attack
-				int damage_dealt = rand.nextInt(player_atkdmg);
-				int atk_choice = rand.nextInt(attack_sounds.length);
-				String attack_sequence = attack_sounds[atk_choice];
-				System.out.println(attack_sequence +"\n");
-				enemy.takeDamage(damage_dealt);
-				System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
-				TimeUnit.MILLISECONDS.sleep(800);
-			} else if (action.equals("2")) { //Heal up
-				if (num_stimpaks > 1) {
-					if (health == 100) {
-						System.out.println("Health already full.... Stimpak wasted.");
-						--num_stimpaks;
-					} else if ((health + stimpak_regen) > 100) {
-						System.out.println("Ahhhh.... that feels better.");
-						--num_stimpaks;
-						health = 100;
-					} else {
-						System.out.println("Ahhhh.... that feels better.");
-						--num_stimpaks;
-						health += stimpak_regen;
+
+			while (enemy.getHealth() > 0 && health > 0){
+				//in combat
+				//Player's Turn
+				System.out.println();
+				System.out.println("-------------------------------------");
+				System.out.println("\t Current Health: " + health);
+				System.out.println("\t " + enemy.getName() + " HP: " + enemy.getHealth() + "\n");
+				System.out.println("What do you want to do?");
+				System.out.println("\t 1. Attack");
+				System.out.println("\t 2. Use Stimpak");
+				System.out.println("\t 3. View Inventory");
+				System.out.println("\t 4. Run!");
+				boolean valid_input = false;
+				String action = "";
+				while (!valid_input) {
+					if (in.hasNextLine()) {
+						action = in.nextLine();
 					}
-				} else {
-					System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
+					if (action.equals("1") || action.equals("2") || action.equals("3") || action.equals("4")){
+						valid_input = true;
+					} else {
+						System.out.println("Invalid option! Please choose a valid course of action\n");
+					}
 				}
+				if (action.equals("1")) { //Attack
+					int damage_dealt = player.attack(enemy.getName());
+					enemy.takeDamage(damage_dealt);
+					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
+					TimeUnit.MILLISECONDS.sleep(800);
+				} else if (action.equals("2")) { //Heal up
+					if (num_stimpaks > 1) {
+						if (health == 100) {
+							System.out.println("Health already full.... Stimpak wasted.");
+							--num_stimpaks;
+						} else if ((health + stimpak_regen) > 100) {
+							System.out.println("Ahhhh.... that feels better.");
+							--num_stimpaks;
+							health = 100;
+						} else {
+							System.out.println("Ahhhh.... that feels better.");
+							--num_stimpaks;
+							health += stimpak_regen;
+						}
+					} else {
+						System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
+					}
+					TimeUnit.MILLISECONDS.sleep(800);
+				} else if (action.equals("3")) { //View inventory
+					player.ShowInventory();
+					continue;
+				} else if (action.equals("4")) { // Run!
+					int luck = rand.nextInt(100);
+					if (luck > 60) {
+						System.out.println("You were able to escape the " + enemy.getName() + "...");
+						TimeUnit.MILLISECONDS.sleep(800);
+						return 0;
+					} else {
+						System.out.println("The " + enemy.getName() + " has blocked your way! You can't escape!\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+					}
+				}
+				System.out.println("...");
+				System.out.println("...");
+				System.out.println("...");
 				TimeUnit.MILLISECONDS.sleep(800);
-			} else if (action.equals("3")) { //View inventory
-				player.ShowInventory();
-				continue;
-			} else if (action.equals("4")) { // Run!
+				// Enemy's Turn
+				if (enemy.getHealth() < 1) {
+					System.out.println("VICTORY! You have defeated the " + enemy.getName() + ". Death comes another day.");
+					TimeUnit.MILLISECONDS.sleep(800);
+					return 1;
+				}
 				int luck = rand.nextInt(100);
 				if (luck > 60) {
-					System.out.println("You were able to escape the " + enemy + "...");
-					TimeUnit.MILLISECONDS.sleep(800);
-					return 0;
+					// the attack lands
+					int enemy_dmg_dealt = enemy.attack();
+					while (enemy_dmg_dealt < 1){
+						enemy_dmg_dealt = enemy.attack();
+					}
+					enemy.landAttack();
+					System.out.println("You take " + enemy_dmg_dealt + " damage!\n");
+					player.loseHealth(enemy_dmg_dealt);;
 				} else {
-					System.out.println("The " + enemy + " has blocked your way! You can't escape!\n");
-					TimeUnit.MILLISECONDS.sleep(800);
+					enemy.missAttack();
 				}
-			}
-			System.out.println("...");
-			System.out.println("...");
-			System.out.println("...");
-			TimeUnit.MILLISECONDS.sleep(800);
-			// Enemy's Turn
-			if (enemy.getHealth() < 1) {
-				System.out.println("VICTORY! You have defeated the " + enemy.getName() + ". Death comes another day.");
 				TimeUnit.MILLISECONDS.sleep(800);
-				return 1;
 			}
-			int luck = rand.nextInt(100);
-			if (luck > 60) {
-				// the attack lands
-				int enemy_dmg_dealt = enemy.getAttack();
-				while (enemy_dmg_dealt < 1){
-					enemy_dmg_dealt = enemy.getAttack();
-				}
-				if (enemy.getName().equals("Facehugger")) {
-					System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
-					System.out.println("It scurries away before you can retaliate.\n");
-				}
-				System.out.println("You take " + enemy_dmg_dealt + " damage!\n");
-				health -= enemy_dmg_dealt;
-			} else {
-				if (enemy.getName().equals("Facehugger")) {
-					System.out.println("The tiny abomination lunges to attack you but you back away just in time.");
-					System.out.println("It scurries away before you can retaliate.\n");
-					System.out.println("You've escaped your inevitable death for another brief moment.");
-					System.out.println("Time to gamble yet again.");
-				}
-			}
-			TimeUnit.MILLISECONDS.sleep(800);
-		}
 		// the protagonist has fallen
 		return -1;
 		} catch(InterruptedException ex) {

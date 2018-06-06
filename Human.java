@@ -50,6 +50,15 @@ public class Human {
     inventory.acquire(item);
   }
 
+  int attack(String enemy) {
+    String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!",
+                              "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
+    Random r = new Random();
+    return r.nextInt(maxDamage);
+    int atk_choice = rand.nextInt(attack_sounds.length);
+    System.out.println(attack_sounds[atk_choice] +"\n");
+  }
+
   String InventorySimplePrint() {
     return inventory.InventorySimplePrint();
   }
@@ -60,5 +69,9 @@ public class Human {
 
   void setName(String n) {
     name = n;
+  }
+
+  void loseHealth(int d) {
+    this.health -= d;
   }
 }

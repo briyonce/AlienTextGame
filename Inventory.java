@@ -6,6 +6,8 @@ public class Inventory{
   public static void main(String[] args){}
 
   private ArrayList<Item> inventory = new ArrayList<Item>();
+  int maxWeight = 25;
+  int curWeight = 0;
 
   public Inventory() {}
 
@@ -52,7 +54,28 @@ public class Inventory{
   }
 
   void acquire(String item) {
-    inventory.add(new Item(item));
+    curItem = new Item(item);
+    if (maxWeight < curWeight + curItem.getWeight()) {
+      System.out.println("INVENTORY FULL: " + (curWeight + curItem.getWeight()));
+      System.out.println("You need to drop something.");
+    } else {
+      boolean itemFound = false;
+      int counter = 0;
+      while (!itemFound) {
+        if (inventory.get(counter).getName().equals(curItem.getName)) {
+          inventory.get(counter).stack();
+          itemFound = true;
+        }
+        ++counter;
+      }
+      if (!itemFound)
+        inventory.add(curItem);
+      curWeight += curItem.getWeight();
+    }
+  }
+
+  void upgrade() {
+    this.maxWeight += 25;
   }
 
   boolean isVowel (char c) {
