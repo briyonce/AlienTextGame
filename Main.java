@@ -6,30 +6,21 @@ import java.util.Arrays;
 
 public class Main {
 
-	static int num_stimpaks = 4;
-	static int stimpak_regen = 40; // The amount of health regenerated from a stimpak
 	static int stimpak_drop_chance = 60;
-
-	static int health = 100;
-	static int player_atkdmg = 15;
-	static Random rand = new Random();
-	static Scanner in = new Scanner(System.in);
-	static ArrayList<String> inventory = new ArrayList<String>();
-	static int max_inv_size = 10;
 	static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
-	static Human player = new Human();
+	static Random rand = new Random();
+	static Human player = new Human(true);
+
+	//Player Variables
 
 	public static void main (String[] args) {
 
 
-
 		//Game Variables
 		boolean jessie_alive = true;
-
-
-		//Player Variables
+		Scanner in = new Scanner(System.in);
 		String playerName = "";
-
+		String playerGender = "";
 
 
 		System.out.println("Welcome to *GAME TITLE*");
@@ -38,12 +29,22 @@ public class Main {
 			playerName = in.nextLine();
 		}
 
-		player.setName(playerName);
+		boolean valid_input = false;
+		while (!valid_input) {
+			System.out.println("Are you male or female?");
+			if (in.hasNextLine()) {
+				playerGender = in.nextLine();
+			}
+			if (playerGender.toLowerCase().equals("male") || playerGender.toLowerCase().equals("m") || playerGender.toLowerCase().equals("female") || playerGender.toLowerCase().equals("f")){
+				valid_input = true;
+				break;
+			} else {
+				System.out.println("Invalid option! Please choose from the available options\n");
+			}
+		}
 
-		player.acquire("stimpak");
-		player.acquire("stimpak");
-		player.acquire("stimpak");
-		player.acquire("stimpak");
+		player.setName(playerName);
+		player.setGender(playerGender);
 
 		boolean running = true;
 
@@ -72,10 +73,13 @@ public class Main {
 				}
 				System.out.println("Your vision clears.");
 				TimeUnit.SECONDS.sleep(2);
+
 				//Very first encounter
+
+				Human jessie = new Human("Jessie", "she", 70);
 				System.out.println("QUICK!!!");
 				System.out.println("Your crewmate is being attacked by a " + enemy.getName() + "!!!!");
-				boolean valid_input = false;
+				valid_input = false;
 				String answer = "";
 				while (!valid_input) {
 					System.out.println("Will you run? Y/N");
@@ -102,15 +106,12 @@ public class Main {
 
 				if (luck <= 60 || answer.equals("n")) {
 					//engage combat
-					result = encounter(enemy); // -1: death, 0: escape, 1: victory
+					result = encounter(enemy, in); // -1: death, 0: escape, 1: victory
 					if (result < 0) { // death case
-						System.out.println("You fall to the floor and watch as your crewmate is overtaken by the creature...");
+						System.out.println("You collapse and watch as your crewmate is overtaken by the creature...");
 						System.out.println("\"Jessie....\" You remember her name.");
-						System.out.println("She slowly sinks to the floor, the Facehugger doing what it does best.");
-						System.out.println("The room falls silent as you breathe your last breath...\n");
-						System.out.println();
-						System.out.println("You have died... Death comes and grasps you with its cold, bony claws...");
-						System.out.println("...in another time... in another life...\n");
+						crewmateDies(new Human("she"), enemy);
+						player.die();
 						jessie_alive = false;
 						valid_input = false;
 						answer = "";
@@ -119,12 +120,12 @@ public class Main {
 							if (in.hasNextLine()) {
 								answer = in.nextLine();
 							}
-							if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n")) {
+							if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n") || answer.toLowerCase().equals("yes") || answer.toLowerCase().equals("no")) {
 								valid_input = true;
 							}
 						}
 						answer = answer.toLowerCase();
-						if (answer.equals("y")) {
+						if (answer.equals("y") || answer.equals("yes")) {
 							continue GAME;
 						} else {
 							System.out.println("Thank you for playing...");
@@ -171,6 +172,7 @@ public class Main {
 					System.out.println("\"Okay... so we're not alone on this ship...\"\n");
 					System.out.println("\"I need to find the captain.\"\n");
 				}
+				in.close();
 				break;
 
 			} catch(InterruptedException ex) {
@@ -180,15 +182,14 @@ public class Main {
 		}
 	}
 
-	public static int encounter(Enemy enemy) {
+	public static int encounter(Enemy enemy, Scanner in) {
 		try {
-
-			while (enemy.getHealth() > 0 && health > 0){
+			while (enemy.getHealth() > 0 && player.getHealth() > 0){
 				//in combat
 				//Player's Turn
 				System.out.println();
 				System.out.println("-------------------------------------");
-				System.out.println("\t Current Health: " + health);
+				System.out.println("\t Current Health: " + player.getHealth());
 				System.out.println("\t " + enemy.getName() + " HP: " + enemy.getHealth() + "\n");
 				System.out.println("What do you want to do?");
 				System.out.println("\t 1. Attack");
@@ -213,18 +214,13 @@ public class Main {
 					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
 					TimeUnit.MILLISECONDS.sleep(800);
 				} else if (action.equals("2")) { //Heal up
-					if (num_stimpaks > 1) {
-						if (health == 100) {
+					if (player.num_stimpaks() > 1) {
+						if (player.getHealth() == 100) {
 							System.out.println("Health already full.... Stimpak wasted.");
-							--num_stimpaks;
-						} else if ((health + stimpak_regen) > 100) {
-							System.out.println("Ahhhh.... that feels better.");
-							--num_stimpaks;
-							health = 100;
+							player.drop("stimpak");
 						} else {
-							System.out.println("Ahhhh.... that feels better.");
-							--num_stimpaks;
-							health += stimpak_regen;
+							player.heal(new Item("stimpak"));
+							player.drop("stimpak");
 						}
 					} else {
 						System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
@@ -275,5 +271,11 @@ public class Main {
 			Thread.currentThread().interrupt();
 			return 20;
 		}
+	}
+
+	static void crewmateDies (Human h, Enemy enemy) {
+		System.out.println(h.getGender() + " slowly sinks to the floor, the " + enemy.getName() +" doing what it does best.");
+    System.out.println("The room falls silent as you breathe your last breath...\n");
+    System.out.println();
 	}
 }

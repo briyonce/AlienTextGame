@@ -7,7 +7,8 @@ public class Item {
   private String color = "grey";
   private int weight = 5;
   private boolean regenerative = false;
-  int frequency = 0;
+  private int regenAmount = 0; // The amount of health regenerated from a stimpak
+  private int frequency = 0;
 
   public Item() {}
 
@@ -15,6 +16,7 @@ public class Item {
     this.name = n;
     if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
+      this.regenAmount = 40;
     }
   }
 
@@ -23,6 +25,7 @@ public class Item {
     this.color = c;
     if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
+      this.regenAmount = 40;
     }
   }
 
@@ -32,6 +35,7 @@ public class Item {
     this.weight = w;
     if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
+      this.regenAmount = 40;
     }
   }
 
@@ -43,7 +47,7 @@ public class Item {
     return this.weight;
   }
 
-  int getColor() {
+  String getColor() {
     return this.color;
   }
 
@@ -53,6 +57,22 @@ public class Item {
   }
 
   void stack() {
-    ++frequency;
+    ++this.frequency;
+  }
+
+  void drop() {
+    --this.frequency;
+  }
+
+  int getQuantity() {
+    return this.frequency;
+  }
+
+  int heal() {
+    return this.regenAmount;
+  }
+
+  boolean isRegenerative() {
+    return this.regenerative;
   }
 }

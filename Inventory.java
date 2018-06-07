@@ -5,11 +5,29 @@ import java.util.ArrayList;
 public class Inventory{
   public static void main(String[] args){}
 
+  private int STARTING_STIMPAKS = 4;
   private ArrayList<Item> inventory = new ArrayList<Item>();
-  int maxWeight = 25;
-  int curWeight = 0;
+  private int maxWeight = 25;
+  private int curWeight = 0;
 
-  public Inventory() {}
+  public Inventory() {
+    for (int i = 0; i < STARTING_STIMPAKS - 1; ++i)
+      acquire("stimpak");
+  }
+
+  int numStimpaks() {
+    int ns = 0;
+    int counter = 0;
+    while (counter < inventory.size()) {
+      Item curItem = inventory.get(counter);
+      if (curItem.getName().toLowerCase().equals("stimpak")) {
+        ns = curItem.getQuantity();
+        break;
+      }
+      ++counter;
+    }
+    return ns;
+  }
 
   String InventorySimplePrint() {
     if (inventory.size() == 0) {
@@ -23,10 +41,14 @@ public class Inventory{
     }
   }
 
+  int getUsage() {
+    return curWeight;
+  }
+
   void ShowInventory() {
-    if (inventory.size() == 0) {
+    if (inventory.size() == 0 && numStimpaks() == 0) {
       System.out.println("You have nothing.");
-    } else if (inventory.size() == 1) {
+    } else if (inventory.size() == 1 && numStimpaks() == 0) {
       System.out.print("You have ");
       String curItem = inventory.get(0).getName();
       if (isVowel(curItem.charAt(0))) {
@@ -34,8 +56,10 @@ public class Inventory{
       } else {
         System.out.println("a " + curItem + ".");
       }
+    } else if (inventory.size() == 0 && numStimpaks () > 0) {
+      System.out.print("You have " + numStimpaks() + " stimpaks.");
     } else {
-      System.out.print("You have ");
+      System.out.print("You have " + numStimpaks() + " stimpaks, ");
       for (int i = 0; i < inventory.size() - 1; ++i) {
         String curItem = inventory.get(i).getName();
         if (isVowel(curItem.charAt(0))) {
@@ -53,25 +77,44 @@ public class Inventory{
     }
   }
 
-  void acquire(String item) {
-    curItem = new Item(item);
+  boolean acquire(String item) {
+    Item curItem = new Item(item);
+    boolean itemFound = false;
     if (maxWeight < curWeight + curItem.getWeight()) {
-      System.out.println("INVENTORY FULL: " + (curWeight + curItem.getWeight()));
-      System.out.println("You need to drop something.");
-    } else {
-      boolean itemFound = false;
+      return false;
+    } else if (inventory.size() > 0) {
       int counter = 0;
-      while (!itemFound) {
-        if (inventory.get(counter).getName().equals(curItem.getName)) {
+      while (!itemFound && (counter < inventory.size())) {
+        if (inventory.get(counter).getName().equals(curItem.getName())) {
           inventory.get(counter).stack();
           itemFound = true;
+          break;
         }
         ++counter;
       }
-      if (!itemFound)
-        inventory.add(curItem);
+    } else if (inventory.size() < 1 || !itemFound) {
+      inventory.add(curItem);
       curWeight += curItem.getWeight();
     }
+    return true;
+  }
+
+  boolean drop(String item) {
+    boolean itemFound = false;
+    int counter = 0;
+    while (!itemFound && counter < inventory.size()) {
+      if (inventory.get(counter).getName().equals(item)) {
+        Item curItem = inventory.get(counter);
+        int quantity = curItem.getQuantity();
+        curItem.drop();
+        if (quantity == 1) {
+          inventory.remove(curItem);
+        }
+        itemFound = true;
+      }
+      ++counter;
+    }
+    return itemFound;
   }
 
   void upgrade() {
