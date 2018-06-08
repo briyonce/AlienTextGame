@@ -11,33 +11,40 @@ public class Human {
   private int maxDamage;
   protected String name = "human";
   private String gender = "he";
+  private String possesive = "his";
   private boolean isPlayer = false;
   private Random r = new Random();
   private Inventory inventory = new Inventory();
   private int STARTING_STIMPAKS = 4;
 
   public Human () {
-    maxDamage = r.nextInt(MAX_DAMAGE);
+    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String g) {
     // Random r = new Random();
     this.gender = g;
-    this.maxDamage = r.nextInt(MAX_DAMAGE);
+    if (g.equals("she")) {
+      this.possesive = "her";
+    }
+    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (boolean p) {
     for (int i = 0; i <= STARTING_STIMPAKS; ++i)
-      acquire("stimpak");
+      acquire("stimpak", true);
     this.isPlayer = true;
-    this.maxDamage = r.nextInt(MAX_DAMAGE);
+    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String n, String g) {
     // Random r = new Random();
     this.name = n;
     this.gender = g;
-    this.maxDamage = r.nextInt(MAX_DAMAGE);
+    if (g.equals("she")) {
+      this.possesive = "her";
+    }
+    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String n, String g, int h) {
@@ -45,7 +52,10 @@ public class Human {
     this.name = n;
     this.health = h;
     this.gender = g;
-    this.maxDamage = r.nextInt(MAX_DAMAGE);
+    if (g.equals("she")) {
+      this.possesive = "her";
+    }
+    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   String getName() {
@@ -60,8 +70,20 @@ public class Human {
     return this.gender;
   }
 
+  String getPossessive() {
+    return this.possesive;
+  }
+
   boolean isAlive() {
-    return health > 0;
+    return this.health > 0;
+  }
+
+  boolean isPlayer() {
+    return this.isPlayer;
+  }
+
+  void acquire(String item, boolean initial) {
+    inventory.acquire(item);
   }
 
   void acquire(String item) {
@@ -70,7 +92,11 @@ public class Human {
       System.out.println("INVENTORY FULL: " + inventory.getUsage() + ": " + new Item(item).getWeight());
       System.out.println(this.name + " needs to drop something.");
     } else {
-
+      if (this.isPlayer) {
+        System.out.println("You pick up the " + item);
+      } else {
+        System.out.println(this.name + " picks up the " + item);
+      }
     }
   }
 
@@ -86,8 +112,11 @@ public class Human {
                               "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
     int atk_choice = r.nextInt(attack_sounds.length);
     System.out.println(attack_sounds[atk_choice] +"\n");
-    System.out.println(maxDamage);
-    return r.nextInt(maxDamage);
+    int damage = r.nextInt(this.maxDamage);
+    while (damage < 2) {
+      damage = r.nextInt(maxDamage);
+    }
+    return damage;
   }
 
   void heal(Item i) {
@@ -117,6 +146,9 @@ public class Human {
 
   void setGender(String g) {
     this.gender = g;
+    if (g.equals("she")) {
+      this.possesive = "her";
+    }
   }
 
   void loseHealth(int d) {
@@ -133,7 +165,6 @@ public class Human {
     }
   }
   void die() {
-    System.out.println("You have died... Death comes and grasps you with its cold, bony claws...");
-    System.out.println("...in another time... in another life...\n");
+    this.health = -1;
   }
 }

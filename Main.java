@@ -18,13 +18,10 @@ public class Main {
 
 
 		//Game Variables
-		boolean jessie_alive = true;
 		Scanner in = new Scanner(System.in);
 		String playerName = "";
 		String playerGender = "";
 
-		System.out.println("STARTING PARTY: ");
-		party.printParty();
 		System.out.println("Welcome to *GAME TITLE*");
 		System.out.println("What is your name?");
 		if (in.hasNextLine()) {
@@ -47,9 +44,6 @@ public class Main {
 
 		player.setName(playerName);
 		player.setGender(playerGender);
-
-		System.out.println("PLAYER INITIALIZED: ");
-		party.printParty();
 
 		boolean running = true;
 
@@ -84,9 +78,6 @@ public class Main {
 				Human jessie = new Human("Jessie", "she", 70);
 				party.addMember(jessie);
 
-				System.out.print("JESSIE ADDED: ");
-				party.printParty();
-				System.out.print("\n");
 				System.out.println("QUICK!!!");
 				System.out.println("Your crewmate is being attacked by a " + enemy.getName() + "!!!!");
 				valid_input = false;
@@ -118,11 +109,9 @@ public class Main {
 					//engage combat
 					result = encounter(enemy, in); // -1: death, 0: escape, 1: victory
 					if (result < 0) { // death case
-						System.out.println("You collapse and watch as your crewmate is overtaken by the creature...");
 						System.out.println("\"Jessie....\" You remember her name.");
-						crewmateDies(new Human("she"), enemy);
-						player.die();
-						jessie_alive = false;
+						die(player, enemy);
+						die(jessie, enemy);
 						valid_input = false;
 						answer = "";
 						while (!valid_input) {
@@ -150,13 +139,12 @@ public class Main {
 					System.out.println("You were able to escape the room...");
 					System.out.println("You close the door and watch as your crewmate is overtaken by the creature...");
 					System.out.println("\"Jessie....\" You remember her name.");
-					System.out.println("She slowly sinks to the floor, the Facehugger doing what it does best.");
+					die(jessie, enemy);
 					System.out.println("The room falls silent.... what have you done?\n");
-					jessie_alive = false;
 				}
 
 				// After initial combat scene
-				if (jessie_alive) {
+				if (jessie.isAlive()) {
 					System.out.println("JESSIE!");
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("She looks at you - eyes wide with fear.");
@@ -261,7 +249,7 @@ public class Main {
 					return 1;
 				}
 				int luck = rand.nextInt(100);
-				if (luck > 60) {
+				if (luck > 20) {
 					// the attack lands
 					int enemy_dmg_dealt = enemy.attack();
 					while (enemy_dmg_dealt < 1){
@@ -270,6 +258,11 @@ public class Main {
 					enemy.landAttack();
 					System.out.println("You take " + enemy_dmg_dealt + " damage!\n");
 					player.loseHealth(enemy_dmg_dealt);;
+					if (enemy_dmg_dealt < 10) {
+						System.out.println("Just a scratch....");
+					} else {
+						System.out.println("It'll heal... ");
+					}
 				} else {
 					enemy.missAttack();
 				}
@@ -283,9 +276,27 @@ public class Main {
 		}
 	}
 
-	static void crewmateDies (Human h, Enemy enemy) {
-		System.out.println(h.getGender() + " slowly sinks to the floor, the " + enemy.getName() +" doing what it does best.");
-    System.out.println("The room falls silent as you breathe your last breath...\n");
-    System.out.println();
+	static void die(Human h, Enemy enemy) {
+		if (!h.isPlayer() && (enemy != null)) {
+			System.out.println(h.getGender() + " slowly sinks to the floor, the " + enemy.getName() +" doing what it does best.");
+	    System.out.println("Another one lost to the world's blighted abominations...\n");
+	    System.out.println();
+		} else if (!h.isPlayer()) {
+			System.out.println("You watch " + h.getName() + " collapse. ");
+			System.out.print(h.getGender() + " breathes " + h.getPossessive() + " last breath.");
+		} else if (h.isPlayer() && (enemy != null)){
+			System.out.print("You collapse and watch as your crewmate");
+			if (party.numMembers() > 2) {
+				System.out.print("s are ");
+			} else {
+				System.out.print(" is ");
+			}
+			System.out.println("overtaken by the creature...");
+		} else {
+			System.out.println("You have died... Death comes and grasps you with its cold, bony claws...");
+	    System.out.println("...in another time... in another life...\n");
+		}
+		h.die();
+		party.removeMember(h);
 	}
 }

@@ -22,6 +22,14 @@ public class Party{
     members.add(h);
   }
 
+  void removeMember(Human h) {
+    members.remove(h);
+  }
+
+  int numMembers() {
+    return members.size();
+  }
+
   void printParty() {
     for (Human h : members) {
       if (h.isAlive())

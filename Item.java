@@ -17,6 +17,7 @@ public class Item {
     if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
+      this.weight = 1;
     }
   }
 
@@ -26,6 +27,7 @@ public class Item {
     if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
+      this.weight = 1;
     }
   }
 
@@ -36,6 +38,7 @@ public class Item {
     if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
+      this.weight = 1;
     }
   }
 

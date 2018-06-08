@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Inventory{
   public static void main(String[] args){}
 
-  
+
   private ArrayList<Item> inventory = new ArrayList<Item>();
   private int maxWeight = 25;
   private int curWeight = 0;
@@ -106,11 +106,11 @@ public class Inventory{
     boolean itemFound = false;
     int counter = 0;
     while (!itemFound && counter < inventory.size()) {
-      if (inventory.get(counter).getName().equals(item)) {
+      if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
         Item curItem = inventory.get(counter);
         int quantity = curItem.getQuantity();
         curItem.drop();
-        if (quantity == 1) {
+        if (quantity <= 1) {
           inventory.remove(curItem);
         }
         itemFound = true;
