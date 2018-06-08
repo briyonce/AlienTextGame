@@ -11,7 +11,7 @@ public class Inventory{
   private int curWeight = 0;
 
   public Inventory() {
-    for (int i = 0; i < STARTING_STIMPAKS - 1; ++i)
+    for (int i = 0; i < STARTING_STIMPAKS; ++i)
       acquire("stimpak");
   }
 
@@ -56,7 +56,7 @@ public class Inventory{
       } else {
         System.out.println("a " + curItem + ".");
       }
-    } else if (inventory.size() == 0 && numStimpaks () > 0) {
+    } else if (inventory.size() == 1 && numStimpaks () > 0) {
       System.out.print("You have " + numStimpaks() + " stimpaks.");
     } else {
       System.out.print("You have " + numStimpaks() + " stimpaks, ");

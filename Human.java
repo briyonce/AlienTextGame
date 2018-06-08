@@ -16,7 +16,6 @@ public class Human {
   private Inventory inventory = new Inventory();
 
   public Human () {
-
     maxDamage = r.nextInt(MAX_DAMAGE);
   }
 
@@ -27,8 +26,8 @@ public class Human {
   }
 
   public Human (boolean p) {
-    System.out.println("in constructor");
     this.isPlayer = true;
+    this.maxDamage = r.nextInt(MAX_DAMAGE);
   }
 
   public Human (String n, String g) {
@@ -82,19 +81,19 @@ public class Human {
   int attack(String enemy) {
     String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!",
                               "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
-    Random r = new Random();
     int atk_choice = r.nextInt(attack_sounds.length);
     System.out.println(attack_sounds[atk_choice] +"\n");
-    System.out.print(maxDamage); 
+    System.out.println(maxDamage);
     return r.nextInt(maxDamage);
   }
 
   void heal(Item i) {
     this.health += i.heal();
-    System.out.println("Ahhhh.... that feels better.");
+    System.out.print("Ahhhh.... that feels better.");
     if (this.health > 100) {
       this.health = 100;
     }
+    System.out.println(" Health: " + this.health);
   }
 
   String InventorySimplePrint() {
