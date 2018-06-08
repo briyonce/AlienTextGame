@@ -10,6 +10,7 @@ public class Main {
 	static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
 	static Random rand = new Random();
 	static Human player = new Human(true);
+	static Party party = new Party(player);
 
 	//Player Variables
 
@@ -22,7 +23,8 @@ public class Main {
 		String playerName = "";
 		String playerGender = "";
 
-
+		System.out.println("STARTING PARTY: ");
+		party.printParty();
 		System.out.println("Welcome to *GAME TITLE*");
 		System.out.println("What is your name?");
 		if (in.hasNextLine()) {
@@ -45,6 +47,9 @@ public class Main {
 
 		player.setName(playerName);
 		player.setGender(playerGender);
+
+		System.out.println("PLAYER INITIALIZED: ");
+		party.printParty();
 
 		boolean running = true;
 
@@ -77,6 +82,11 @@ public class Main {
 				//Very first encounter
 
 				Human jessie = new Human("Jessie", "she", 70);
+				party.addMember(jessie);
+
+				System.out.print("JESSIE ADDED: ");
+				party.printParty();
+				System.out.print("\n");
 				System.out.println("QUICK!!!");
 				System.out.println("Your crewmate is being attacked by a " + enemy.getName() + "!!!!");
 				valid_input = false;

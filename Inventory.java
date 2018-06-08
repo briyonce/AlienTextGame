@@ -5,14 +5,12 @@ import java.util.ArrayList;
 public class Inventory{
   public static void main(String[] args){}
 
-  private int STARTING_STIMPAKS = 4;
+  
   private ArrayList<Item> inventory = new ArrayList<Item>();
   private int maxWeight = 25;
   private int curWeight = 0;
 
   public Inventory() {
-    for (int i = 0; i < STARTING_STIMPAKS; ++i)
-      acquire("stimpak");
   }
 
   int numStimpaks() {
@@ -35,7 +33,12 @@ public class Inventory{
     } else {
       StringBuilder sb = new StringBuilder();
       for (Item item : inventory) {
-        sb.append(item.getName() + " ");
+        sb.append(item.getQuantity() + " " + item.getName());
+        if (item.getQuantity() > 1) {
+          sb.append("s ");
+        } else {
+          sb.append(" ");
+        }
       }
       return sb.toString();
     }

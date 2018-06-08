@@ -10,6 +10,10 @@ public class Party{
     partySize = 0;
   }
 
+  public Party (Human h) {
+    members.add(h);
+  }
+
   public Party (ArrayList<Human> p) {
     members = p;
   }

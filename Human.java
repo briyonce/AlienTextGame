@@ -14,6 +14,7 @@ public class Human {
   private boolean isPlayer = false;
   private Random r = new Random();
   private Inventory inventory = new Inventory();
+  private int STARTING_STIMPAKS = 4;
 
   public Human () {
     maxDamage = r.nextInt(MAX_DAMAGE);
@@ -26,6 +27,8 @@ public class Human {
   }
 
   public Human (boolean p) {
+    for (int i = 0; i <= STARTING_STIMPAKS; ++i)
+      acquire("stimpak");
     this.isPlayer = true;
     this.maxDamage = r.nextInt(MAX_DAMAGE);
   }
