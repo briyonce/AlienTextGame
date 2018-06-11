@@ -36,4 +36,8 @@ public class Party{
         System.out.println(h.getName() + ": " + h.getHealth() + " - " + h.InventorySimplePrint());
     }
   }
+
+  int size() {
+    return this.partySize;
+  }
 }

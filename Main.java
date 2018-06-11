@@ -52,7 +52,7 @@ public class Main {
 
 		System.out.println("Good Morning, private.");
 
-		GAME:
+		GAME_START_SEQUENCE_ONE:
 		while (running) {
 			try {
 				System.out.println("-------------------------------------");
@@ -125,7 +125,7 @@ public class Main {
 						}
 						answer = answer.toLowerCase();
 						if (answer.equals("y") || answer.equals("yes")) {
-							continue GAME;
+							continue GAME_START_SEQUENCE_ONE;
 						} else {
 							System.out.println("Thank you for playing...");
 							System.out.println("Until next time.");
@@ -141,17 +141,18 @@ public class Main {
 					System.out.println("\"Jessie....\" You remember her name.");
 					die(jessie, enemy);
 					System.out.println("The room falls silent.... what have you done?\n");
+
 				}
 
 				// After initial combat scene
 				if (jessie.isAlive()) {
-					System.out.println("JESSIE!");
+					System.out.println("JESSIE! THAT'S HER NAME!");
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("She looks at you - eyes wide with fear.");
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("\"Wh..Wha... What WAS THAT THING????\" She screams. \n");
 					TimeUnit.MILLISECONDS.sleep(800);
-					System.out.println("\"I... I don't know, Jessie. Let's get out of here. There may be more.");
+					System.out.println("\"You: I... I don't know, Jessie. Let's get out of here. There may be more.");
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("J: \"Okay...\"\n");
 					TimeUnit.MILLISECONDS.sleep(800);
@@ -159,6 +160,7 @@ public class Main {
 					TimeUnit.MILLISECONDS.sleep(800);
 					System.out.println("The two of you exit the room. Never to return.");
 					TimeUnit.MILLISECONDS.sleep(800);
+					System.out.println("You: We need to get you to Med Bay ASAP.");
 				} else {
 					// Face the reality of what you've done
 					TimeUnit.MILLISECONDS.sleep(1500);
@@ -169,7 +171,41 @@ public class Main {
 					System.out.println("Brushing away your thoughts of cowardice, you decide to address the situation at hand.");
 					System.out.println("\"Okay... so we're not alone on this ship...\"\n");
 					System.out.println("\"I need to find the captain.\"\n");
+					player.incrementCowardice();
 				}
+				
+				SEQUENCE_TWO:
+					if (party.size() > 1 ) { // Jessie is alive
+						for (int i = 0; i < 10; ++i)
+							System.out.println("MED BAY. 7:00");
+						TimeUnit.MILLISECONDS.sleep(1000);
+						System.out.println("You: \"So... Jessie. Do you know what happened?\"\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("J: \"Not really... I only remember up to the party last night.\"\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("J: \"I woke up to some strange sounds in the room... then that thing.\"\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("You place some gauze over her wound. It looks serious.\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("J: \"Thank you so much for saving me... I really owe you one.\" She winces.\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("\"You: Of course!\" \"I just wish I could've acted sooner...\" You think to yourself.\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("You look up at Jessie. The blood is already soaking through from the massive gash on her forehead.\n");
+						System.out.println("She looks faint.");
+						TimeUnit.MILLISECONDS.sleep(800);
+					} else { // You let her die
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("You're parched, famished, dazed. You deserve it.\n");
+						TimeUnit.MILLISECONDS.sleep(800);
+						System.out.println("\"What the hell is going on here?\"\n");
+					}
+					TimeUnit.MILLISECONDS.sleep(800);
+					System.out.print("Looking out into the hall you can see the main power is out.");
+					System.out.println(" The walls are tinted a faint red from the reserve lights.\n");
+					TimeUnit.MILLISECONDS.sleep(800);
+					System.out.println("\"Why do they always choose red....\"\n");
+
 				in.close();
 				break;
 
@@ -247,7 +283,7 @@ public class Main {
 					}
 					enemy.landAttack();
 					System.out.println("You take " + enemy_dmg_dealt + " damage!\n");
-					player.loseHealth(enemy_dmg_dealt);;
+					player.loseHealth(enemy_dmg_dealt);
 					if (enemy_dmg_dealt < 10) {
 						System.out.println("Just a scratch....");
 					} else {

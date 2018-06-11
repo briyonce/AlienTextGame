@@ -6,6 +6,7 @@ public class Human {
 
   static int MAX_HEALTH = 100;
   static int MAX_DAMAGE = 50;
+  static int MAX_COWARDICE = 100;
 
   protected int health = MAX_HEALTH;
   private int maxDamage;
@@ -16,6 +17,7 @@ public class Human {
   private Random r = new Random();
   private Inventory inventory = new Inventory();
   private int STARTING_STIMPAKS = 4;
+  private int cowardice = 0;
 
   public Human () {
     this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
@@ -163,6 +165,10 @@ public class Human {
     } else {
 
     }
+  }
+
+  void incrementCowardice() {
+    cowardice += 10;
   }
 
   void use_stimpak() {
