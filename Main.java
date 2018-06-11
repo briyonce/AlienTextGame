@@ -212,17 +212,7 @@ public class Main {
 					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
 					TimeUnit.MILLISECONDS.sleep(800);
 				} else if (action.equals("2")) { //Heal up
-					if (player.num_stimpaks() > 1) {
-						if (player.getHealth() == 100) {
-							System.out.println("Health already full.... Stimpak wasted.");
-							player.drop("stimpak");
-						} else {
-							player.heal(new Item("stimpak"));
-							player.drop("stimpak");
-						}
-					} else {
-						System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
-					}
+					player.use_stimpak();
 					TimeUnit.MILLISECONDS.sleep(800);
 				} else if (action.equals("3")) { //View inventory
 					player.ShowInventory();

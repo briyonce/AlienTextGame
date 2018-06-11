@@ -164,6 +164,20 @@ public class Human {
 
     }
   }
+
+  void use_stimpak() {
+    if (num_stimpaks() > 0) {
+      if (this.health == 100) {
+        System.out.println("Health already full.... Stimpak wasted.");
+        drop("stimpak");
+      } else {
+        heal(new Item("stimpak"));
+        drop("stimpak");
+      }
+    } else {
+      System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
+    }
+  }
   void die() {
     this.health = -1;
   }

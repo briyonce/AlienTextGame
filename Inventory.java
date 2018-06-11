@@ -108,9 +108,9 @@ public class Inventory{
     while (!itemFound && counter < inventory.size()) {
       if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
         Item curItem = inventory.get(counter);
-        int quantity = curItem.getQuantity();
         curItem.drop();
-        if (quantity <= 1) {
+        int quantity = curItem.getQuantity();
+        if (quantity < 1) {
           inventory.remove(curItem);
         }
         itemFound = true;
