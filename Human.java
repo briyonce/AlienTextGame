@@ -1,23 +1,26 @@
-import java.util.Random;
+// Base class for all humans in the game.
+// There may one day be different tiers or classes of humans
 
+import java.util.Random;
 
 public class Human {
   public static void main(String[] args){}
 
   static int MAX_HEALTH = 100;
   static int MAX_DAMAGE = 50;
-  static int MAX_COWARDICE = 100;
+  static int MAX_COWARDICE = 100;   // I wonder what'll happen if they hit 100...
 
   protected int health = MAX_HEALTH;
   private int maxDamage;
   protected String name = "human";
-  private String gender = "he";
-  private String possesive = "his";
+  private String gender = "he";     // He/she rather than male/female
+  private String possesive = "his"; // His/hers. Used for grammatical purposes
   private boolean isPlayer = false;
   private Random r = new Random();
   private Inventory inventory = new Inventory();
   private int STARTING_STIMPAKS = 4;
-  private int cowardice = 0;
+  private int cowardice = 0;        // Cowardice/karma mechanic. To be implemented
+                                    // later on.
 
   public Human () {
     this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
@@ -88,6 +91,7 @@ public class Human {
     inventory.acquire(item);
   }
 
+  // Add an item to your inventory
   void acquire(String item) {
     boolean success = inventory.acquire(item);
     if (!success) {
@@ -102,6 +106,7 @@ public class Human {
     }
   }
 
+  // Remove an item from your inventory
   void drop(String item) {
     boolean success = inventory.drop(item);
     if (!success) {
@@ -109,6 +114,8 @@ public class Human {
     }
   }
 
+  // Returns a value for the amount of damage
+  // dealt to the enemy
   int attack(String enemy) {
     String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!",
                               "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
@@ -121,6 +128,7 @@ public class Human {
     return damage;
   }
 
+  // Heal yo' self
   void heal(Item i) {
     this.health += i.heal();
     System.out.print("Ahhhh.... that feels better.");
@@ -130,14 +138,19 @@ public class Human {
     System.out.println(" Health: " + this.health);
   }
 
+  // Quick inventory printout for party view
   String InventorySimplePrint() {
     return inventory.InventorySimplePrint();
   }
 
+  // More detailed inventory printout for combat
   void ShowInventory() {
     inventory.ShowInventory();
   }
 
+  // The number of stimpaks the character has.
+  // Will be changed later as more health items
+  // are introduced into the game.
   int num_stimpaks() {
     return inventory.numStimpaks();
   }
@@ -153,24 +166,29 @@ public class Human {
     }
   }
 
+  // The character has taken damage.
   void loseHealth(int d) {
     this.health -= d;
   }
 
+  // Move an item from this character's inventory
+  // to another character's inventory
   void give (Item i, Human h) {
     boolean hasItem = inventory.drop(i.getName());
     if (hasItem) {
       System.out.println("You give " + h.getName() + " the " + i.getName() + ".");
       h.acquire(i.getName());
     } else {
-
+      System.out.println("You don't even have that item to give...");
     }
   }
 
+  // Used for the fututre cowardice/karma mechanic
   void incrementCowardice() {
     cowardice += 10;
   }
 
+  // Used in conjunction with heal()... I think.
   void use_stimpak() {
     if (num_stimpaks() > 0) {
       if (this.health == 100) {
@@ -184,6 +202,8 @@ public class Human {
       System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
     }
   }
+
+  // Null out value. RIP!
   void die() {
     this.health = -1;
   }

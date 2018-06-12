@@ -7,28 +7,32 @@ import java.util.Arrays;
 public class Main {
 
 	static int stimpak_drop_chance = 60;
-	static char[] vowels = {'a', 'e', 'i', 'o', 'u'};
 	static Random rand = new Random();
 	static Human player = new Human(true);
 	static Party party = new Party(player);
 
-	//Player Variables
-
 	public static void main (String[] args) {
 
 
-		//Game Variables
+		// Game Variables
 		Scanner in = new Scanner(System.in);
+
+		// Player Variables
 		String playerName = "";
 		String playerGender = "";
 
+		// ESKETITTTTT
 		System.out.println("Welcome to *GAME TITLE*");
 		System.out.println("What is your name?");
 		if (in.hasNextLine()) {
 			playerName = in.nextLine();
 		}
 
-		boolean valid_input = false;
+		boolean valid_input = false; // Checks for appropriate user input when the user is prompted.
+
+		// Gender is only used for pronouns. It may be used later
+		// on for discrimination purposes once the player enters
+		// the wasteland. Just a thought.
 		while (!valid_input) {
 			System.out.println("Are you male or female?");
 			if (in.hasNextLine()) {
@@ -42,10 +46,11 @@ public class Main {
 			}
 		}
 
+		// Initialize the player's attributes
 		player.setName(playerName);
 		player.setGender(playerGender);
 
-		boolean running = true;
+		boolean running = true; // Keeps track of game state
 
 		for (int i = 0; i < 15; ++i)
 			System.out.println();
@@ -73,8 +78,8 @@ public class Main {
 				System.out.println("Your vision clears.");
 				TimeUnit.SECONDS.sleep(2);
 
-				//Very first encounter
-
+				// Very first encounter. Jessie is the player's roommate and
+				// is currently under attack.
 				Human jessie = new Human("Jessie", "she", 70);
 				party.addMember(jessie);
 
@@ -173,9 +178,9 @@ public class Main {
 					System.out.println("\"I need to find the captain.\"\n");
 					player.incrementCowardice();
 				}
-				
+
 				SEQUENCE_TWO:
-					if (party.size() > 1 ) { // Jessie is alive
+					if (party.numMembers() > 1 ) { // Jessie is alive
 						for (int i = 0; i < 10; ++i)
 							System.out.println("MED BAY. 7:00");
 						TimeUnit.MILLISECONDS.sleep(1000);
@@ -216,6 +221,7 @@ public class Main {
 		}
 	}
 
+	// The fight sequence when you encounter an enemy
 	public static int encounter(Enemy enemy, Scanner in) {
 		try {
 			while (enemy.getHealth() > 0 && player.getHealth() > 0){
@@ -302,6 +308,9 @@ public class Main {
 		}
 	}
 
+ // Remove current human h from the party.
+ // Enemy will be null if they died due to other causes
+ // Blood loss, fatigue, misfortune, age, etc.
 	static void die(Human h, Enemy enemy) {
 		if (!h.isPlayer() && (enemy != null)) {
 			System.out.println(h.getGender() + " slowly sinks to the floor, the " + enemy.getName() +" doing what it does best.");

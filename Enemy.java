@@ -5,13 +5,11 @@ public class Enemy {
     public static void main(String[] args){}
 
     static int MAX_HEALTH = 300;
-    static int MAX_DAMAGE = 50;
+    static int MAX_DAMAGE = 50; // The maximum amount of damage ANY enemy can do
 
     protected int health;
     private int maxDamage;
     protected String name;
-
-
 
     public Enemy () {
       Random r = new Random();
@@ -40,11 +38,15 @@ public class Enemy {
       this.maxDamage = d;
     }
 
+    // Returns a value for the amount of damage
+    // dealt to the target
     int attack() {
       Random r = new Random();
       return r.nextInt(maxDamage);
     }
 
+    // This occurs when the enemy's attack connects
+    // with the target
     void landAttack() {
       if (this.name.equals("Facehugger")) {
         System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
@@ -52,6 +54,7 @@ public class Enemy {
       }
     }
 
+    // The enemy misses its attack
     void missAttack() {
       if (this.name.equals("Facehugger")) {
         System.out.println("The tiny abomination lunges to attack you but you back away just in time.");
@@ -73,6 +76,7 @@ public class Enemy {
       health -= d;
     }
 
+    // Dependent on what class of enemy is initialized
     protected void alterName(String n) {
       name = n;
     }

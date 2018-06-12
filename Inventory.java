@@ -1,18 +1,17 @@
-//Inventory mechanic
+//Inventory mechanic. Holds all ya items
 
 import java.util.ArrayList;
 
 public class Inventory{
   public static void main(String[] args){}
 
-
-  private ArrayList<Item> inventory = new ArrayList<Item>();
+  private ArrayList<Item> inventory = new ArrayList<Item>(); // Holds items.
   private int maxWeight = 25;
   private int curWeight = 0;
 
-  public Inventory() {
-  }
+  public Inventory() {}
 
+  // The number of stimpaks in the inventory
   int numStimpaks() {
     int ns = 0;
     int counter = 0;
@@ -27,6 +26,18 @@ public class Inventory{
     return ns;
   }
 
+  // Gets the current inventory utilization in percent form
+  double getUsagePercentage() {
+    return (curWeight / maxWeight) * 100;
+  }
+
+  // Gets the current inventory utilization so the character
+  // can see how the item in question compares.
+  int getUsage() {
+    return curWeight;
+  }
+
+  // Quick inventory printout for party view
   String InventorySimplePrint() {
     if (inventory.size() == 0) {
       return "nothing";
@@ -44,35 +55,32 @@ public class Inventory{
     }
   }
 
-  int getUsage() {
-    return curWeight;
-  }
-
+  // More detailed inventory printout for combat
   void ShowInventory() {
     if (inventory.size() == 0 && numStimpaks() == 0) {
       System.out.println("You have nothing.");
     } else if (inventory.size() == 1 && numStimpaks() == 0) {
       System.out.print("You have ");
       String curItem = inventory.get(0).getName();
-      if (isVowel(curItem.charAt(0))) {
+      if (isVowel(curItem.charAt(0))) { // Grammar stuff
         System.out.println("an " + curItem + ".");
       } else {
         System.out.println("a " + curItem + ".");
       }
-    } else if (inventory.size() == 1 && numStimpaks () > 0) {
+    } else if (inventory.size() == 1 && numStimpaks () > 0) { // Grammar stuffs
       System.out.print("You have " + numStimpaks() + " stimpaks.");
     } else {
       System.out.print("You have " + numStimpaks() + " stimpaks, ");
       for (int i = 0; i < inventory.size() - 1; ++i) {
         String curItem = inventory.get(i).getName();
-        if (isVowel(curItem.charAt(0))) {
+        if (isVowel(curItem.charAt(0))) { // Mooooorreeee grammar!
           System.out.print("an " + curItem + ", ");
         } else {
           System.out.print("a " + curItem + ", ");
         }
       }
       String curItem = inventory.get(inventory.size() - 1).getName();
-      if (isVowel(curItem.charAt(0))) {
+      if (isVowel(curItem.charAt(0))) { // Need I dare say more?
         System.out.println("and an " + curItem + ".");
       } else {
         System.out.println("and a " + curItem + ".");
@@ -80,39 +88,42 @@ public class Inventory{
     }
   }
 
+  // Add an item to the inventory
   boolean acquire(String item) {
     Item curItem = new Item(item);
     boolean itemFound = false;
-    if (maxWeight < curWeight + curItem.getWeight()) {
+    if (maxWeight < curWeight + curItem.getWeight()) { // Over capacity
       return false;
     } else if (inventory.size() > 0) {
       int counter = 0;
       while (!itemFound && (counter < inventory.size())) {
         if (inventory.get(counter).getName().equals(curItem.getName())) {
-          inventory.get(counter).stack();
-          itemFound = true;
+          inventory.get(counter).stack(); // Don't add a new item, just increase
+          itemFound = true;               // the quantity.
           break;
         }
         ++counter;
       }
-    } else if (inventory.size() < 1 || !itemFound) {
+    }
+    if (inventory.size() < 1 || !itemFound) { // Add a new item!
       inventory.add(curItem);
       curWeight += curItem.getWeight();
     }
     return true;
   }
 
+  // Remove an item from the inventory
   boolean drop(String item) {
     boolean itemFound = false;
     int counter = 0;
     while (!itemFound && counter < inventory.size()) {
       if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
         Item curItem = inventory.get(counter);
-        curItem.drop();
+        curItem.drop();                         // Decrease quantity of item in question
         int quantity = curItem.getQuantity();
         if (quantity < 1) {
-          inventory.remove(curItem);
-        }
+          inventory.remove(curItem);            // Remove AFTER drop so the quantity count
+        }                                       // is accurate.
         itemFound = true;
       }
       ++counter;
@@ -120,10 +131,12 @@ public class Inventory{
     return itemFound;
   }
 
+  // You may choose to upgrade your inventory. Pretty sweet imo.
   void upgrade() {
     this.maxWeight += 25;
   }
 
+  // Used for grammar stuff.
   boolean isVowel (char c) {
     char[] vowels = {'a', 'e', 'i', 'o', 'u'};
     for (char v : vowels) {
