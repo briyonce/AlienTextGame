@@ -139,13 +139,13 @@ public class Human {
   }
 
   // Quick inventory printout for party view
-  String InventorySimplePrint() {
-    return inventory.InventorySimplePrint();
+  String inventorySimplePrint() {
+    return inventory.inventorySimplePrint();
   }
 
   // More detailed inventory printout for combat
-  void ShowInventory() {
-    inventory.ShowInventory();
+  void showInventory() {
+    inventory.showInventory();
   }
 
   // The number of stimpaks the character has.

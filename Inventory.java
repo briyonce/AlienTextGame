@@ -31,14 +31,32 @@ public class Inventory{
     return (curWeight / maxWeight) * 100;
   }
 
+  Item retrieve(int index) {
+    return inventory.get(index);
+  }
+
   // Gets the current inventory utilization so the character
   // can see how the item in question compares.
   int getUsage() {
     return curWeight;
   }
 
+  boolean isEmpty() {
+    return curWeight == 0;
+  }
+
+  int numItems() {
+    int counter = 0;
+    int items = 0;
+    while (counter < inventory.size()) {
+      items += inventory.get(counter).getQuantity();
+      ++counter;
+    }
+    return items;
+  }
+
   // Quick inventory printout for party view
-  String InventorySimplePrint() {
+  String inventorySimplePrint() {
     if (inventory.size() == 0) {
       return "nothing";
     } else {
@@ -55,8 +73,21 @@ public class Inventory{
     }
   }
 
+  void inventoryNumberPrint() {
+    if (inventory.size() == 0) {
+      System.out.println("nothing.");
+    } else {
+      System.out.println("0. Done.");
+      int counter = 1;
+      for (Item item : inventory) {
+        System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
+        ++counter;
+      }
+    }
+  }
+
   // More detailed inventory printout for combat
-  void ShowInventory() {
+  void showInventory() {
     if (inventory.size() == 0 && numStimpaks() == 0) {
       System.out.println("You have nothing.");
     } else if (inventory.size() == 1 && numStimpaks() == 0) {

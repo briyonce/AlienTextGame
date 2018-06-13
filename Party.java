@@ -40,7 +40,7 @@ public class Party{
   void printParty() {
     for (Human h : members) {
       if (h.isAlive())
-        System.out.println(h.getName() + ": " + h.getHealth() + " - " + h.InventorySimplePrint());
+        System.out.println(h.getName() + ": " + h.getHealth() + " - " + h.inventorySimplePrint());
     }
   }
 

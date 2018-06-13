@@ -152,19 +152,19 @@ public class Main {
 				// After initial combat scene
 				if (jessie.isAlive()) {
 					System.out.println("JESSIE! THAT'S HER NAME!");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("She looks at you - eyes wide with fear.");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("\"Wh..Wha... What WAS THAT THING????\" She screams. \n");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("\"You: I... I don't know, Jessie. Let's get out of here. There may be more.");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("J: \"Okay...\"\n");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("She is obviously very shaken by the whole experience. The salt from her tears stain her cheeks.\n");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("The two of you exit the room. Never to return.");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("You: We need to get you to Med Bay ASAP.");
 				} else {
 					// Face the reality of what you've done
@@ -172,7 +172,7 @@ public class Main {
 					for (int i = 0; i < 5; ++i)
 						System.out.println();
 					System.out.println("You monster.");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("Brushing away your thoughts of cowardice, you decide to address the situation at hand.");
 					System.out.println("\"Okay... so we're not alone on this ship...\"\n");
 					System.out.println("\"I need to find the captain.\"\n");
@@ -182,34 +182,47 @@ public class Main {
 				SEQUENCE_TWO:
 					if (party.numMembers() > 1 ) { // Jessie is alive
 						for (int i = 0; i < 10; ++i)
-							System.out.println("MED BAY. 7:00");
+							System.out.println();
+						Room curRoom = new Room("Med Bay");
+						System.out.println("MED BAY. 7:00");
 						TimeUnit.MILLISECONDS.sleep(1000);
 						System.out.println("You: \"So... Jessie. Do you know what happened?\"\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("J: \"Not really... I only remember up to the party last night.\"\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("J: \"I woke up to some strange sounds in the room... then that thing.\"\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("You place some gauze over her wound. It looks serious.\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("J: \"Thank you so much for saving me... I really owe you one.\" She winces.\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("\"You: Of course!\" \"I just wish I could've acted sooner...\" You think to yourself.\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("You look up at Jessie. The blood is already soaking through from the massive gash on her forehead.\n");
 						System.out.println("She looks faint.");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
+						System.out.println("You: Hey, Jessie. Rest up a bit. I'm going to see if I can find the captain\n");
+						TimeUnit.MILLISECONDS.sleep(1500);
+						System.out.println("You: Maybe she knows what's going on.\n");
+						TimeUnit.MILLISECONDS.sleep(1500);
+						System.out.println("You look over at her again. It didn't take long.\n");
+						TimeUnit.MILLISECONDS.sleep(1500);
+						System.out.println("You turn to leave the room.\n");
+						curRoom.lootRoom(player);
+						//curRoom.lootRoom(player);
 					} else { // You let her die
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("You're parched, famished, dazed. You deserve it.\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("\"What the hell is going on here?\"\n");
 					}
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.print("Looking out into the hall you can see the main power is out.");
 					System.out.println(" The walls are tinted a faint red from the reserve lights.\n");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					System.out.println("\"Why do they always choose red....\"\n");
+
+					// Here we go...
 
 				in.close();
 				break;
@@ -252,32 +265,32 @@ public class Main {
 					int damage_dealt = player.attack(enemy.getName());
 					enemy.takeDamage(damage_dealt);
 					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 				} else if (action.equals("2")) { //Heal up
 					player.use_stimpak();
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 				} else if (action.equals("3")) { //View inventory
-					player.ShowInventory();
+					player.showInventory();
 					continue;
 				} else if (action.equals("4")) { // Run!
 					int luck = rand.nextInt(100);
 					if (luck > 60) {
 						System.out.println("You were able to escape the " + enemy.getName() + "...");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 						return 0;
 					} else {
 						System.out.println("The " + enemy.getName() + " has blocked your way! You can't escape!\n");
-						TimeUnit.MILLISECONDS.sleep(800);
+						TimeUnit.MILLISECONDS.sleep(1500);
 					}
 				}
 				System.out.println("...");
 				System.out.println("...");
 				System.out.println("...");
-				TimeUnit.MILLISECONDS.sleep(800);
+				TimeUnit.MILLISECONDS.sleep(1500);
 				// Enemy's Turn
 				if (enemy.getHealth() < 1) {
 					System.out.println("VICTORY! You have defeated the " + enemy.getName() + ". Death comes another day.");
-					TimeUnit.MILLISECONDS.sleep(800);
+					TimeUnit.MILLISECONDS.sleep(1500);
 					return 1;
 				}
 				int luck = rand.nextInt(100);
@@ -298,7 +311,7 @@ public class Main {
 				} else {
 					enemy.missAttack();
 				}
-				TimeUnit.MILLISECONDS.sleep(800);
+				TimeUnit.MILLISECONDS.sleep(1500);
 			}
 		// the protagonist has fallen
 		return -1;
