@@ -21,6 +21,7 @@ public class Human {
   private int STARTING_STIMPAKS = 4;
   private int cowardice = 0;        // Cowardice/karma mechanic. To be implemented
                                     // later on.
+  private boolean hasFlashlight = false;
 
   public Human () {
     this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
@@ -87,6 +88,10 @@ public class Human {
     return this.isPlayer;
   }
 
+  boolean hasFlashlight() {
+    return this.hasFlashlight;
+  }
+
   void acquire(String item, boolean initial) {
     inventory.acquire(item);
   }
@@ -104,6 +109,9 @@ public class Human {
       } else {
         System.out.println(this.name + " picks up the " + item);
       }
+      if (item.toLowerCase().equals("flashlight")) {
+        this.hasFlashlight = true;
+      }
       return true;
     }
   }
@@ -111,7 +119,9 @@ public class Human {
   // Remove an item from your inventory
   void drop(String item) {
     boolean success = inventory.drop(item);
-    if (!success) {
+    if (success) {
+      this.hasFlashlight = false;
+    } else {
       System.out.println(this.name + " didn't even have this to begin with...");
     }
   }

@@ -208,7 +208,7 @@ public class Main {
 						System.out.println("You look over at her again. It didn't take long.\n");
 						TimeUnit.MILLISECONDS.sleep(1500);
 						System.out.println("You turn to leave the room.\n");
-						curRoom.lootRoom(player);
+						roomExitSequence(curRoom);
 						//curRoom.lootRoom(player);
 					} else { // You let her die
 						TimeUnit.MILLISECONDS.sleep(1500);
@@ -319,6 +319,38 @@ public class Main {
 			Thread.currentThread().interrupt();
 			return 20;
 		}
+	}
+
+	//
+	static void roomExitSequence(Room r) {
+		System.out.println("Preparing to leave " + r.getName());
+		boolean exit = false;
+		Scanner reader = new Scanner(System.in);
+		while (!exit) {
+			System.out.println("What would you like to do?");
+			System.out.println("1. Exit");
+			System.out.println("2. Examine Room");
+			System.out.println("3. Loot Room");
+			int choice = reader.nextInt();
+			reader.nextLine();
+			while (choice < 1 || choice > 3) {
+				System.out.println("Invalid choice. Please try again.");
+				choice = reader.nextInt();
+				reader.nextLine();
+			}
+			if (choice == 1) {
+				exit = true;
+			} else if (choice == 2) {
+				if (player.hasFlashlight()) {
+					r.describe(true);
+				} else {
+					r.describe(false);
+				}
+			} else if (choice == 3) {
+				r.lootRoom(player);
+			}
+		}
+		reader.close();
 	}
 
  // Remove current human h from the party.

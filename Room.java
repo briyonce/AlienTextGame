@@ -3,11 +3,16 @@ import java.util.Scanner;
 public class Room {
   public static void main(String[] args) {}
 
-  Inventory loot = new Inventory();
-  String name = "room";
-  public Room () {
+  private Inventory loot = new Inventory();
+  private String name = "room";
 
-  }
+  // Environmental conditions for room descriptions
+  private boolean onShip = true;
+  private boolean outside = false;
+  private boolean powerOut = true;
+
+
+  public Room () {}
 
   public Room (String n) {
     this.name = n;
@@ -17,6 +22,20 @@ public class Room {
         loot.acquire("stimpak");
       }
       loot.acquire("flashlight");
+    }
+  }
+
+  void describe(boolean flashlight) {
+    if (onShip) {
+      System.out.print("We're on the ship.");
+      if (powerOut && !flashlight) {
+        System.out.println(" Power's out. It's pretty dark in here. May need a flashlight");
+      } else if (powerOut && flashlight) {
+        if (this.name.toLowerCase().equals("med bay")) {
+          System.out.println("Lots of equipment thrown about. Looks like the ship went through a rough patch");
+          System.out.println("The walls are a sterile white. Looks like a regular infirmary for the most part.");
+        }
+      }
     }
   }
 
@@ -35,6 +54,7 @@ public class Room {
       this.display();
       System.out.println("What do you want? One at a time. ");
       int choice = reader.nextInt();
+      reader.nextLine();
       boolean valid_input = false;
       if (choice < loot.numItems() + 1 ) {
         valid_input = true;
@@ -43,6 +63,7 @@ public class Room {
         System.out.println("Sorry, that's not one of the options. Please select from what's available.");
         this.display();
         choice = reader.nextInt();
+        reader.nextLine();
         if ((choice < loot.numItems() + 2) && (choice >= 0)) {
           valid_input = true;
         }
