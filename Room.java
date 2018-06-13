@@ -24,8 +24,8 @@ public class Room {
     return this.name;
   }
 
-  void display() {
-    loot.inventoryNumberPrint();
+  boolean display() {
+    return loot.inventoryNumberPrint();
   }
 
   boolean lootRoom(Human h) {
@@ -43,21 +43,44 @@ public class Room {
         System.out.println("Sorry, that's not one of the options. Please select from what's available.");
         this.display();
         choice = reader.nextInt();
-        if (choice < loot.numItems() + 1) {
+        if ((choice < loot.numItems() + 2) && (choice >= 0)) {
           valid_input = true;
         }
       }
       if (choice == 0) {
         reader.close();
         return true;
+      } else if (choice == 1) {
+        transfer(loot, h);
+      } else {
+        transfer(loot.retrieve(choice - 2), h);
       }
-      transfer(loot.retrieve(choice - 1), h);
     }
+    System.out.println("You've stripped the room of all its worth.");
     reader.close();
     return true;
   }
 
-  // Move an item from this character's inventory
+  // The character loots everything in the room
+  void transfer (Inventory i, Human h) {
+    int counter = 0;
+    while (i.numItems() > 0) {
+      Item item = i.retrieve(counter);
+      String name = item.getName();
+      int quantity = item.getQuantity();
+      i.dropAll(item.getName());
+      // Item newItem = new Item(name, quantity); // to be used later upon optimization
+      for (int index = 0; index < quantity; ++index) {
+        boolean success = h.acquire(name);
+        if (!success) {
+          i.acquire(name);
+          break;
+        }
+      }
+    }
+  }
+
+  // Move an item from this room's inventory
   // to another character's inventory
   void transfer (Item i, Human h) {
     boolean hasItem = loot.drop(i.getName());

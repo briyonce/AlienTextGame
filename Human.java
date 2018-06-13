@@ -92,17 +92,19 @@ public class Human {
   }
 
   // Add an item to your inventory
-  void acquire(String item) {
+  boolean acquire(String item) {
     boolean success = inventory.acquire(item);
     if (!success) {
       System.out.println("INVENTORY FULL: " + inventory.getUsage() + ": " + new Item(item).getWeight());
       System.out.println(this.name + " needs to drop something.");
+      return false;
     } else {
       if (this.isPlayer) {
         System.out.println("You pick up the " + item);
       } else {
         System.out.println(this.name + " picks up the " + item);
       }
+      return true;
     }
   }
 

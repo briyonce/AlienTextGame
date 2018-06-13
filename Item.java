@@ -8,7 +8,7 @@ public class Item {
   private int weight = 5;      // Used for inventory mechanic. YOU GOTTA CHOOSE!
   private boolean regenerative = false; // Used for health/healing objects
   private int regenAmount = 0; // The amount of health regenerated from a stimpak
-  private int frequency = 1;   // Quantity. The amount of THIS the player has.
+  private int quantity = 1;   // Quantity. The amount of THIS the player has.
 
   public Item() {}
 
@@ -42,6 +42,16 @@ public class Item {
     }
   }
 
+  public Item (String n, int q) {
+    this.name = n;
+    this.quantity = q;
+    if (n.toLowerCase().equals("stimpak")) {
+      this.regenerative = true;
+      this.regenAmount = 40;
+      this.weight = 1;
+    }
+  }
+
   String getName() {
     return this.name;
   }
@@ -62,17 +72,17 @@ public class Item {
 
   // You got another one. How cool.
   void stack() {
-    ++this.frequency;
+    ++this.quantity;
   }
 
   // Another one bites the dust. Damn rip.
   void drop() {
-    --this.frequency;
+    --this.quantity;
   }
 
   // How many of me are there???
   int getQuantity() {
-    return this.frequency;
+    return this.quantity;
   }
 
   // You may or may not. Depends.

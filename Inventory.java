@@ -32,6 +32,11 @@ public class Inventory{
   }
 
   Item retrieve(int index) {
+    if (index > inventory.size()) {
+      if (!inventory.isEmpty()) {
+        return inventory.get(inventory.size() - 1);
+      }
+    }
     return inventory.get(index);
   }
 
@@ -42,7 +47,7 @@ public class Inventory{
   }
 
   boolean isEmpty() {
-    return curWeight == 0;
+    return numItems() == 0;
   }
 
   int numItems() {
@@ -73,16 +78,19 @@ public class Inventory{
     }
   }
 
-  void inventoryNumberPrint() {
+  boolean inventoryNumberPrint() {
     if (inventory.size() == 0) {
       System.out.println("nothing.");
+      return false;
     } else {
       System.out.println("0. Done.");
-      int counter = 1;
+      System.out.println("1. ALL.");
+      int counter = 2;
       for (Item item : inventory) {
         System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
         ++counter;
       }
+      return true;
     }
   }
 
@@ -138,11 +146,27 @@ public class Inventory{
     }
     if (inventory.size() < 1 || !itemFound) { // Add a new item!
       inventory.add(curItem);
-      curWeight += curItem.getWeight();
     }
+    curWeight += curItem.getWeight();
     return true;
   }
 
+  boolean dropAll(String item) {
+    boolean itemFound = false;
+    int counter = 0;
+    while (!itemFound && counter < inventory.size()) {
+      if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
+        Item curItem = inventory.get(counter);
+        int quantity = curItem.getQuantity();
+        int totalWeight = quantity * curItem.getWeight();
+        inventory.remove(curItem);
+        curWeight -= totalWeight;
+        itemFound = true;
+      }
+      ++counter;
+    }
+    return itemFound;
+  }
   // Remove an item from the inventory
   boolean drop(String item) {
     boolean itemFound = false;
@@ -150,6 +174,7 @@ public class Inventory{
     while (!itemFound && counter < inventory.size()) {
       if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
         Item curItem = inventory.get(counter);
+        curWeight -= curItem.getWeight();
         curItem.drop();                         // Decrease quantity of item in question
         int quantity = curItem.getQuantity();
         if (quantity < 1) {
