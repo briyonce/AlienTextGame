@@ -347,7 +347,7 @@ public class Main {
 					r.describe(false);
 				}
 			} else if (choice == 3) {
-				r.lootRoom(player);
+				r.lootRoom(player, reader);
 			}
 		}
 		reader.close();

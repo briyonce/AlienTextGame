@@ -47,8 +47,7 @@ public class Room {
     return loot.inventoryNumberPrint();
   }
 
-  boolean lootRoom(Human h) {
-    Scanner reader = new Scanner(System.in);
+  boolean lootRoom(Human h, Scanner reader) {
     System.out.println("Let's see what this room has to offer...");
     while (!this.loot.isEmpty()) {
       this.display();
@@ -69,7 +68,6 @@ public class Room {
         }
       }
       if (choice == 0) {
-        reader.close();
         return true;
       } else if (choice == 1) {
         transfer(loot, h);
@@ -78,7 +76,6 @@ public class Room {
       }
     }
     System.out.println("You've stripped the room of all its worth.");
-    reader.close();
     return true;
   }
 
