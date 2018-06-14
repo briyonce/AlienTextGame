@@ -263,6 +263,9 @@ public class Main {
 				}
 				if (action.equals("1")) { //Attack
 					int damage_dealt = player.attack(enemy.getName());
+					if (damage_dealt > enemy.getHealth()) {
+						damage_dealt = enemy.getHealth();
+					}
 					enemy.takeDamage(damage_dealt);
 					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
 					TimeUnit.SECONDS.sleep(3);
@@ -323,7 +326,7 @@ public class Main {
 
 	//
 	static void roomExitSequence(Room r) {
-		System.out.println("Preparing to leave " + r.getName() + "\n");
+		System.out.println("--- Preparing to leave " + r.getName() + " ---\n");
 		boolean exit = false;
 		Scanner reader = new Scanner(System.in);
 		while (!exit) {
@@ -333,10 +336,12 @@ public class Main {
 			System.out.println("3. Loot Room");
 			int choice = reader.nextInt();
 			reader.nextLine();
+			System.out.println();
 			while (choice < 1 || choice > 3) {
 				System.out.println("Invalid choice. Please try again.\n");
 				choice = reader.nextInt();
 				reader.nextLine();
+				System.out.println();
 			}
 			if (choice == 1) {
 				exit = true;
