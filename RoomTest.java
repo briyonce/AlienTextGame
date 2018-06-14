@@ -1,6 +1,10 @@
 import java.util.Scanner;
 
 public class RoomTest {
+
+  static Human player = new Human(true);
+  static Party p = new Party();
+
   public static void main(String[] args) {
     // test1();
     test2();
@@ -10,23 +14,25 @@ public class RoomTest {
     Room curRoom = new Room("med bay");
     curRoom.display();
     Human h = new Human();
-    Party p = new Party(h);
-    p.printParty();
+    Party pa = new Party(h);
+    pa.printParty();
     curRoom.lootRoom(h, new Scanner(System.in));
-    p.printParty();
+    pa.printParty();
   }
 
   static void test2() {
     Room curRoom = new Room("med bay");
+    player.setName("bri");
+    player.setGender("f");
+    p.addMember(player);
+    p.printParty();
     roomExitSequence(curRoom);
+    p.printParty();
   }
 
   static void roomExitSequence(Room r) {
 		System.out.println("Preparing to leave " + r.getName());
 		boolean exit = false;
-    Human player = new Human("true");
-    player.setName("bri");
-    player.setGender("f");
 		Scanner reader = new Scanner(System.in);
 		while (!exit) {
 			System.out.println("What would you like to do?");
@@ -36,7 +42,7 @@ public class RoomTest {
 			int choice = reader.nextInt();
 			reader.nextLine();
 			while (choice < 1 || choice > 3) {
-				System.out.println("Invalid choice. Please try again.");
+				System.out.println("Invalid choice. Please try again.\n");
 				choice = reader.nextInt();
 				reader.nextLine();
 			}

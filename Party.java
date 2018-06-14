@@ -7,38 +7,40 @@ public class Party{
   public static void main(String[] args) {};
 
   private ArrayList<Human> members = new ArrayList<Human>();
-  private int partySize;
+  private int partySize = 0; // used for speed
 
-  public Party () {
-    partySize = 0;
-  }
+  public Party () {}
 
   public Party (Human h) {
     members.add(h);
+    ++this.partySize;
   }
 
   public Party (ArrayList<Human> p) {
-    members = p;
+    this.members = p;
+    this.partySize = p.size();
   }
 
   // Strengthen in numbers
   void addMember(Human h) {
     members.add(h);
+    ++this.partySize;
   }
 
   // They weren't that cool anyways...
   void removeMember(Human h) {
     members.remove(h);
+    --this.partySize;
   }
 
   // Return the number of humans in the party.
   int numMembers() {
-    return members.size();
+    return this.partySize;
   }
 
   // Overview of all active players, their stats, and their inventories.
   void printParty() {
-    for (Human h : members) {
+    for (Human h : this.members) {
       if (h.isAlive())
         System.out.println(h.getName() + ": " + h.getHealth() + " - " + h.inventorySimplePrint());
     }

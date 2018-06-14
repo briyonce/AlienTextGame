@@ -80,7 +80,7 @@ public class Inventory{
 
   boolean inventoryNumberPrint() {
     if (inventory.size() == 0) {
-      System.out.println("nothing.");
+      System.out.println("nothing.\n");
       return false;
     } else {
       System.out.println("0. Done.");
@@ -90,6 +90,7 @@ public class Inventory{
         System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
         ++counter;
       }
+      System.out.println();
       return true;
     }
   }
@@ -97,17 +98,17 @@ public class Inventory{
   // More detailed inventory printout for combat
   void showInventory() {
     if (inventory.size() == 0 && numStimpaks() == 0) {
-      System.out.println("You have nothing.");
+      System.out.println("You have nothing.\n");
     } else if (inventory.size() == 1 && numStimpaks() == 0) {
       System.out.print("You have ");
       String curItem = inventory.get(0).getName();
       if (isVowel(curItem.charAt(0))) { // Grammar stuff
-        System.out.println("an " + curItem + ".");
+        System.out.println("an " + curItem + ".\n");
       } else {
-        System.out.println("a " + curItem + ".");
+        System.out.println("a " + curItem + ".\n");
       }
     } else if (inventory.size() == 1 && numStimpaks () > 0) { // Grammar stuffs
-      System.out.print("You have " + numStimpaks() + " stimpaks.");
+      System.out.print("You have " + numStimpaks() + " stimpaks.\n");
     } else {
       System.out.print("You have " + numStimpaks() + " stimpaks, ");
       for (int i = 0; i < inventory.size() - 1; ++i) {
@@ -120,9 +121,9 @@ public class Inventory{
       }
       String curItem = inventory.get(inventory.size() - 1).getName();
       if (isVowel(curItem.charAt(0))) { // Need I dare say more?
-        System.out.println("and an " + curItem + ".");
+        System.out.println("and an " + curItem + ".\n");
       } else {
-        System.out.println("and a " + curItem + ".");
+        System.out.println("and a " + curItem + ".\n");
       }
     }
   }

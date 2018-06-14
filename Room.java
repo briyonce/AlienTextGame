@@ -29,11 +29,11 @@ public class Room {
     if (onShip) {
       System.out.print("We're on the ship.");
       if (powerOut && !flashlight) {
-        System.out.println(" Power's out. It's pretty dark in here. May need a flashlight");
+        System.out.println(" Power's out. It's pretty dark in here. May need a flashlight. \n");
       } else if (powerOut && flashlight) {
         if (this.name.toLowerCase().equals("med bay")) {
-          System.out.println("Lots of equipment thrown about. Looks like the ship went through a rough patch");
-          System.out.println("The walls are a sterile white. Looks like a regular infirmary for the most part.");
+          System.out.println(" Lots of equipment thrown about. Looks like the ship went through a rough patch.");
+          System.out.println("The walls are a sterile white. Looks like a regular infirmary for the most part.\n");
         }
       }
     }
@@ -48,7 +48,7 @@ public class Room {
   }
 
   boolean lootRoom(Human h, Scanner reader) {
-    System.out.println("Let's see what this room has to offer...");
+    System.out.println("Let's see what this room has to offer...\n");
     while (!this.loot.isEmpty()) {
       this.display();
       System.out.println("What do you want? One at a time. ");
@@ -59,7 +59,7 @@ public class Room {
         valid_input = true;
       }
       while (!valid_input) {
-        System.out.println("Sorry, that's not one of the options. Please select from what's available.");
+        System.out.println("Sorry, that's not one of the options. Please select from what's available.\n");
         this.display();
         choice = reader.nextInt();
         reader.nextLine();
@@ -75,7 +75,7 @@ public class Room {
         transfer(loot.retrieve(choice - 2), h);
       }
     }
-    System.out.println("You've stripped the room of all its worth.");
+    System.out.println("You've stripped the room of all its worth.\n");
     return true;
   }
 
@@ -103,10 +103,9 @@ public class Room {
   void transfer (Item i, Human h) {
     boolean hasItem = loot.drop(i.getName());
     if (hasItem) {
-      System.out.println(h.getName() + "picked up the " + i.getName() + ".");
       h.acquire(i.getName());
     } else {
-      System.out.println("That item isn't in this room.");
+      System.out.println("That item isn't in this room.\n");
     }
   }
 }

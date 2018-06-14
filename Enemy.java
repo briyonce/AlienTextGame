@@ -57,10 +57,10 @@ public class Enemy {
     // The enemy misses its attack
     void missAttack() {
       if (this.name.equals("Facehugger")) {
-        System.out.println("The tiny abomination lunges to attack you but you back away just in time.");
+        System.out.println("The tiny abomination lunges to attack you but you back away just in time.\n");
         System.out.println("It scurries away before you can retaliate.\n");
-        System.out.println("You've escaped your inevitable death for another brief moment.");
-        System.out.println("Time to gamble yet again.");
+        System.out.println("You've escaped your inevitable death for another brief moment.\n");
+        System.out.println("Time to gamble yet again.\n");
       }
     }
 

@@ -37,7 +37,7 @@ public class Human {
   }
 
   public Human (boolean p) {
-    for (int i = 0; i <= STARTING_STIMPAKS; ++i)
+    for (int i = 0; i < STARTING_STIMPAKS; ++i)
       acquire("stimpak", true);
     this.isPlayer = true;
     this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
@@ -92,8 +92,10 @@ public class Human {
     return this.hasFlashlight;
   }
 
-  void acquire(String item, boolean initial) {
-    inventory.acquire(item);
+  // Used to give the player an initial amount of items
+  // without displaying the "acquire text".
+  boolean acquire(String item, boolean initial) {
+    return inventory.acquire(item);
   }
 
   // Add an item to your inventory
@@ -101,7 +103,7 @@ public class Human {
     boolean success = inventory.acquire(item);
     if (!success) {
       System.out.println("INVENTORY FULL: " + inventory.getUsage() + ": " + new Item(item).getWeight());
-      System.out.println(this.name + " needs to drop something.");
+      System.out.println(this.name + " needs to drop something.\n");
       return false;
     } else {
       if (this.isPlayer) {
@@ -122,7 +124,7 @@ public class Human {
     if (success) {
       this.hasFlashlight = false;
     } else {
-      System.out.println(this.name + " didn't even have this to begin with...");
+      System.out.println(this.name + " didn't even have this to begin with...\n");
     }
   }
 
@@ -143,7 +145,7 @@ public class Human {
   // Heal yo' self
   void heal(Item i) {
     this.health += i.heal();
-    System.out.print("Ahhhh.... that feels better.");
+    System.out.print("Ahhhh.... that feels better.\n");
     if (this.health > 100) {
       this.health = 100;
     }
@@ -188,10 +190,10 @@ public class Human {
   void give (Item i, Human h) {
     boolean hasItem = inventory.drop(i.getName());
     if (hasItem) {
-      System.out.println("You give " + h.getName() + " the " + i.getName() + ".");
+      System.out.println("You give " + h.getName() + " the " + i.getName() + ".\n");
       h.acquire(i.getName());
     } else {
-      System.out.println("You don't even have that item to give...");
+      System.out.println("You don't even have that item to give...\n");
     }
   }
 
@@ -204,7 +206,7 @@ public class Human {
   void use_stimpak() {
     if (num_stimpaks() > 0) {
       if (this.health == 100) {
-        System.out.println("Health already full.... Stimpak wasted.");
+        System.out.println("Health already full.... Stimpak wasted.\n");
         drop("stimpak");
       } else {
         heal(new Item("stimpak"));
