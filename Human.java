@@ -7,8 +7,6 @@ public class Human extends Entity {
   public static void main(String[] args){}
   static int MAX_COWARDICE = 100;   // I wonder what'll happen if they hit 100...
 
-  private int maxDamage;
-
   private String gender = "he";     // He/she rather than male/female
   private String possesive = "his"; // His/hers. Used for grammatical purposes
   private boolean isPlayer = false;
@@ -72,6 +70,7 @@ public class Human extends Entity {
     return this.isPlayer;
   }
 
+  // Used for examining your environment
   boolean hasFlashlight() {
     return this.hasFlashlight;
   }
@@ -130,7 +129,7 @@ public class Human extends Entity {
   void heal(Item i) {
     this.health += i.heal();
     System.out.print("Ahhhh.... that feels better.\n");
-    if (this.health > 100) {
+    if (this.health > 100) { // Cap health at 100
       this.health = 100;
     }
     System.out.println(" Health: " + this.health);
@@ -153,8 +152,7 @@ public class Human extends Entity {
     return inventory.numStimpaks();
   }
 
-
-
+  // For grammatical purposes.
   void setGender(String g) {
     this.gender = g;
     if (g.equals("she")) {
@@ -179,7 +177,7 @@ public class Human extends Entity {
     cowardice += 10;
   }
 
-  // Used in conjunction with heal()... I think.
+  // Used in conjunction with heal()... I think. I hope.
   void use_stimpak() {
     if (num_stimpaks() > 0) {
       if (this.health == 100) {

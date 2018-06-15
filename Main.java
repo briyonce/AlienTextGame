@@ -215,7 +215,6 @@ public class Main {
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("You turn to leave the room.\n");
 						roomExitSequence(curRoom);
-						//curRoom.lootRoom(player);
 					} else { // You let her die
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("You're parched, famished, dazed. You deserve it.\n");
@@ -278,8 +277,18 @@ public class Main {
 					if (damage_dealt > e.getHealth()) {
 						damage_dealt = e.getHealth();
 					}
-					e.takeDamage(damage_dealt);
-					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
+					int luck = rand.nextInt(100);
+					if (luck > 30) {
+						e.takeDamage(damage_dealt);
+						System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
+						luck = rand.nextInt(50);
+						if (luck > 40) { // 20% chance you'll stun your enemy
+							e.stun();
+						}
+					} else {
+						System.out.println("You missed your attack. Do better next time. If you get one. \n");
+					}
+
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
 					h.use_stimpak();
@@ -309,24 +318,30 @@ public class Main {
 					TimeUnit.SECONDS.sleep(3);
 					return 1;
 				}
-				int luck = rand.nextInt(100);
-				if (luck > 20) {
-					// the attack lands
-					int e1_dmg_dealt = e.attack();
-					while (e1_dmg_dealt < 1){
-						e1_dmg_dealt = e.attack();
-					}
-					e.landAttack();
-					System.out.println("You take " + e1_dmg_dealt + " damage!\n");
-					h.takeDamage(e1_dmg_dealt);
-					if (e1_dmg_dealt < 10) {
-						System.out.println("Just a scratch....\n");
+				if (!e1.isStunned()) {
+					int luck = rand.nextInt(100);
+					if (luck > 20) {
+						// the attack lands
+						int e1_dmg_dealt = e.attack();
+						while (e1_dmg_dealt < 1){
+							e1_dmg_dealt = e.attack();
+						}
+						e.landAttack();
+						System.out.println("You take " + e1_dmg_dealt + " damage!\n");
+						h.takeDamage(e1_dmg_dealt);
+						if (e1_dmg_dealt < 10) {
+							System.out.println("Just a scratch....\n");
+						} else {
+							System.out.println("It'll heal... ");
+						}
 					} else {
-						System.out.println("It'll heal... ");
+						e.missAttack();
 					}
 				} else {
-					e.missAttack();
+					System.out.println("The " + e.getName() + " is frozen where it stands. Your attack really did a number on it.\n");
+					e.unStun(); // to be ready for the next round.
 				}
+
 				++enemyCounter;
 				++playerCounter;
 				TimeUnit.SECONDS.sleep(3);
@@ -379,7 +394,7 @@ public class Main {
  // Blood loss, fatigue, misfortune, age, etc.
 	static void die(Human h, Party p, Enemy e1) {
 		if (!h.isPlayer() && (e1 != null)) {
-			System.out.println(h.getGender() + " slowly sinks to the floor, the " + e1.getName() +" doing what it does best.\n");
+			System.out.println(h.getGender() + " slowly sinks to the floor, the " + e1.getName() + " doing what it does best.\n");
 	    System.out.println("Another one lost to the world's blighted abominations...\n");
 	    System.out.println();
 		} else if (!h.isPlayer()) {

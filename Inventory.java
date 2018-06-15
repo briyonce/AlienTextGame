@@ -31,6 +31,7 @@ public class Inventory{
     return (curWeight / maxWeight) * 100;
   }
 
+  // Equivalent to ArrayList get(). Used for looting rooms
   Item retrieve(int index) {
     if (index > inventory.size()) {
       if (!inventory.isEmpty()) {
@@ -50,6 +51,7 @@ public class Inventory{
     return numItems() == 0;
   }
 
+  // Total including multiples of one item
   int numItems() {
     int counter = 0;
     int items = 0;
@@ -78,6 +80,7 @@ public class Inventory{
     }
   }
 
+  // Used for looting rooms
   int inventoryNumberPrint() {
     int counter = 2;
     if (inventory.size() == 0) {
@@ -151,6 +154,7 @@ public class Inventory{
     return true;
   }
 
+  // Used for looting rooms. Or death if I implemented it.
   boolean dropAll(String item) {
     boolean itemFound = false;
     int counter = 0;
@@ -167,6 +171,7 @@ public class Inventory{
     }
     return itemFound;
   }
+
   // Remove an item from the inventory
   boolean drop(String item) {
     boolean itemFound = false;

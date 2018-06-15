@@ -6,6 +6,7 @@ public class Entity {
   protected int health = 100;
   protected int maxDamage = 50;
   static int MAX_DAMAGE = 50;
+  private boolean isStunned = false;
 
   public Entity() {}
 
@@ -32,8 +33,22 @@ public class Entity {
     return r.nextInt(maxDamage);
   }
 
+  // Pretty self explanitory
   void setName(String n) {
     this.name = n;
+  }
+
+  // Used for combat
+  boolean isStunned() {
+    return this.isStunned;
+  }
+
+  void stun() {
+    this.isStunned = true;
+  }
+
+  void unStun() {
+    this.isStunned = false;
   }
 
 }
