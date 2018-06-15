@@ -6,9 +6,9 @@ public class RoomTest {
   static Party p = new Party();
 
   public static void main(String[] args) {
-    // test1();
+    test1();
     // test2();
-    test3();
+    // test3();
   }
 
   public static void test1 () {

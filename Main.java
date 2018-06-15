@@ -84,7 +84,6 @@ public class Main {
 				// Very first encounter. Jessie is the player's roommate and
 				// is currently under attack.
 				Human jessie = new Human("Jessie", "she", 70);
-				party.addMember(jessie);
 
 				System.out.println("QUICK!!!");
 				System.out.println("Your crewmate is being attacked by a " + e1.getName() + "!!!!");
@@ -115,11 +114,11 @@ public class Main {
 
 				if (luck <= 60 || answer.equals("n")) {
 					//engage combat
-					result = encounter(e1, in); // -1: death, 0: escape, 1: victory
+					result = encounter(in); // -1: death, 0: escape, 1: victory
 					if (result < 0) { // death case
 						System.out.println("\"Jessie....\" You remember her name.\n");
 						die(player, party, e1);
-						die(jessie, party, e1);
+						die(jessie, null, e1);
 						valid_input = false;
 						answer = "";
 						while (!valid_input) {
@@ -140,20 +139,22 @@ public class Main {
 							break;
 						}
 					} else if (result == 1) {
+						enemies.empty();
 						System.out.println("You are able to save your crewmate.\n");
 					}
 
-				} if (luck > 60 || result == 0) {
+				} if (luck > 60 || result == 0) { // you escape and leave Jessie to die
 					System.out.println("You were able to escape the room...\n");
 					System.out.println("You close the door and watch as your crewmate is overtaken by the creature...\n");
 					System.out.println("\"Jessie....\" You remember her name.\n");
-					die(jessie, party, e1);
+					die(jessie, null, e1);
 					System.out.println("The room falls silent.... what have you done?\n");
-
+					enemies.empty();
 				}
 
 				// After initial combat scene
 				if (jessie.isAlive()) {
+					party.addMember(jessie);
 					System.out.println("JESSIE! THAT'S HER NAME!\n");
 					TimeUnit.SECONDS.sleep(3);
 					System.out.println("She looks at you - eyes wide with fear.\n");
@@ -177,8 +178,11 @@ public class Main {
 					System.out.println("You monster.\n");
 					TimeUnit.SECONDS.sleep(3);
 					System.out.println("Brushing away your thoughts of cowardice, you decide to address the situation at hand.\n");
+					TimeUnit.SECONDS.sleep(3);
 					System.out.println("\"Okay... so we're not alone on this ship...\"\n");
+					TimeUnit.SECONDS.sleep(3);
 					System.out.println("\"I need to find the captain.\"\n");
+					TimeUnit.SECONDS.sleep(2);
 					player.incrementCowardice();
 				}
 
@@ -237,15 +241,21 @@ public class Main {
 	}
 
 	// The fight sequence when you encounter an e1
-	public static int encounter(Enemy e1, Scanner in) {
+	public static int encounter(Scanner in) {
 		try {
-			while (e1.getHealth() > 0 && player.getHealth() > 0){
+			int playerCounter = 0;
+			int enemyCounter = 0;
+			while (enemies.numMembers() > 0 && party.numMembers() > 0){
+				Enemy e = (Enemy) enemies.getMember(enemyCounter % enemies.size());
+				Human h = (Human) party.getMember(playerCounter % party.size());
 				//in combat
 				//Player's Turn
 				System.out.println();
 				System.out.println("-------------------------------------");
-				System.out.println("\t Current Health: " + player.getHealth());
-				System.out.println("\t " + e1.getName() + " HP: " + e1.getHealth() + "\n");
+				System.out.print("\t");
+				party.printPartyHealth();
+				System.out.print("\t");
+				enemies.printPartyHealth();
 				System.out.println("What do you want to do?");
 				System.out.println("\t 1. Attack");
 				System.out.println("\t 2. Use Stimpak");
@@ -264,27 +274,27 @@ public class Main {
 					}
 				}
 				if (action.equals("1")) { //Attack
-					int damage_dealt = player.attack(e1.getName());
-					if (damage_dealt > e1.getHealth()) {
-						damage_dealt = e1.getHealth();
+					int damage_dealt = h.attack(e.getName());
+					if (damage_dealt > e.getHealth()) {
+						damage_dealt = e.getHealth();
 					}
-					e1.takeDamage(damage_dealt);
+					e.takeDamage(damage_dealt);
 					System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
-					player.use_stimpak();
+					h.use_stimpak();
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("3")) { //View inventory
-					player.showInventory();
+					h.showInventory();
 					continue;
 				} else if (action.equals("4")) { // Run!
 					int luck = rand.nextInt(100);
 					if (luck > 60) {
-						System.out.println("You were able to escape the " + e1.getName() + "...\n");
+						System.out.println("You were able to escape the " + e.getName() + "...\n");
 						TimeUnit.SECONDS.sleep(3);
 						return 0;
 					} else {
-						System.out.println("The " + e1.getName() + " has blocked your way! You can't escape!\n");
+						System.out.println("The " + e.getName() + " has blocked your way! You can't escape!\n");
 						TimeUnit.SECONDS.sleep(3);
 					}
 				}
@@ -293,32 +303,36 @@ public class Main {
 				System.out.println("...\n");
 				TimeUnit.SECONDS.sleep(3);
 				// e1's Turn
-				if (e1.getHealth() < 1) {
-					System.out.println("VICTORY! You have defeated the " + e1.getName() + ". Death comes another day.\n");
+				if (e.getHealth() < 1) {
+					enemies.removeMember(e);
+					System.out.println("VICTORY! You have defeated the " + e.getName() + ". Death comes another day.\n");
 					TimeUnit.SECONDS.sleep(3);
 					return 1;
 				}
 				int luck = rand.nextInt(100);
 				if (luck > 20) {
 					// the attack lands
-					int e1_dmg_dealt = e1.attack();
+					int e1_dmg_dealt = e.attack();
 					while (e1_dmg_dealt < 1){
-						e1_dmg_dealt = e1.attack();
+						e1_dmg_dealt = e.attack();
 					}
-					e1.landAttack();
+					e.landAttack();
 					System.out.println("You take " + e1_dmg_dealt + " damage!\n");
-					player.takeDamage(e1_dmg_dealt);
+					h.takeDamage(e1_dmg_dealt);
 					if (e1_dmg_dealt < 10) {
 						System.out.println("Just a scratch....\n");
 					} else {
 						System.out.println("It'll heal... ");
 					}
 				} else {
-					e1.missAttack();
+					e.missAttack();
 				}
+				++enemyCounter;
+				++playerCounter;
 				TimeUnit.SECONDS.sleep(3);
 			}
 		// the protagonist has fallen
+		enemies.empty();
 		return -1;
 		} catch(InterruptedException ex) {
 			Thread.currentThread().interrupt();
@@ -384,6 +398,7 @@ public class Main {
 	    System.out.println("...in another time... in another life...\n");
 		}
 		h.die();
-		party.removeMember(h);
+		if (!(p == null))
+			p.removeMember(h);
 	}
 }

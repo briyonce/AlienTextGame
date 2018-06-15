@@ -43,19 +43,20 @@ public class Room {
     return this.name;
   }
 
-  boolean display() {
+  int display() {
     return loot.inventoryNumberPrint();
   }
 
   boolean lootRoom(Human h, Scanner reader) {
     System.out.println("Let's see what this room has to offer...\n");
+    int numItems = 0;
     while (!this.loot.isEmpty()) {
-      this.display();
+      numItems = this.display();
       System.out.println("What do you want? One at a time. ");
       int choice = reader.nextInt();
       reader.nextLine();
       boolean valid_input = false;
-      if (choice < loot.numItems() + 1 ) {
+      if (choice < numItems + 2) {
         valid_input = true;
       }
       while (!valid_input) {
@@ -63,7 +64,7 @@ public class Room {
         this.display();
         choice = reader.nextInt();
         reader.nextLine();
-        if ((choice < loot.numItems() + 2) && (choice >= 0)) {
+        if ((choice < numItems + 2) && (choice >= 0)) {
           valid_input = true;
         }
       }

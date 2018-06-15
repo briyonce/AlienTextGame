@@ -32,6 +32,10 @@ public class Party{
     ++this.partySize;
   }
 
+  Entity getMember(int index) {
+    return members.get(index);
+  }
+
   // They weren't that cool anyways...
   void removeMember(Human h) {
     members.remove(h);
@@ -48,6 +52,9 @@ public class Party{
     return this.partySize;
   }
 
+  void empty() {
+    members.clear();
+  }
   // Overview of all active players, their stats, and their inventories.
   void printParty() {
     for (Entity e : this.members) {
@@ -59,6 +66,13 @@ public class Party{
       }
       System.out.println();
     }
+  }
+
+  void printPartyHealth() {
+    for (Entity e : this.members) {
+      System.out.print(e.getName() + "'s Health: " + e.getHealth() + "  ");
+    }
+    System.out.println();
   }
 
   // Just in case somebody uses this and doesn't actually look at the files.

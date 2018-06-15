@@ -78,21 +78,20 @@ public class Inventory{
     }
   }
 
-  boolean inventoryNumberPrint() {
+  int inventoryNumberPrint() {
+    int counter = 2;
     if (inventory.size() == 0) {
       System.out.println("nothing.\n");
-      return false;
     } else {
       System.out.println("0. Done.");
       System.out.println("1. ALL.");
-      int counter = 2;
       for (Item item : inventory) {
         System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
         ++counter;
       }
       System.out.println();
-      return true;
     }
+    return counter - 2;
   }
 
   // More detailed inventory printout for combat
