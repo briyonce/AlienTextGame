@@ -1,5 +1,5 @@
 @ECHO OFF
-set CLASSPATH=.
+set CLASSPATH=./bin
 javac *.java
 java Main
 pause
