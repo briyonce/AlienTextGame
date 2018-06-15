@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Party{
   public static void main(String[] args) {};
 
-  private ArrayList<Human> members = new ArrayList<Human>();
+  private ArrayList<Entity> members = new ArrayList<Entity>();
   private int partySize = 0; // used for speed
 
   public Party () {}
@@ -16,7 +16,7 @@ public class Party{
     ++this.partySize;
   }
 
-  public Party (ArrayList<Human> p) {
+  public Party (ArrayList<Entity> p) {
     this.members = p;
     this.partySize = p.size();
   }
@@ -27,9 +27,19 @@ public class Party{
     ++this.partySize;
   }
 
+  void addMember(Enemy e) {
+    members.add(e);
+    ++this.partySize;
+  }
+
   // They weren't that cool anyways...
   void removeMember(Human h) {
     members.remove(h);
+    --this.partySize;
+  }
+
+  void removeMember(Enemy e) {
+    members.remove(e);
     --this.partySize;
   }
 
@@ -40,9 +50,14 @@ public class Party{
 
   // Overview of all active players, their stats, and their inventories.
   void printParty() {
-    for (Human h : this.members) {
-      if (h.isAlive())
-        System.out.println(h.getName() + ": " + h.getHealth() + " - " + h.inventorySimplePrint());
+    for (Entity e : this.members) {
+      System.out.print(e.getName() + ": " + e.getHealth());
+      if (e instanceof Human) {
+        Human h = (Human) e;
+        if (h.isAlive()) // Just making sure
+           System.out.print( " - " + h.inventorySimplePrint());
+      }
+      System.out.println();
     }
   }
 

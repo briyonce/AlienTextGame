@@ -1,48 +1,37 @@
 // Base class for all enemy types
 import java.util.Random;
 
-public class Enemy {
+public class Enemy extends Entity {
     public static void main(String[] args){}
 
     static int MAX_HEALTH = 300;
-    static int MAX_DAMAGE = 50; // The maximum amount of damage ANY enemy can do
-
-    protected int health;
-    private int maxDamage;
-    protected String name;
+     // The maximum amount of damage ANY enemy can do
 
     public Enemy () {
       Random r = new Random();
-      this.health = r.nextInt(MAX_HEALTH);
-      this.maxDamage = r.nextInt(MAX_DAMAGE);
-      this.name = "new";
+      super.health = r.nextInt(MAX_HEALTH);
+      super.maxDamage = r.nextInt(MAX_DAMAGE);
+      super.name = "new";
     }
 
     public Enemy(String n){
       Random r = new Random();
-      this.name = n;
-      this.health = r.nextInt(MAX_HEALTH);
-      this.maxDamage = r.nextInt(MAX_DAMAGE);
+      super.name = n;
+      super.health = r.nextInt(MAX_HEALTH);
+      super.maxDamage = r.nextInt(MAX_DAMAGE);
     }
 
     public Enemy (String n, int h) {
       Random r = new Random();
-      this.name = n;
-      this.health = h;
-      this.maxDamage = r.nextInt(MAX_DAMAGE);
+      super.name = n;
+      super.health = h;
+      super.maxDamage = r.nextInt(MAX_DAMAGE);
     }
 
     public Enemy (String n, int h, int d) {
-      this.name = n;
-      this.health = h;
-      this.maxDamage = d;
-    }
-
-    // Returns a value for the amount of damage
-    // dealt to the target
-    int attack() {
-      Random r = new Random();
-      return r.nextInt(maxDamage);
+      super.name = n;
+      super.health = h;
+      super.maxDamage = d;
     }
 
     // This occurs when the enemy's attack connects
@@ -62,22 +51,5 @@ public class Enemy {
         System.out.println("You've escaped your inevitable death for another brief moment.\n");
         System.out.println("Time to gamble yet again.\n");
       }
-    }
-
-    String getName() {
-      return this.name;
-    }
-
-    int getHealth() {
-      return this.health;
-    }
-
-    void takeDamage(int d) {
-      health -= d;
-    }
-
-    // Dependent on what class of enemy is initialized
-    protected void alterName(String n) {
-      name = n;
     }
 }

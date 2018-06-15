@@ -7,7 +7,8 @@ public class RoomTest {
 
   public static void main(String[] args) {
     // test1();
-    test2();
+    // test2();
+    test3();
   }
 
   public static void test1 () {
@@ -27,6 +28,16 @@ public class RoomTest {
     p.addMember(player);
     p.printParty();
     roomExitSequence(curRoom);
+    p.printParty();
+  }
+
+  static void test3 () {
+    Xeno x = new Xeno();
+    Xeno x2 = new Xeno();
+    Xeno x3 = new Xeno("bribrad", 4, 5);
+    p.addMember(x);
+    p.addMember(x2);
+    p.addMember(x3);
     p.printParty();
   }
 
@@ -60,4 +71,6 @@ public class RoomTest {
 		}
 		reader.close();
 	}
+
+
 }

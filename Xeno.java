@@ -11,7 +11,7 @@ public class Xeno extends Enemy {
   public Xeno () {
     Random r = new Random();
     String name = xeno_types[r.nextInt(xeno_types.length)];
-    super.alterName(name);
+    super.setName(name);
   }
 
   public Xeno (String name, int health, int maxDamage) {

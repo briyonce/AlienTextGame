@@ -3,16 +3,12 @@
 
 import java.util.Random;
 
-public class Human {
+public class Human extends Entity {
   public static void main(String[] args){}
-
-  static int MAX_HEALTH = 100;
-  static int MAX_DAMAGE = 50;
   static int MAX_COWARDICE = 100;   // I wonder what'll happen if they hit 100...
 
-  protected int health = MAX_HEALTH;
   private int maxDamage;
-  protected String name = "human";
+
   private String gender = "he";     // He/she rather than male/female
   private String possesive = "his"; // His/hers. Used for grammatical purposes
   private boolean isPlayer = false;
@@ -24,7 +20,7 @@ public class Human {
   private boolean hasFlashlight = false;
 
   public Human () {
-    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
+    super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String g) {
@@ -33,43 +29,35 @@ public class Human {
     if (g.equals("she")) {
       this.possesive = "her";
     }
-    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
+    super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (boolean p) {
     for (int i = 0; i < STARTING_STIMPAKS; ++i)
       acquire("stimpak", true);
     this.isPlayer = true;
-    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
+    super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String n, String g) {
     // Random r = new Random();
-    this.name = n;
+    super.name = n;
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
     }
-    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
+    super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String n, String g, int h) {
     // Random r = new Random();
-    this.name = n;
-    this.health = h;
+    super.name = n;
+    super.health = h;
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
     }
-    this.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
-  }
-
-  String getName() {
-    return this.name;
-  }
-
-  int getHealth() {
-    return this.health;
+    super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   String getGender() {
@@ -78,10 +66,6 @@ public class Human {
 
   String getPossessive() {
     return this.possesive;
-  }
-
-  boolean isAlive() {
-    return this.health > 0;
   }
 
   boolean isPlayer() {
@@ -135,9 +119,9 @@ public class Human {
                               "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
     int atk_choice = r.nextInt(attack_sounds.length);
     System.out.println(attack_sounds[atk_choice] +"\n");
-    int damage = r.nextInt(this.maxDamage);
+    int damage = super.attack();
     while (damage < 2) {
-      damage = r.nextInt(maxDamage);
+      damage = super.attack();
     }
     return damage;
   }
@@ -169,20 +153,13 @@ public class Human {
     return inventory.numStimpaks();
   }
 
-  void setName(String n) {
-    this.name = n;
-  }
+
 
   void setGender(String g) {
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
     }
-  }
-
-  // The character has taken damage.
-  void loseHealth(int d) {
-    this.health -= d;
   }
 
   // Move an item from this character's inventory
