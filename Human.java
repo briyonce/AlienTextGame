@@ -111,19 +111,6 @@ public class Human extends Entity {
     }
   }
 
-  // Returns a value for the amount of damage
-  // dealt to the enemy
-  int attack(String enemy) {
-    String[] attack_sounds = {"You lunge for the " + enemy + "! Slash! Bam!",
-                              "Your bare fists meet the flesh of your enemy... It squeals in pain and scurries away before you can deal any more damage."};
-    int atk_choice = r.nextInt(attack_sounds.length);
-    System.out.println(attack_sounds[atk_choice] +"\n");
-    int damage = super.attack();
-    while (damage < 2) {
-      damage = super.attack();
-    }
-    return damage;
-  }
 
   // Heal yo' self
   void heal(Item i) {

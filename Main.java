@@ -273,22 +273,7 @@ public class Main {
 					}
 				}
 				if (action.equals("1")) { //Attack
-					int damage_dealt = h.attack(e.getName());
-					if (damage_dealt > e.getHealth()) {
-						damage_dealt = e.getHealth();
-					}
-					int luck = rand.nextInt(100);
-					if (luck > 30) {
-						e.takeDamage(damage_dealt);
-						System.out.println("You dealt " + damage_dealt + " damage to the horrid beast. \n");
-						luck = rand.nextInt(50);
-						if (luck > 40) { // 20% chance you'll stun your enemy
-							e.stun();
-						}
-					} else {
-						System.out.println("You missed your attack. Do better next time. If you get one. \n");
-					}
-
+					h.attack(e);
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
 					h.use_stimpak();
@@ -318,29 +303,8 @@ public class Main {
 					TimeUnit.SECONDS.sleep(3);
 					return 1;
 				}
-				if (!e1.isStunned()) {
-					int luck = rand.nextInt(100);
-					if (luck > 20) {
-						// the attack lands
-						int e1_dmg_dealt = e.attack();
-						while (e1_dmg_dealt < 1){
-							e1_dmg_dealt = e.attack();
-						}
-						e.landAttack();
-						System.out.println("You take " + e1_dmg_dealt + " damage!\n");
-						h.takeDamage(e1_dmg_dealt);
-						if (e1_dmg_dealt < 10) {
-							System.out.println("Just a scratch....\n");
-						} else {
-							System.out.println("It'll heal... ");
-						}
-					} else {
-						e.missAttack();
-					}
-				} else {
-					System.out.println("The " + e.getName() + " is frozen where it stands. Your attack really did a number on it.\n");
-					e.unStun(); // to be ready for the next round.
-				}
+				// The enemy attacks now
+				e.attack(h);
 
 				++enemyCounter;
 				++playerCounter;

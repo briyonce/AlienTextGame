@@ -34,15 +34,6 @@ public class Enemy extends Entity {
       super.maxDamage = d;
     }
 
-    // This occurs when the enemy's attack connects
-    // with the target
-    void landAttack() {
-      if (this.name.equals("Facehugger")) {
-        System.out.println("\"GAH!!!!\" You wail! The Facehugger slashes at you with its long tail!");
-        System.out.println("It scurries away before you can retaliate.\n");
-      }
-    }
-
     // The enemy misses its attack
     void missAttack() {
       if (this.name.equals("Facehugger")) {
