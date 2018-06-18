@@ -9,6 +9,8 @@ public class Item {
   private boolean regenerative = false; // Used for health/healing objects
   private int regenAmount = 0; // The amount of health regenerated from a stimpak
   private int quantity = 1;   // Quantity. The amount of THIS the player has.
+  private int health = 10;    // Weapons are breakable
+  private boolean breakable = false;
 
   public Item() {}
 
@@ -64,10 +66,17 @@ public class Item {
     return this.color;
   }
 
+  int getHealth() {
+    return this.health;
+  }
+
   // Simple item description.
   void examine() {
     System.out.print("It's a " + this.name + ". It's " + this.color + " and it "
-    + "weighs " + this.weight);
+    + "weighs " + this.weight + ".");
+    if (this.breakable)
+      System.out.print( + this.health + " health remaining.");
+    System.out.println();
   }
 
   // You got another one. How cool.

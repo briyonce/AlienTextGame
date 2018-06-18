@@ -11,7 +11,7 @@ public class Enemy extends Entity {
       Random r = new Random();
       super.health = r.nextInt(MAX_HEALTH);
       super.maxDamage = r.nextInt(MAX_DAMAGE);
-      super.name = "new";
+      super.name = "Enemy";
     }
 
     public Enemy(String n){

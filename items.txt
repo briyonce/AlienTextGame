@@ -1,0 +1,8 @@
+stimpak true 40
+flashlight false 0
+map false 0
+bandaid true 20
+scissors false 0
+antidote true 0
+baton false 0
+ammo false 0

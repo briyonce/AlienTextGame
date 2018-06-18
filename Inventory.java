@@ -5,7 +5,13 @@ import java.util.ArrayList;
 public class Inventory{
   public static void main(String[] args){}
 
-  private ArrayList<Item> inventory = new ArrayList<Item>(); // Holds items.
+  private ArrayList<ArrayList<Item>> inventory = new ArrayList<ArrayList<Item>>(); // Holds items.
+  /* | | - [ items ]
+     | | - [ healing items ]
+     | | - [ shooting weapons ]
+     | | - [ melee weapons ]
+     | | - [ ranged weapons ] */
+
   private int maxWeight = 25;
   private int curWeight = 0;
 
@@ -15,8 +21,8 @@ public class Inventory{
   int numStimpaks() {
     int ns = 0;
     int counter = 0;
-    while (counter < inventory.size()) {
-      Item curItem = inventory.get(counter);
+    while (counter < inventory.get(0).size()) {
+      Item curItem = inventory.get(0).get(counter);
       if (curItem.getName().toLowerCase().equals("stimpak")) {
         ns = curItem.getQuantity();
         break;
@@ -33,12 +39,13 @@ public class Inventory{
 
   // Equivalent to ArrayList get(). Used for looting rooms
   Item retrieve(int index) {
-    if (index > inventory.size()) {
-      if (!inventory.isEmpty()) {
-        return inventory.get(inventory.size() - 1);
+    ArrayList<Item> items = inventory.get(0);
+    if (index > items.size()) {
+      if (!items.isEmpty()) {
+        return items.get(items.size() - 1);
       }
     }
-    return inventory.get(index);
+    return items.get(index);
   }
 
   // Gets the current inventory utilization so the character

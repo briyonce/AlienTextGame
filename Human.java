@@ -111,7 +111,21 @@ public class Human extends Entity {
     }
   }
 
-
+  Weapon chooseWeapon (Scanner reader) {
+    System.out.println("What type of weapon?");
+    System.out.println("\t 1. Shootable");
+    System.out.println("\t 2. Melee");
+    System.out.println("\t 3. Ranged");
+    int choice = reader.nextInt();
+    reader.nextLine();
+    while (choice < 1 || choice > 3) {
+      System.out.println("Invalid choice. Choose a valid option.");
+      choice = reader.nextInt();
+      reader.nextLine();
+    }
+    
+    return null;
+  }
   // Heal yo' self
   void heal(Item i) {
     this.health += i.heal();

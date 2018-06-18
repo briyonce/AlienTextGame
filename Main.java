@@ -273,6 +273,7 @@ public class Main {
 					}
 				}
 				if (action.equals("1")) { //Attack
+					Weapon w = h.chooseWeapon();
 					h.attack(e);
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
@@ -319,20 +320,22 @@ public class Main {
 		}
 	}
 
-	//
+	// This is where the player will loot or examine the room.
+	// You can't loot the room until you've cleared it
 	static void roomExitSequence(Room r) {
 		System.out.println("--- Preparing to leave " + r.getName() + " ---\n");
 		boolean exit = false;
 		Scanner reader = new Scanner(System.in);
 		while (!exit) {
 			System.out.println("What would you like to do?");
-			System.out.println("1. Exit");
+			System.out.println("1. Exit Room");
 			System.out.println("2. Examine Room");
 			System.out.println("3. Loot Room");
+			System.out.println("4. Manage Inventory");
 			int choice = reader.nextInt();
 			reader.nextLine();
 			System.out.println();
-			while (choice < 1 || choice > 3) {
+			while (choice < 1 || choice > 4) {
 				System.out.println("Invalid choice. Please try again.\n");
 				choice = reader.nextInt();
 				reader.nextLine();
@@ -348,6 +351,8 @@ public class Main {
 				}
 			} else if (choice == 3) {
 				r.lootRoom(player, reader);
+			} else if (choice == 4) {
+				// manage inventory
 			}
 		}
 		reader.close();
