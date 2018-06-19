@@ -273,8 +273,7 @@ public class Main {
 					}
 				}
 				if (action.equals("1")) { //Attack
-					Weapon w = h.chooseWeapon(in);
-					h.attack(e);
+					Weapon w = h.chooseWeapon(in, e);
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
 					h.use_stimpak();

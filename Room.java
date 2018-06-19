@@ -11,20 +11,30 @@ public class Room {
   private boolean outside = false;
   private boolean powerOut = true;
 
-
+  // Different Rooms in Mind: Storage closet, Cafeteria, Med Bay, Quarters,
+  // captain's quarters, living room
   public Room () {}
 
   public Room (String n) {
     this.name = n;
     if (n.toLowerCase().equals("med bay")) {
-      loot.acquire(loot.map, true);
-      for (int i = 0; i < 3; ++i) {
-        loot.acquire(loot.stimpak, true);
-      }
-      loot.acquire(loot.flashlight, true);
+      initializeMedBay();
+    } else if (n.toLowerCase().equals("living quarters")) {
+      initializeLivingQuarters();
     }
   }
 
+  void initializeLivingQuarters() {
+  }
+
+  void initializeMedBay() {
+    loot.acquire(loot.map, true);
+    loot.acquire(loot.flashlight, true);
+    for (int i = 0; i < 3; ++i) {
+      loot.acquire(loot.stimpak, true);
+    }
+
+  }
   void tierDisplay() {
     loot.levelPrint();
   }

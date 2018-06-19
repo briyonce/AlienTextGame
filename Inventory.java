@@ -2,6 +2,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Inventory{
   public static void main(String[] args){}
@@ -17,6 +18,8 @@ public class Inventory{
   public Item map = new Item("map");
   public Item flashlight = new Item("flashlight");
   public Item stimpak = new Item("stimpak");
+  public Shootable gun = new Shootable("gun");
+  public Shootable crossbow = new Shootable("crossbow");
 
   private int maxWeight = 25;
   private int curWeight = 0;
@@ -90,6 +93,134 @@ public class Inventory{
       numItems += inventory.get(counter).size();
     }
     return numItems;
+  }
+
+  void displayShootables() {
+    ArrayList<Item> shootables = inventory.get(2);
+    for (Item i : shootables) {
+      if (i instanceof Shootable) {
+        Shootable s = (Shootable) i;
+        int ammo = s.getAmmo() * s.getQuantity();
+        System.out.print(s.getName() + " - " + ammo + " Ammo.");
+      }
+    }
+    System.out.println();
+  }
+
+  int chooseShootables (Scanner reader) {
+    ArrayList<Item> shootables = inventory.get(2);
+    int counter = 1;
+    int choice = 0;
+    boolean valid_input = false;
+    while (!valid_input) {
+      System.out.println("0. Back.");
+      for (Item i : shootables) {
+        System.out.println(counter + ". " + i.getName() + ". ");
+        ++counter;
+      }
+      System.out.println("Which would you like?");
+      choice = reader.nextInt();
+      reader.nextLine();
+      if (choice >= 0 && choice < shootables.size() + 1) {
+        valid_input = true;
+      } else {
+        System.out.println("Please choose a valid option.\n");
+      }
+      counter = 1;
+    }
+    if (choice == 0) { // Go back to weapon types
+      return -1;
+    } else {
+      Shootable s = (Shootable) shootables.get(choice - 1);
+      s.attack();
+      return 1;
+    }
+  }
+
+  void displayMelee() {
+    ArrayList<Item> melee = inventory.get(3);
+    System.out.print("Hands - Infinite Health. ");
+    for (Item i : melee) {
+      if (i instanceof Melee) {
+        Melee m = (Melee) i;
+        System.out.print(m.getName() + " - " + m.getHealth() + " Health. ");
+      }
+    }
+    System.out.println();
+  }
+
+  int chooseMelee (Scanner reader) {
+    ArrayList<Item> melee = inventory.get(2);
+    int counter = 2;
+    int choice = 0;
+    boolean valid_input = false;
+    while (!valid_input) {
+      System.out.println("0. Back.");
+      System.out.println("1. Fists.");
+      for (Item i : melee) {
+        System.out.println(counter + ". " + i.getName() + ". ");
+        ++counter;
+      }
+      System.out.println("Which would you like?");
+      choice = reader.nextInt();
+      reader.nextLine();
+      if (choice >= 0 && choice < melee.size() + 2) {
+        valid_input = true;
+      } else {
+        System.out.println("Please choose a valid option.\n");
+      }
+      counter = 1;
+    }
+    if (choice == 0) { // Go back to weapon types
+      return -1;
+    } else if (choice == 1) { // Use your fists
+      return 0;
+    } else {
+      Melee m = (Melee) melee.get(choice - 2);
+      m.attack();
+      return 1;
+    }
+  }
+
+  void displayRanged() {
+    ArrayList<Item> ranged = inventory.get(4);
+    for (Item i : ranged) {
+      if (i instanceof Ranged) {
+        Ranged s = (Ranged) i;
+        System.out.print(s.getName() + " - " + s.getQuantity() + ". ");
+      }
+    }
+    System.out.println();
+  }
+
+  int chooseRanged (Scanner reader) {
+    ArrayList<Item> ranged = inventory.get(4);
+    int counter = 1;
+    int choice = 0;
+    boolean valid_input = false;
+    while (!valid_input) {
+      System.out.println("0. Back.");
+      for (Item i : ranged) {
+        System.out.println(counter + ". " + i.getName() + ". ");
+        ++counter;
+      }
+      System.out.println("Which would you like?");
+      choice = reader.nextInt();
+      reader.nextLine();
+      if (choice >= 0 && choice < ranged.size() + 1) {
+        valid_input = true;
+      } else {
+        System.out.println("Please choose a valid option.\n");
+      }
+      counter = 1;
+    }
+    if (choice == 0) { // Go back to weapon types
+      return -1;
+    } else {
+      Ranged r = (Ranged) ranged.get(choice - 1);
+      r.attack();
+      return 1;
+    }
   }
 
   // Quick inventory printout for party view

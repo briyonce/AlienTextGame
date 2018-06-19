@@ -111,11 +111,15 @@ public class Human extends Entity {
     }
   }
 
-  Weapon chooseWeapon (Scanner reader) {
+  Weapon chooseWeapon (Scanner reader, Enemy e) {
+    int goBack = 0;
     System.out.println("What type of weapon?");
-    System.out.println("\t 1. Shootable");
-    System.out.println("\t 2. Melee");
-    System.out.println("\t 3. Ranged");
+    System.out.print("\t 1. Shootable: ");
+    inventory.displayShootables();
+    System.out.print("\t 2. Melee: ");
+    inventory.displayMelee();
+    System.out.print("\t 3. Ranged: ");
+    inventory.displayRanged();
     int choice = reader.nextInt();
     reader.nextLine();
     while (choice < 1 || choice > 3) {
@@ -123,7 +127,18 @@ public class Human extends Entity {
       choice = reader.nextInt();
       reader.nextLine();
     }
-
+    if (choice == 1) {
+      goBack = inventory.chooseShootables(reader);
+    } else if (choice == 2) { // Fist
+      goBack = inventory.chooseMelee(reader);
+    } else { // Ranged weapons
+      goBack = inventory.chooseRanged(reader);
+    }
+    if (goBack == -1) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
+      chooseWeapon(reader, e); // Hopefully this won't call an infinite loop
+    } else if (goBack == 0) {
+      this.attack(e);
+    }
     return null;
   }
   // Heal yo' self
