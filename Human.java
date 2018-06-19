@@ -1,6 +1,6 @@
 // Base class for all humans in the game.
 // There may one day be different tiers or classes of humans
-
+import java.util.Scanner;
 import java.util.Random;
 
 public class Human extends Entity {
@@ -32,7 +32,7 @@ public class Human extends Entity {
 
   public Human (boolean p) {
     for (int i = 0; i < STARTING_STIMPAKS; ++i)
-      acquire("stimpak", true);
+      acquire(inventory.stimpak, true);
     this.isPlayer = true;
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
@@ -77,24 +77,24 @@ public class Human extends Entity {
 
   // Used to give the player an initial amount of items
   // without displaying the "acquire text".
-  boolean acquire(String item, boolean initial) {
+  boolean acquire(Item item, boolean initial) {
     return inventory.acquire(item);
   }
 
   // Add an item to your inventory
-  boolean acquire(String item) {
+  boolean acquire(Item item) {
     boolean success = inventory.acquire(item);
     if (!success) {
-      System.out.println("INVENTORY FULL: " + inventory.getUsage() + ": " + new Item(item).getWeight());
+      System.out.println("INVENTORY FULL: " + inventory.getUsage() + ": " + item.getWeight());
       System.out.println(this.name + " needs to drop something.\n");
       return false;
     } else {
       if (this.isPlayer) {
-        System.out.println("You pick up the " + item);
+        System.out.println("You pick up the " + item.getName());
       } else {
-        System.out.println(this.name + " picks up the " + item);
+        System.out.println(this.name + " picks up the " + item.getName());
       }
-      if (item.toLowerCase().equals("flashlight")) {
+      if (item.getName().toLowerCase().equals("flashlight")) {
         this.hasFlashlight = true;
       }
       return true;
@@ -102,8 +102,8 @@ public class Human extends Entity {
   }
 
   // Remove an item from your inventory
-  void drop(String item) {
-    boolean success = inventory.drop(item);
+  void drop(Item item) {
+    boolean success = inventory.drop(item, false);
     if (success) {
       this.hasFlashlight = false;
     } else {
@@ -123,7 +123,7 @@ public class Human extends Entity {
       choice = reader.nextInt();
       reader.nextLine();
     }
-    
+
     return null;
   }
   // Heal yo' self
@@ -164,10 +164,10 @@ public class Human extends Entity {
   // Move an item from this character's inventory
   // to another character's inventory
   void give (Item i, Human h) {
-    boolean hasItem = inventory.drop(i.getName());
+    boolean hasItem = inventory.drop(i, false);
     if (hasItem) {
       System.out.println("You give " + h.getName() + " the " + i.getName() + ".\n");
-      h.acquire(i.getName());
+      h.acquire(i);
     } else {
       System.out.println("You don't even have that item to give...\n");
     }
@@ -183,10 +183,10 @@ public class Human extends Entity {
     if (num_stimpaks() > 0) {
       if (this.health == 100) {
         System.out.println("Health already full.... Stimpak wasted.\n");
-        drop("stimpak");
+        drop(inventory.stimpak);
       } else {
-        heal(new Item("stimpak"));
-        drop("stimpak");
+        heal(inventory.stimpak);
+        drop(inventory.stimpak);
       }
     } else {
       System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");

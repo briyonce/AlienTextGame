@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class RoomTest {
 
@@ -7,12 +8,17 @@ public class RoomTest {
 
   public static void main(String[] args) {
     test1();
-    // test2();
-    // test3();
+    System.out.println("\n\n");
+    test2();
+    System.out.println("\n\n");
+    test3();
+    System.out.println("\n\n");
+    test4();
   }
 
   public static void test1 () {
     Room curRoom = new Room("med bay");
+    curRoom.tierDisplay();
     curRoom.display();
     Human h = new Human();
     Party pa = new Party(h);
@@ -27,7 +33,7 @@ public class RoomTest {
     player.setGender("f");
     p.addMember(player);
     p.printParty();
-    roomExitSequence(curRoom);
+    //(curRoom);
     p.printParty();
   }
 
@@ -41,6 +47,23 @@ public class RoomTest {
     p.printParty();
   }
 
+
+  static void test4 () {
+    ArrayList<ArrayList<Item>> i = new ArrayList<ArrayList<Item>>(5);
+    System.out.println(i.size());
+    i.ensureCapacity(5);
+    System.out.println(i.size());
+    i.add(new ArrayList<Item>());
+    i.add(new ArrayList<Item>());
+    i.add(new ArrayList<Item>());
+    i.add(new ArrayList<Item>());
+    i.add(new ArrayList<Item>());
+    System.out.println(i.size());
+    ArrayList<Item> x = i.get(0);
+    System.out.println(x.size());
+  }
+
+/*
   static void roomExitSequence(Room r) {
 		System.out.println("Preparing to leave " + r.getName());
 		boolean exit = false;
@@ -71,6 +94,6 @@ public class RoomTest {
 		}
 		reader.close();
 	}
-
+*/
 
 }

@@ -1,28 +1,38 @@
 //Inventory mechanic. Holds all ya items
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Inventory{
   public static void main(String[] args){}
+  private ArrayList<ArrayList<Item>> inventory = new ArrayList<ArrayList<Item>>(5);
+  private String[] labels = {"Reg Items: ", "Healing Items: ", "Shootable Weapons: ",
+                             "Melee Weapons: ", "Ranged Weapons: "};
+  /* |0| - [ items ]
+     |1| - [ healing items ]
+     |2| - [ shooting weapons ]
+     |3| - [ melee weapons ]
+     |4| - [ ranged weapons ] */
 
-  private ArrayList<ArrayList<Item>> inventory = new ArrayList<ArrayList<Item>>(); // Holds items.
-  /* | | - [ items ]
-     | | - [ healing items ]
-     | | - [ shooting weapons ]
-     | | - [ melee weapons ]
-     | | - [ ranged weapons ] */
+  public Item map = new Item("map");
+  public Item flashlight = new Item("flashlight");
+  public Item stimpak = new Item("stimpak");
 
   private int maxWeight = 25;
   private int curWeight = 0;
 
-  public Inventory() {}
+  public Inventory() {
+    for (int i = 0; i < 5; ++i) {
+      inventory.add(new ArrayList<Item>());
+    }
+  }
 
   // The number of stimpaks in the inventory
   int numStimpaks() {
     int ns = 0;
     int counter = 0;
-    while (counter < inventory.get(0).size()) {
-      Item curItem = inventory.get(0).get(counter);
+    while (counter < this.inventory.get(1).size()) {
+      Item curItem = this.inventory.get(1).get(counter);
       if (curItem.getName().toLowerCase().equals("stimpak")) {
         ns = curItem.getQuantity();
         break;
@@ -60,27 +70,43 @@ public class Inventory{
 
   // Total including multiples of one item
   int numItems() {
-    int counter = 0;
-    int items = 0;
-    while (counter < inventory.size()) {
-      items += inventory.get(counter).getQuantity();
-      ++counter;
+    int index = 0;
+    int numItems = 0;
+    for (int counter = 0; counter < inventory.size(); ++counter) {
+      ArrayList<Item> items = inventory.get(counter);
+      index = 0;
+      while (index < items.size()) {
+        numItems += items.get(index).getQuantity();
+        ++index;
+      }
     }
-    return items;
+    return numItems;
+  }
+
+  // Total number of individual items
+  int individualItems() {
+    int numItems = 0;
+    for (int counter = 0; counter < inventory.size(); ++counter) {
+      numItems += inventory.get(counter).size();
+    }
+    return numItems;
   }
 
   // Quick inventory printout for party view
   String inventorySimplePrint() {
-    if (inventory.size() == 0) {
+    if (numItems() == 0) {
       return "nothing";
     } else {
       StringBuilder sb = new StringBuilder();
-      for (Item item : inventory) {
-        sb.append(item.getQuantity() + " " + item.getName());
-        if (item.getQuantity() > 1) {
-          sb.append("s ");
-        } else {
-          sb.append(" ");
+      for (int i = 0; i < inventory.size(); ++i) {
+        ArrayList<Item> items = inventory.get(i);
+        for (Item item : items) {
+          sb.append(item.getQuantity() + " " + item.getName());
+          if (item.getQuantity() > 1) {
+            sb.append("s ");
+          } else {
+            sb.append(" ");
+          }
         }
       }
       return sb.toString();
@@ -90,14 +116,16 @@ public class Inventory{
   // Used for looting rooms
   int inventoryNumberPrint() {
     int counter = 2;
-    if (inventory.size() == 0) {
+    if (numItems() == 0) {
       System.out.println("nothing.\n");
     } else {
       System.out.println("0. Done.");
       System.out.println("1. ALL.");
-      for (Item item : inventory) {
-        System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
-        ++counter;
+      for (ArrayList<Item> list : inventory) {
+        for (Item item : list) {
+          System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
+          ++counter;
+        }
       }
       System.out.println();
     }
@@ -106,95 +134,169 @@ public class Inventory{
 
   // More detailed inventory printout for combat
   void showInventory() {
-    if (inventory.size() == 0 && numStimpaks() == 0) {
+    if (numItems() == 0 && numStimpaks() == 0) {
       System.out.println("You have nothing.\n");
-    } else if (inventory.size() == 1 && numStimpaks() == 0) {
+    } else if (numItems() == 1 && numStimpaks() == 0) {
       System.out.print("You have ");
-      String curItem = inventory.get(0).getName();
+      String curItem = inventory.get(0).get(0).getName();
       if (isVowel(curItem.charAt(0))) { // Grammar stuff
         System.out.println("an " + curItem + ".\n");
       } else {
         System.out.println("a " + curItem + ".\n");
       }
-    } else if (inventory.size() == 1 && numStimpaks () > 0) { // Grammar stuffs
+    } else if (individualItems() == 1 && numStimpaks () > 0) { // Grammar stuffs
       System.out.print("You have " + numStimpaks() + " stimpaks.\n");
     } else {
-      System.out.print("You have " + numStimpaks() + " stimpaks, ");
-      for (int i = 0; i < inventory.size() - 1; ++i) {
-        String curItem = inventory.get(i).getName();
-        if (isVowel(curItem.charAt(0))) { // Mooooorreeee grammar!
-          System.out.print("an " + curItem + ", ");
-        } else {
-          System.out.print("a " + curItem + ", ");
+      for (int counter = 0; counter < inventory.size(); ++counter) {
+        System.out.print(labels[counter]);
+        ArrayList<Item> items = inventory.get(counter);
+        for (Item i : items) {
+          System.out.print(i.getQuantity() + " " + i.getName());
+          if (i.getQuantity() > 1) {
+            System.out.print("s ");
+          } else {
+            System.out.print(" ");
+          }
         }
+        System.out.println();
       }
-      String curItem = inventory.get(inventory.size() - 1).getName();
-      if (isVowel(curItem.charAt(0))) { // Need I dare say more?
-        System.out.println("and an " + curItem + ".\n");
-      } else {
-        System.out.println("and a " + curItem + ".\n");
+    }
+  }
+
+  boolean itemStack(ArrayList<Item> items, Item i) {
+    int counter = 0;
+    boolean itemFound = false;
+    while (!itemFound && counter < items.size()) {
+      if (items.get(counter).getName().equals(i.getName())) {
+        items.get(counter).stack();
+        itemFound = true;
+        break;
       }
+      ++counter;
+    }
+    if (!itemFound) {
+      items.add(i);
+    }
+    return true;
+  }
+
+  boolean acquire(Item item, boolean room) {
+    boolean itemFound = false;
+    ArrayList<Item> items = inventory.get(0);
+    int counter = 0;
+    while (counter < items.size() && !itemFound) {
+      if (items.get(counter).getName().equals(item.getName())) {
+        items.get(counter).stack();
+        itemFound = true;
+        break;
+      }
+      ++counter;
+    }
+    if (!itemFound)
+      items.add(item);
+    return itemFound;
+  }
+
+  void levelPrint() {
+    for (ArrayList<Item> list : inventory) {
+      for (Item i : list) {
+        System.out.print(i.getName() + " ");
+      }
+      System.out.println();
     }
   }
 
   // Add an item to the inventory
-  boolean acquire(String item) {
-    Item curItem = new Item(item);
+  boolean acquire(Item item) {
     boolean itemFound = false;
-    if (maxWeight < curWeight + curItem.getWeight()) { // Over capacity
+    if (maxWeight < curWeight + item.getWeight()) { // Over capacity
       return false;
-    } else if (inventory.size() > 0) {
-      int counter = 0;
-      while (!itemFound && (counter < inventory.size())) {
-        if (inventory.get(counter).getName().equals(curItem.getName())) {
-          inventory.get(counter).stack(); // Don't add a new item, just increase
-          itemFound = true;               // the quantity.
-          break;
-        }
-        ++counter;
+    } else if (item instanceof Weapon) {
+      if (item instanceof Shootable) {
+        ArrayList<Item> shootables = inventory.get(2);
+        itemFound = itemStack(shootables, item);
+      } else if (item instanceof Melee) {
+        ArrayList<Item> melee = inventory.get(3);
+        itemFound = itemStack(melee, item);
+      } else { // Ranged
+        ArrayList<Item> ranged = inventory.get(4);
+        itemFound = itemStack(ranged, item);
       }
+    } else if (item.isRegenerative()) {
+      ArrayList<Item> healing = inventory.get(1);
+      itemFound = itemStack(healing, item);
+    } else { // Regular Item
+      ArrayList<Item> items = inventory.get(0);
+      itemFound = itemStack(items, item);
     }
-    if (inventory.size() < 1 || !itemFound) { // Add a new item!
-      inventory.add(curItem);
-    }
-    curWeight += curItem.getWeight();
-    return true;
+    curWeight += item.getWeight();
+    return itemFound;
   }
 
-  // Used for looting rooms. Or death if I implemented it.
-  boolean dropAll(String item) {
+  boolean itemRemove(ArrayList<Item> items, Item i, boolean all) {
     boolean itemFound = false;
     int counter = 0;
-    while (!itemFound && counter < inventory.size()) {
-      if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
-        Item curItem = inventory.get(counter);
-        int quantity = curItem.getQuantity();
-        int totalWeight = quantity * curItem.getWeight();
-        inventory.remove(curItem);
-        curWeight -= totalWeight;
+    while (!itemFound && counter < items.size()) {
+      if (items.get(counter).getName().equals(i.getName())) {
+        Item curItem = items.get(counter);
+        if (all) {
+          int quantity = curItem.getQuantity();
+          int totalWeight = quantity * curItem.getWeight();
+          items.remove(curItem);
+          this.curWeight -= totalWeight;
+        } else {
+          curWeight -= curItem.getWeight();
+          curItem.drop();                         // Decrease quantity of item in question
+          int quantity = curItem.getQuantity();
+          if (quantity < 1) {
+            items.remove(curItem);            // Remove AFTER drop so the quantity count
+          }                                       // is accurate.
+        }
         itemFound = true;
+        break;
       }
       ++counter;
     }
     return itemFound;
   }
 
-  // Remove an item from the inventory
-  boolean drop(String item) {
+  // Used for looting rooms. Or death if I implemented it.
+  boolean dropAll(Item item, boolean room) {
+    boolean itemFound = drop(true, item, true);
+    return itemFound;
+  }
+
+  boolean drop(boolean room, Item item, boolean all) {
     boolean itemFound = false;
-    int counter = 0;
-    while (!itemFound && counter < inventory.size()) {
-      if (inventory.get(counter).getName().toLowerCase().equals(item.toLowerCase())) {
-        Item curItem = inventory.get(counter);
-        curWeight -= curItem.getWeight();
-        curItem.drop();                         // Decrease quantity of item in question
-        int quantity = curItem.getQuantity();
-        if (quantity < 1) {
-          inventory.remove(curItem);            // Remove AFTER drop so the quantity count
-        }                                       // is accurate.
-        itemFound = true;
+    ArrayList<Item> items = inventory.get(0);
+    if (!all) {
+      itemFound = itemRemove(items, item, false);
+    } else {
+      itemFound = itemRemove(items, item, true);
+    }
+    return itemFound;
+  }
+
+  // Remove an item from the inventory
+  boolean drop(Item item, boolean all) {
+    boolean itemFound = false;
+    if (item instanceof Weapon) {
+      if (item instanceof Shootable) {
+        ArrayList<Item> shootables = inventory.get(2);
+        itemFound = itemRemove(shootables, item, all);
+      } else if (item instanceof Melee) {
+        ArrayList<Item> melee = inventory.get(3);
+        itemFound = itemRemove(melee, item, all);
+      } else { // Ranged
+        ArrayList<Item> ranged = inventory.get(4);
+        itemFound = itemRemove(ranged, item, all);
       }
-      ++counter;
+    } else if (item.isRegenerative()) {
+      ArrayList<Item> healing = inventory.get(1);
+      itemFound = itemRemove(healing, item, all);
+    } else { // Regular Item
+      ArrayList<Item> items = inventory.get(0);
+      itemFound = itemRemove(items, item, all);
     }
     return itemFound;
   }

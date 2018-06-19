@@ -17,12 +17,16 @@ public class Room {
   public Room (String n) {
     this.name = n;
     if (n.toLowerCase().equals("med bay")) {
-      loot.acquire("map");
+      loot.acquire(loot.map, true);
       for (int i = 0; i < 3; ++i) {
-        loot.acquire("stimpak");
+        loot.acquire(loot.stimpak, true);
       }
-      loot.acquire("flashlight");
+      loot.acquire(loot.flashlight, true);
     }
+  }
+
+  void tierDisplay() {
+    loot.levelPrint();
   }
 
   void describe(boolean flashlight) {
@@ -43,6 +47,7 @@ public class Room {
     return this.name;
   }
 
+  // Show all of the items currently available for looting in the room
   int display() {
     return loot.inventoryNumberPrint();
   }
@@ -85,14 +90,13 @@ public class Room {
     int counter = 0;
     while (i.numItems() > 0) {
       Item item = i.retrieve(counter);
-      String name = item.getName();
       int quantity = item.getQuantity();
-      i.dropAll(item.getName());
+      i.dropAll(item, true);
       // Item newItem = new Item(name, quantity); // to be used later upon optimization
       for (int index = 0; index < quantity; ++index) {
-        boolean success = h.acquire(name);
+        boolean success = h.acquire(item);
         if (!success) {
-          i.acquire(name);
+          i.acquire(item);
           break;
         }
       }
@@ -102,9 +106,9 @@ public class Room {
   // Move an item from this room's inventory
   // to another character's inventory
   void transfer (Item i, Human h) {
-    boolean hasItem = loot.drop(i.getName());
+    boolean hasItem = loot.drop(false, i, false);
     if (hasItem) {
-      h.acquire(i.getName());
+      h.acquire(i);
     } else {
       System.out.println("That item isn't in this room.\n");
     }
