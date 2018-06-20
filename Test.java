@@ -14,7 +14,8 @@ public class Test {
     // test3();
     // System.out.println("\n\n");
     // test4();
-    test5();
+    // test5();
+    test6();
   }
 
   public static void test1 () {
@@ -75,7 +76,20 @@ public class Test {
     player.acquire(new Ranged("knives"));
     player.showInventory();
     player.chooseWeapon(reader, x);
+  }
 
+  static void test6 () {
+    Scanner reader = new Scanner(System.in);
+    player.setName("bri");
+    player.setGender("f");
+    player.acquire(new Item("map"));
+    player.acquire(new Shootable("gun"));
+    player.acquire(new Shootable("gun"));
+    player.acquire(new Melee("bat"));
+    player.acquire(new Ranged("knives"));
+    player.acquire(new Item("stimpak"));
+    player.showInventory();
+    player.manageInventory(reader);
   }
 
   static void roomExitSequence(Room r) {

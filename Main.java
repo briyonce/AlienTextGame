@@ -161,7 +161,7 @@ public class Main {
 					TimeUnit.SECONDS.sleep(3);
 					System.out.println("\"Wh..Wha... What WAS THAT THING????\" She screams. \n");
 					TimeUnit.SECONDS.sleep(3);
-					System.out.println("\"You: I... I don't know, Jessie. Let's get out of here. There may be more.\n");
+					System.out.println("You: \"I... I don't know, Jessie. Let's get out of here. There may be more.\n");
 					TimeUnit.SECONDS.sleep(3);
 					System.out.println("J: \"Okay...\"\n");
 					TimeUnit.SECONDS.sleep(3);
@@ -203,13 +203,15 @@ public class Main {
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("J: \"Thank you so much for saving me... I really owe you one.\" She winces.\n");
 						TimeUnit.SECONDS.sleep(3);
-						System.out.println("\"You: Of course!\" \"I just wish I could've acted sooner...\" You think to yourself.\n");
+						System.out.println("You: \"Of course!\" \"I just wish I could've acted sooner...\" You think to yourself.\n");
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("You look up at Jessie. The blood is already soaking through from the massive gash on her forehead.\n");
 						System.out.println("She looks faint.\n");
 						TimeUnit.SECONDS.sleep(3);
 						System.out.print("You: Hey, Jessie. Rest up a bit. I'm going to see if I can find the captain...");
-						System.out.println(" Maybe she knows what's going on.\n");
+						System.out.println(" Maybe she knows what's going on. AND " + player.getSpouse().toUpperCase() + "!!?\n");
+						TimeUnit.SECONDS.sleep(3);
+						System.out.println("Oh God, " + player.getSpouse() + ".\n");
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("You look over at her again. It didn't take long.\n");
 						TimeUnit.SECONDS.sleep(3);
@@ -220,6 +222,8 @@ public class Main {
 						System.out.println("You're parched, famished, dazed. You deserve it.\n");
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("\"What the hell is going on here?\"\n");
+						TimeUnit.SECONDS.sleep(3);
+						System.out.println("\"AND WHERE IS " + player.getSpouse().toUpperCase() + "?\"\n");
 					}
 					TimeUnit.SECONDS.sleep(3);
 					System.out.print("Looking out into the hall you can see the main power is out.");
@@ -228,7 +232,9 @@ public class Main {
 					System.out.println("\"Why do they always choose red....\"\n");
 
 					// Here we go...
-
+					for (int i = 0; i < 20; ++i)
+						System.out.println();
+					System.out.println("HALLWAY. 7:35\n");
 				in.close();
 				break;
 
@@ -352,6 +358,7 @@ public class Main {
 				r.lootRoom(player, reader);
 			} else if (choice == 4) {
 				// manage inventory
+				player.manageInventory(reader);
 			}
 		}
 		reader.close();

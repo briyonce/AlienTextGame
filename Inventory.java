@@ -107,7 +107,7 @@ public class Inventory{
     System.out.println();
   }
 
-  int chooseShootables (Scanner reader) {
+  int chooseShootables (Scanner reader, boolean drop) {
     ArrayList<Item> shootables = inventory.get(2);
     int counter = 1;
     int choice = 0;
@@ -118,7 +118,11 @@ public class Inventory{
         System.out.println(counter + ". " + i.getName() + ". ");
         ++counter;
       }
-      System.out.println("Which would you like?");
+      System.out.print("Which would you like");
+      if (drop) {
+        System.out.print(" to drop");
+      }
+      System.out.println("?\n");
       choice = reader.nextInt();
       reader.nextLine();
       if (choice >= 0 && choice < shootables.size() + 1) {
@@ -130,10 +134,12 @@ public class Inventory{
     }
     if (choice == 0) { // Go back to weapon types
       return -1;
-    } else {
+    } else if (!drop) {
       Shootable s = (Shootable) shootables.get(choice - 1);
       s.attack();
       return 1;
+    } else {
+      return choice;
     }
   }
 
@@ -149,7 +155,7 @@ public class Inventory{
     System.out.println();
   }
 
-  int chooseMelee (Scanner reader) {
+  int chooseMelee (Scanner reader, boolean drop) {
     ArrayList<Item> melee = inventory.get(2);
     int counter = 2;
     int choice = 0;
@@ -161,7 +167,11 @@ public class Inventory{
         System.out.println(counter + ". " + i.getName() + ". ");
         ++counter;
       }
-      System.out.println("Which would you like?");
+      System.out.print("Which would you like");
+      if (drop) {
+        System.out.print(" to drop");
+      }
+      System.out.println("?\n");
       choice = reader.nextInt();
       reader.nextLine();
       if (choice >= 0 && choice < melee.size() + 2) {
@@ -175,10 +185,12 @@ public class Inventory{
       return -1;
     } else if (choice == 1) { // Use your fists
       return 0;
-    } else {
+    } else if (!drop) {
       Melee m = (Melee) melee.get(choice - 2);
       m.attack();
       return 1;
+    } else {
+      return choice - 1;
     }
   }
 
@@ -193,7 +205,7 @@ public class Inventory{
     System.out.println();
   }
 
-  int chooseRanged (Scanner reader) {
+  int chooseRanged (Scanner reader, boolean drop) {
     ArrayList<Item> ranged = inventory.get(4);
     int counter = 1;
     int choice = 0;
@@ -204,7 +216,11 @@ public class Inventory{
         System.out.println(counter + ". " + i.getName() + ". ");
         ++counter;
       }
-      System.out.println("Which would you like?");
+      System.out.print("Which would you like");
+      if (drop) {
+        System.out.print(" to drop");
+      }
+      System.out.println("?\n");
       choice = reader.nextInt();
       reader.nextLine();
       if (choice >= 0 && choice < ranged.size() + 1) {
@@ -216,10 +232,12 @@ public class Inventory{
     }
     if (choice == 0) { // Go back to weapon types
       return -1;
-    } else {
+    } else if (!drop) {
       Ranged r = (Ranged) ranged.get(choice - 1);
       r.attack();
       return 1;
+    } else {
+      return choice;
     }
   }
 
@@ -279,7 +297,7 @@ public class Inventory{
       System.out.print("You have " + numStimpaks() + " stimpaks.\n");
     } else {
       for (int counter = 0; counter < inventory.size(); ++counter) {
-        System.out.print(labels[counter]);
+        System.out.print(counter + ". " + labels[counter]);
         ArrayList<Item> items = inventory.get(counter);
         for (Item i : items) {
           System.out.print(i.getQuantity() + " " + i.getName());

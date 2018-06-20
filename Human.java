@@ -9,6 +9,7 @@ public class Human extends Entity {
 
   private String gender = "he";     // He/she rather than male/female
   private String possesive = "his"; // His/hers. Used for grammatical purposes
+  private String spouseName = "Claire";
   private boolean isPlayer = false;
   private Random r = new Random();
   private Inventory inventory = new Inventory();
@@ -26,6 +27,7 @@ public class Human extends Entity {
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
+      this.spouseName = "Richard";
     }
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
@@ -43,6 +45,7 @@ public class Human extends Entity {
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
+      this.spouseName = "Richard";
     }
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
@@ -54,6 +57,7 @@ public class Human extends Entity {
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
+      this.spouseName = "Richard";
     }
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
@@ -64,6 +68,10 @@ public class Human extends Entity {
 
   String getPossessive() {
     return this.possesive;
+  }
+
+  String getSpouse() {
+    return this.spouseName;
   }
 
   boolean isPlayer() {
@@ -128,11 +136,11 @@ public class Human extends Entity {
       reader.nextLine();
     }
     if (choice == 1) {
-      goBack = inventory.chooseShootables(reader);
+      goBack = inventory.chooseShootables(reader, false);
     } else if (choice == 2) { // Fist
-      goBack = inventory.chooseMelee(reader);
+      goBack = inventory.chooseMelee(reader, false);
     } else { // Ranged weapons
-      goBack = inventory.chooseRanged(reader);
+      goBack = inventory.chooseRanged(reader, false);
     }
     if (goBack == -1) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
       chooseWeapon(reader, e); // Hopefully this won't call an infinite loop
@@ -161,6 +169,49 @@ public class Human extends Entity {
     inventory.showInventory();
   }
 
+  void manageInventory(Scanner reader) {
+    boolean validInput = false;
+    int choice = -1;
+    int result = -1;
+    while (!validInput) {
+      System.out.println("\t --- INVENTORY --- \n");
+      inventory.showInventory();
+      System.out.println("5. Back.");
+      System.out.println();
+      System.out.println("What type of item would you like to get rid of?");
+      choice = reader.nextInt();
+      reader.nextLine();
+      if (choice >= 0 && choice < 6) {
+        validInput = true;
+        break;
+      } else {
+        System.out.println("Invalid option. Please choose from one of the available categories.");
+      }
+      System.out.println();
+    }
+    if (choice == 5) {
+      // Do nothing and let the method return.
+    } else {
+      if (choice == 0) {
+
+      } else if (choice == 1) {
+
+      } else if (choice == 2) { // Fist
+        result = inventory.chooseShootables(reader, true);
+      } else if (choice == 3) { // Ranged weapons
+        result = inventory.chooseMelee(reader, true);
+      } else if (choice == 4) {
+        result = inventory.chooseRanged(reader, true);
+      }
+      if (result == -1) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
+        manageInventory(reader); // Hopefully this won't call an infinite loop
+      } else if (goBack == 0) {
+        this.attack(e);
+      }
+    }
+
+  }
+
   // The number of stimpaks the character has.
   // Will be changed later as more health items
   // are introduced into the game.
@@ -173,6 +224,7 @@ public class Human extends Entity {
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
+      this.spouseName = "Richard";
     }
   }
 
