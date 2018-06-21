@@ -1,4 +1,5 @@
 import java.util.concurrent.TimeUnit;
+import java.util.Scanner;
 
 public class SequenceText {
 
@@ -23,7 +24,7 @@ public class SequenceText {
 	}
 
 	//Sequence two
-	public static void sequenceTwoMedBay(Human player) {
+	public static void sequenceTwoWithJessie(Human player) {
 		narrationText("MED BAY. 7:00", 2);
 		narrationText("You: \"So... Jessie. Do you know what happened?\"");
 		narrationText("J: \"Not really... I only remember up to the party last night.\"");
@@ -39,17 +40,22 @@ public class SequenceText {
 		narrationText("You look over at her again. It didn't take long.");
 		narrationText("You turn to leave the room.");
 	}
+
 	public static void sequenceTwoAlone(Human player) {
 		narrationText("You're parched, famished, dazed. You deserve it.");
 		narrationText("\"What the hell is going on here?\"");
 		narrationText("\"AND WHERE IS " + player.getSpouse().toUpperCase() + "?\"");
 	}
-	public static void whyDoTheyAlwaysChooseRed() {
+
+	public static void initialRemarks() {
 		narrationText("Looking out into the hall you can see the main power is out.", 0, noNewLine);
 		narrationText(" The walls are tinted a faint red from the reserve lights.", 3);
 		narrationText("\"Why do they always choose red....\"", 0);
 	}
 
+	public static void hallwayOne() {
+		narrationText("You hear some faint moaning coming from down the hall.");
+	}
 
 	public static void narrationText(String text) {
 		try {
@@ -60,6 +66,7 @@ public class SequenceText {
 			Thread.currentThread().interrupt();
 		}
 	}
+
 	public static void narrationText(String text, int alternateTime) {
 		try {
 			System.out.println(text);
@@ -69,6 +76,7 @@ public class SequenceText {
 			Thread.currentThread().interrupt();
 		};
 	}
+
 	public static void narrationText(String text, boolean newLine) {
 		try {
 			System.out.print(text);

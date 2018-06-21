@@ -62,6 +62,7 @@ public class Main {
 		for (int i = 0; i < 15; ++i)
 			System.out.println();
 
+		// GAME START
 		System.out.println("Good Morning, private.\n");
 
 		GAME_START_SEQUENCE_ONE:
@@ -99,9 +100,9 @@ public class Main {
 				while (!validInput) {
 					System.out.println("Will you run? Y/N");
 					if (in.hasNextLine()) {
-						answer = in.nextLine();
+						answer = in.nextLine().toLowerCase();
 					}
-					if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n")) {
+					if (answer.equals("y") || answer.equals("n") || answer.equals("yes") || answer.equals("no")) {
 						validInput = true;
 					}
 				}
@@ -109,7 +110,7 @@ public class Main {
 				answer = answer.toLowerCase();
 				int luck = 0;
 				int result = 2;
-				if (answer.equals("y")) {
+				if (answer.equals("y") || answer.equals("yes")) {
 					luck = rand.nextInt(100);
 					if (luck > 60) {
 						System.out.println("You were able to escape the " + e1.getName() + "...\n");
@@ -119,37 +120,22 @@ public class Main {
 					}
 				}
 
-				if (luck <= 60 || answer.equals("n")) {
+				if (luck <= 60 || answer.equals("n") || answer.equals("no")) {
 					//engage combat
 					result = encounter(in); // -1: death, 0: escape, 1: victory
-					if (result < 0) { // death case
+					if (result < 0) { // you died in the first encounter
 						System.out.println("\"Jessie....\" You remember her name.\n");
 						die(player, party, e1);
 						die(jessie, null, e1);
-						validInput = false;
-						answer = "";
-						while (!validInput) {
-							System.out.println("Try again? Y/N \n");
-							if (in.hasNextLine()) {
-								answer = in.nextLine();
-							}
-							if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n") || answer.toLowerCase().equals("yes") || answer.toLowerCase().equals("no")) {
-								validInput = true;
-							}
-						}
-						answer = answer.toLowerCase();
-						if (answer.equals("y") || answer.equals("yes")) {
-							continue GAME_START_SEQUENCE_ONE;
-						} else {
-							System.out.println("Thank you for playing...\n");
-							System.out.println("Until next time.\n");
+						if(endGame(in)) {
 							break;
+						} else {
+							continue GAME_START_SEQUENCE_ONE;
 						}
-					} else if (result == 1) {
+					} else if (result == 1) { // You beat the enemy!
 						enemies.empty();
 						System.out.println("You are able to save your crewmate.\n");
 					}
-
 				} if (luck > 60 || result == 0) { // you escape and leave Jessie to die
 					System.out.println("You were able to escape the room...\n");
 					System.out.println("You close the door and watch as your crewmate is overtaken by the creature...\n");
@@ -162,41 +148,73 @@ public class Main {
 				// After initial combat scene
 				if (jessie.isAlive()) {
 					party.addMember(jessie);
-
 					SequenceText.jessieIsAlive();
 				} else {
 					// Face the reality of what you've done
 					TimeUnit.SECONDS.sleep(3);
 					for (int i = 0; i < 5; ++i)
 						System.out.println();
-
 					SequenceText.youMonster();
-
 					player.incrementCowardice();
 				}
 
 				SEQUENCE_TWO:
+				while (running) {
 					if (party.numMembers() > 1 ) { // Jessie is alive
 						for (int i = 0; i < 10; ++i)
 							System.out.println();
 						Room curRoom = new Room("Med Bay");
-
-						SequenceText.sequenceTwoMedBay(player);
-
+						SequenceText.sequenceTwoWithJessie(player);
 						roomExitSequence(curRoom);
 					} else { // You let her die
 						TimeUnit.SECONDS.sleep(3);
-
 						SequenceText.sequenceTwoAlone(player);
 					}
 					TimeUnit.SECONDS.sleep(3);
-
-					SequenceText.whyDoTheyAlwaysChooseRed();
+					SequenceText.initialRemarks();
 
 					// Here we go...
 					for (int i = 0; i < 20; ++i)
 						System.out.println();
+
 					System.out.println("HALLWAY. 7:35\n");
+					SequenceText.hallwayOne();
+					answer = "";
+					validInput = false;
+					while (!validInput) {
+						SequenceText.narrationText("Do you want to follow the sound? (Y/N)");
+						answer = in.nextLine().toLowerCase();
+						if (answer.equals("y") || answer.equals("n") || answer.equals("yes") || answer.equals("no")) {
+							validInput = true;
+							break;
+						} else {
+							System.out.println("Please choose a valid answer.\n");
+						}
+					}
+					if (answer.equals("y") || answer.equals("yes")) {
+						Xeno enemy1 = new Xeno ("Xenomorph", 100, 100);
+						Xeno enemy2 = new Xeno ("Xenomorph", 100, 100);
+						Xeno enemy3 = new Xeno ("Xenomorph", 100, 100);
+						party.removeMember(jessie);
+						enemies.addMember(enemy1);
+						enemies.addMember(enemy2);
+						enemies.addMember(enemy3);
+						result = encounter(in);
+						if (result < 0) {
+							die(player, party, (Enemy) enemies.getMember(0));
+							if(endGame(in)) {
+								break;
+							} else {
+								continue SEQUENCE_TWO;
+							}
+						} else {
+							System.out.println("You made it.\n");
+						}
+					} else {
+						System.out.println("You turn to go the other direction.\n");
+					}
+				}
+
 				in.close();
 				break;
 
@@ -207,7 +225,30 @@ public class Main {
 		}
 	}
 
-	// The fight sequence when you encounter an e1
+	static boolean endGame(Scanner in) {
+		boolean validInput = false;
+		String answer = "";
+		while (!validInput) {
+			System.out.println("Try again? Y/N \n");
+			if (in.hasNextLine()) {
+				answer = in.nextLine().toLowerCase();
+			}
+			if (answer.equals("y") || answer.equals("n") || answer.equals("yes") || answer.equals("no")) {
+				validInput = true;
+			}
+		}
+		answer = answer.toLowerCase();
+		if (answer.equals("y") || answer.equals("yes")) {
+			return false;
+		} else {
+			System.out.println("Thank you for playing...\n");
+			System.out.println("Until next time.\n");
+			return true;
+		}
+	}
+
+	// The fight sequence when you encounter an enemy
+	// -1. you die. 0. you run. 1 you win.
 	public static int encounter(Scanner in) {
 		try {
 			int playerCounter = 0;

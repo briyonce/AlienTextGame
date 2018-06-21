@@ -203,6 +203,7 @@ public class Human extends Entity {
       }
       if (choice == 5) {
         // Do nothing and let the method return.
+        running = false;
       } else {
         droppable = inventory.chooseItem(choice, reader, true);
         if (droppable == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)

@@ -8,6 +8,7 @@ public class Melee extends Weapon {
   public Melee (String n) {
     if (n.toLowerCase().equals("fist")) {
       this.health = Integer.MAX_VALUE;
+      super.weight = 0;
     }
     super.name = n;
   }

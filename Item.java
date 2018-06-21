@@ -5,8 +5,8 @@ public class Item {
 
   private String name = "object";
   private String color = "grey";
-  private int weight = 5;      // Used for inventory mechanic. YOU GOTTA CHOOSE!
-  private boolean regenerative = false; // Used for health/healing objects
+  protected int weight = 5;      // Used for inventory mechanic. YOU GOTTA CHOOSE!
+  boolean regenerative = false; // Used for health/healing objects
   private int regenAmount = 0; // The amount of health regenerated from a Stimpak
   private int quantity = 1;   // Quantity. The amount of THIS the player has.
   private int health = 10;    // Weapons are breakable
