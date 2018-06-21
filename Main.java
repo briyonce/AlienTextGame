@@ -65,7 +65,8 @@ public class Main {
 				System.out.println("...you open your eyes.\n");
 				System.out.println("\"Computer?\"");
 				for (int i = 0; i < 3; ++i) {
-					narrationText("....\n", 2);
+					System.out.println("....\n");
+					TimeUnit.SECONDS.sleep(2);
 				}
 				System.out.println("....\n");
 				
@@ -198,20 +199,6 @@ public class Main {
 			}
 			break;
 		}
-	}
-
-	public static final boolean noNewLine = false;	//I just put this here for clarification
-	public static void narrationText(Stirng text) {	//functions redirected to SequenceText class
-		SequenceText.narrationText(text);
-	}
-	public static void narrationText(Stirng text, int alternateTime) {
-		SequenceText.narrationText(text, alternateTime);
-	}
-	public static void narrationText(String text, boolean newLine) {
-		SequenceText.narrationText(text, newLine);
-	}
-	public static void narrationText(String text, int alternateTime, boolean newLine) {
-		SequenceText.narrationText(text, alternateTime, newLine);
 	}
 
 	// The fight sequence when you encounter an e1
