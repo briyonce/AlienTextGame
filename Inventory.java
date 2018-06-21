@@ -103,7 +103,14 @@ public class Inventory{
     while (!validInput) {
       System.out.println("0. Back.");
       for (Item i : items) {
-        System.out.println(counter + ". " + i.getName());
+        if (drop) {
+          if (!i.getName().equals("Fist")) {
+            System.out.println(counter + ". " + i.getName());
+          }
+        } else {
+          System.out.println(counter + ". " + i.getName());
+        }
+
       }
       System.out.print("Which item would you like");
       if (drop) {
@@ -112,9 +119,16 @@ public class Inventory{
       System.out.println("?\n");
       choice = reader.nextInt();
       reader.nextLine();
-      if (choice >= 0 && choice <= items.size()) {
-        validInput = true;
+      if (drop && category == 3) {
+        if (choice >= 0 && choice <= items.size() - 1) {
+          validInput = true;
+        }
+      } else {
+        if (choice >= 0 && choice <= items.size()) {
+          validInput = true;
+        }
       }
+
     }
     if (choice == 0) {
       return null;
@@ -137,46 +151,18 @@ public class Inventory{
 
   void displayMelee() {
     ArrayList<Item> melee = inventory.get(3);
-    System.out.print("Hands - Infinite Health. ");
     for (Item i : melee) {
       if (i instanceof Melee) {
         Melee m = (Melee) i;
-        System.out.print(m.getName() + " - " + m.getHealth() + " Health. ");
+        System.out.print(m.getName() + " - ");
+        if (m.getHealth() == Integer.MAX_VALUE) {
+          System.out.print("Infinite Health.");
+        } else {
+          System.out.print(m.getHealth() + " Health. ");
+        }
       }
     }
     System.out.println();
-  }
-
-  Weapon chooseMelee (Scanner reader) {
-    ArrayList<Item> melee = inventory.get(2);
-    int counter = 2;
-    int choice = 0;
-    boolean validInput = false;
-    while (!validInput) {
-      System.out.println("0. Back.");
-      System.out.println("1. Fists.");
-      for (Item i : melee) {
-        System.out.println(counter + ". " + i.getName() + ". ");
-        ++counter;
-      }
-      System.out.print("Which would you like?\n");
-      choice = reader.nextInt();
-      reader.nextLine();
-      if (choice >= 0 && choice < melee.size() + 2) {
-        validInput = true;
-      } else {
-        System.out.println("Please choose a valid option.\n");
-      }
-      counter = 1;
-    }
-    if (choice == 0) { // Go back to weapon types
-      return null;
-    } else if (choice == 1) { // Use your fists
-      return new Weapon();
-    } else {
-      Melee m = (Melee) melee.get(choice - 2);
-      return m;
-    }
   }
 
   void displayRanged() {

@@ -6,6 +6,9 @@ public class Melee extends Weapon {
   private int health = 10;
 
   public Melee (String n) {
+    if (n.toLowerCase().equals("fist")) {
+      this.health = Integer.MAX_VALUE;
+    }
     super.name = n;
   }
 
@@ -22,5 +25,10 @@ public class Melee extends Weapon {
     Random r = new Random();
     int amount = r.nextInt(MAX_HEALTH);
     health += amount;
+  }
+
+  void attack(Entity e) {
+    System.out.println("Attacking with " + super.getName() + ".\n");
+    this.wear();
   }
 }
