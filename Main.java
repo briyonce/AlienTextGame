@@ -64,11 +64,12 @@ public class Main {
 				System.out.println("-------------------------------------");
 				System.out.println("...you open your eyes.\n");
 				System.out.println("\"Computer?\"");
-				System.out.println("....\n");
 				for (int i = 0; i < 3; ++i) {
-					TimeUnit.SECONDS.sleep(2);
 					System.out.println("....\n");
+					TimeUnit.SECONDS.sleep(2);
 				}
+				System.out.println("....\n");
+				
 				System.out.println("...you hear something rustling about the room.\n");
 				System.out.println("\"COMPUTER?\"");
 				TimeUnit.SECONDS.sleep(3);
@@ -155,34 +156,16 @@ public class Main {
 				// After initial combat scene
 				if (jessie.isAlive()) {
 					party.addMember(jessie);
-					System.out.println("JESSIE! THAT'S HER NAME!\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("She looks at you - eyes wide with fear.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("\"Wh..Wha... What WAS THAT THING????\" She screams. \n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("You: \"I... I don't know, Jessie. Let's get out of here. There may be more.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("J: \"Okay...\"\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("She is obviously very shaken by the whole experience. The salt from her tears stain her cheeks.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("The two of you exit the room. Never to return.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("You: We need to get you to Med Bay ASAP.\n");
+
+					SequenceText.jessieIsAlive();
 				} else {
 					// Face the reality of what you've done
 					TimeUnit.SECONDS.sleep(3);
 					for (int i = 0; i < 5; ++i)
 						System.out.println();
-					System.out.println("You monster.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("Brushing away your thoughts of cowardice, you decide to address the situation at hand.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("\"Okay... so we're not alone on this ship...\"\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("\"I need to find the captain.\"\n");
-					TimeUnit.SECONDS.sleep(2);
+
+					SequenceText.youMonster();
+
 					player.incrementCowardice();
 				}
 
@@ -191,45 +174,18 @@ public class Main {
 						for (int i = 0; i < 10; ++i)
 							System.out.println();
 						Room curRoom = new Room("Med Bay");
-						System.out.println("MED BAY. 7:00\n");
-						TimeUnit.SECONDS.sleep(2);
-						System.out.println("You: \"So... Jessie. Do you know what happened?\"\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("J: \"Not really... I only remember up to the party last night.\"\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("J: \"I woke up to some strange sounds in the room... then that thing.\"\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("You place some gauze over her wound. It looks serious.\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("J: \"Thank you so much for saving me... I really owe you one.\" She winces.\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("You: \"Of course!\" \"I just wish I could've acted sooner...\" You think to yourself.\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("You look up at Jessie. The blood is already soaking through from the massive gash on her forehead.\n");
-						System.out.println("She looks faint.\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.print("You: \"Hey, Jessie. Rest up a bit. I'm going to see if I can find the captain...");
-						System.out.println(" Maybe she knows what's going on. AND " + player.getSpouse().toUpperCase() + "!!?\"\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("Oh God, " + player.getSpouse() + ".\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("You look over at her again. It didn't take long.\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("You turn to leave the room.\n");
+						
+						SequenceText.sequenceTwoMedBay();
+
 						roomExitSequence(curRoom);
 					} else { // You let her die
 						TimeUnit.SECONDS.sleep(3);
-						System.out.println("You're parched, famished, dazed. You deserve it.\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("\"What the hell is going on here?\"\n");
-						TimeUnit.SECONDS.sleep(3);
-						System.out.println("\"AND WHERE IS " + player.getSpouse().toUpperCase() + "?\"\n");
+						
+						SequenceText.sequenceTwoAlone();
 					}
 					TimeUnit.SECONDS.sleep(3);
-					System.out.print("Looking out into the hall you can see the main power is out.");
-					System.out.println(" The walls are tinted a faint red from the reserve lights.\n");
-					TimeUnit.SECONDS.sleep(3);
-					System.out.println("\"Why do they always choose red....\"\n");
+
+					SequenceText.whyDoTheyAlwaysChooseRed();
 
 					// Here we go...
 					for (int i = 0; i < 20; ++i)
