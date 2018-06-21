@@ -23,9 +23,9 @@ public class SequenceText {
 	}
 
 	//Sequence two
-	public static void sequenceTwoMedBay(Player player) {
+	public static void sequenceTwoMedBay(Human player) {
 		narrationText("MED BAY. 7:00", 2);
-		narrationText("You: \"So... Jessie. Do you know what happened?\"", noNewLine);
+		narrationText("You: \"So... Jessie. Do you know what happened?\"");
 		narrationText("J: \"Not really... I only remember up to the party last night.\"");
 		narrationText("J: \"I woke up to some strange sounds in the room... then that thing.\"");
 		narrationText("You place some gauze over her wound. It looks serious.");
@@ -39,38 +39,55 @@ public class SequenceText {
 		narrationText("You look over at her again. It didn't take long.");
 		narrationText("You turn to leave the room.");
 	}
-	public static void sequenceTwoAlone(Player player) {
+	public static void sequenceTwoAlone(Human player) {
 		narrationText("You're parched, famished, dazed. You deserve it.");
 		narrationText("\"What the hell is going on here?\"");
 		narrationText("\"AND WHERE IS " + player.getSpouse().toUpperCase() + "?\"");
 	}
 	public static void whyDoTheyAlwaysChooseRed() {
-		narrationText("Looking out into the hall you can see the main power is out.", 0);
+		narrationText("Looking out into the hall you can see the main power is out.", 0, noNewLine);
 		narrationText(" The walls are tinted a faint red from the reserve lights.", 3);
 		narrationText("\"Why do they always choose red....\"", 0);
 	}
 
 
-	public static void narrationText(Stirng text) {
-		System.out.println(text);
-		System.put.println();		//new line
-		TimeUnit.SECONDS.sleep(3);	//default time at 3 seconds
+	public static void narrationText(String text) {
+		try {
+			System.out.println(text);
+			System.out.println();		//new line
+			TimeUnit.SECONDS.sleep(3);	//default time at 3 seconds
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 	}
-	public static void narrationText(Stirng text, int alternateTime) {
-		System.out.println(text);
-		System.put.println();		//new line
-		TimeUnit.SECONDS.sleep(alternateTime);
+	public static void narrationText(String text, int alternateTime) {
+		try {
+			System.out.println(text);
+			System.out.println();		//new line
+			TimeUnit.SECONDS.sleep(alternateTime);	//default time at 3 seconds
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		};
 	}
 	public static void narrationText(String text, boolean newLine) {
-		System.out.println(text);
-		if(newLine)
-			System.out.prinln()
-		TimeUnit.SECONDS.sleep(3);	//default time at 3 seconds
+		try {
+			System.out.print(text);
+			if(newLine)
+				System.out.println();
+			TimeUnit.SECONDS.sleep(3);	//default time at 3 seconds
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 	}
+
 	public static void narrationText(String text, int alternateTime, boolean newLine) {
-		System.out.println(text);
-		if(newLine)
-			System.out.prinln()
-		TimeUnit.SECONDS.sleep(alternateTime);
+		try {
+			System.out.print(text);
+			if(newLine)
+				System.out.println();
+			TimeUnit.SECONDS.sleep(alternateTime);
+		} catch(InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
 	}
 }

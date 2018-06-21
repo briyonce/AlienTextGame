@@ -19,11 +19,13 @@ public class Human extends Entity {
   private boolean hasFlashlight = false;
 
   public Human () {
+    acquire(inventory.fist, true);
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String g) {
     // Random r = new Random();
+    acquire(inventory.fist, true);
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
@@ -33,6 +35,7 @@ public class Human extends Entity {
   }
 
   public Human (boolean p) {
+    acquire(inventory.fist, true);
     for (int i = 0; i < STARTING_STIMPAKS; ++i)
       acquire(inventory.stimpak, true);
     this.isPlayer = true;
@@ -41,6 +44,7 @@ public class Human extends Entity {
 
   public Human (String n, String g) {
     // Random r = new Random();
+    acquire(inventory.fist, true);
     super.name = n;
     this.gender = g;
     if (g.equals("she")) {
@@ -52,6 +56,7 @@ public class Human extends Entity {
 
   public Human (String n, String g, int h) {
     // Random r = new Random();
+    acquire(inventory.fist, true);
     super.name = n;
     super.health = h;
     this.gender = g;
@@ -135,22 +140,16 @@ public class Human extends Entity {
       choice = reader.nextInt();
       reader.nextLine();
     }
-    if (choice == 1 || choice == 3) {
+    if (choice >= 1 || choice <= 3) {
       weapon = (Weapon) inventory.chooseItem(choice + 1, reader, false);
       if (weapon == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
         chooseWeapon(reader, e); // Hopefully this won't call an infinite loop
+      } else if (choice == 2){
+        if (weapon.getName().equals("Fist")) {
+          this.attack(e);
+        }
       } else {
         weapon.attack();
-      }
-    } else if (choice == 2) { // Fist
-      weapon = inventory.chooseMelee(reader);
-      if (weapon == null) {
-        chooseWeapon(reader, e);
-      } else if (weapon instanceof Melee) {
-        Melee m = (Melee) weapon;
-        m.attack();
-      } else {
-        this.attack(e);
       }
     }
   }

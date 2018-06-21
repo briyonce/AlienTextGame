@@ -69,7 +69,7 @@ public class Main {
 					TimeUnit.SECONDS.sleep(2);
 				}
 				System.out.println("....\n");
-				
+
 				System.out.println("...you hear something rustling about the room.\n");
 				System.out.println("\"COMPUTER?\"");
 				TimeUnit.SECONDS.sleep(3);
@@ -174,14 +174,14 @@ public class Main {
 						for (int i = 0; i < 10; ++i)
 							System.out.println();
 						Room curRoom = new Room("Med Bay");
-						
-						SequenceText.sequenceTwoMedBay();
+
+						SequenceText.sequenceTwoMedBay(player);
 
 						roomExitSequence(curRoom);
 					} else { // You let her die
 						TimeUnit.SECONDS.sleep(3);
-						
-						SequenceText.sequenceTwoAlone();
+
+						SequenceText.sequenceTwoAlone(player);
 					}
 					TimeUnit.SECONDS.sleep(3);
 
