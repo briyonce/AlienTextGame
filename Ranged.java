@@ -1,4 +1,4 @@
-// Things such as spells, throwing knives, etc. One time use. You may have multiple, though.
+// Things such as spells, throwing Knives, etc. One time use. You may have multiple, though.
 
 public class Ranged extends Weapon {
 

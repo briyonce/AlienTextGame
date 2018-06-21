@@ -1,3 +1,5 @@
+// Just used for testing new mechanics and functions
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -71,9 +73,9 @@ public class Test {
     player.setGender("f");
     Xeno x = new Xeno();
     player.showInventory();
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Ranged("knives"));
+    player.acquire(new Shootable("Gun"));
+    player.acquire(new Shootable("Gun"));
+    player.acquire(new Ranged("Knives"));
     player.showInventory();
     player.chooseWeapon(reader, x);
   }
@@ -82,14 +84,17 @@ public class Test {
     Scanner reader = new Scanner(System.in);
     player.setName("bri");
     player.setGender("f");
-    player.acquire(new Item("map"));
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Melee("bat"));
-    player.acquire(new Ranged("knives"));
-    player.acquire(new Item("stimpak"));
+    player.acquire(new Item("Map"));
+    player.acquire(new Shootable("Gun"));
+    player.acquire(new Shootable("Gun"));
+    player.acquire(new Melee("Bat"));
+    player.acquire(new Ranged("Knives"));
+    player.acquire(new Item("Stimpak"));
     player.showInventory();
-    player.manageInventory(reader);
+    ArrayList<Item> droppedItems = player.manageInventory(reader);
+    for (Item i : droppedItems) {
+      System.out.println(i.getName());
+    }
   }
 
   static void roomExitSequence(Room r) {

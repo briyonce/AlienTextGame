@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class Main {
 
-	static int stimpak_drop_chance = 60;
+	static int Stimpak_drop_chance = 60;
 	static Random rand = new Random();
 	static Human player = new Human(true);
 	static Party party = new Party(player);
@@ -45,6 +45,12 @@ public class Main {
 			} else {
 				System.out.println("Invalid option! Please choose from the available options\n");
 			}
+		}
+
+		if (playerGender.charAt(0) == 'm') {
+			playerGender = "he";
+		} else {
+			playerGender = "she";
 		}
 
 		// Initialize the player's attributes
@@ -238,7 +244,7 @@ public class Main {
 					h.chooseWeapon(in, e);
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
-					h.use_stimpak();
+					h.use_Stimpak();
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("3")) { //View inventory
 					h.showInventory();

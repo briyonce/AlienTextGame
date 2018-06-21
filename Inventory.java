@@ -17,8 +17,8 @@ public class Inventory{
 
   public Item map = new Item("Map");
   public Item flashlight = new Item("Flashlight");
-  public Item stimpak = new Item("Stimpak");
-  public Shootable gun = new Shootable("Gun");
+  public Item Stimpak = new Item("Stimpak");
+  public Shootable Gun = new Shootable("Gun");
   public Shootable crossbow = new Shootable("Crossbow");
   public Melee fist = new Melee("Fist");
   private int maxWeight = 25;
@@ -30,13 +30,13 @@ public class Inventory{
     }
   }
 
-  // The number of stimpaks in the inventory
+  // The number of Stimpaks in the inventory
   int numStimpaks() {
     int ns = 0;
     int counter = 0;
     while (counter < this.inventory.get(1).size()) {
       Item curItem = this.inventory.get(1).get(counter);
-      if (curItem.getName().toLowerCase().equals("stimpak")) {
+      if (curItem.getName().toLowerCase().equals("Stimpak")) {
         ns = curItem.getQuantity();
         break;
       }
@@ -67,6 +67,7 @@ public class Inventory{
     return curWeight;
   }
 
+  // Return true if there is nothing in the inventory.
   boolean isEmpty() {
     return numItems() == 0;
   }
@@ -95,6 +96,8 @@ public class Inventory{
     return numItems;
   }
 
+  // List off all items in inventory so the player can select
+  // Used to select weapons as well as for inventory management.
   Item chooseItem(int category, Scanner reader, boolean drop) {
     ArrayList<Item> items = inventory.get(category);
     boolean validInput = false;
@@ -137,6 +140,7 @@ public class Inventory{
     }
   }
 
+  // List off all shootable type weapons
   void displayShootables() {
     ArrayList<Item> shootables = inventory.get(2);
     for (Item i : shootables) {
@@ -149,6 +153,7 @@ public class Inventory{
     System.out.println();
   }
 
+  // List off all melee type weapons
   void displayMelee() {
     ArrayList<Item> melee = inventory.get(3);
     for (Item i : melee) {
@@ -165,6 +170,7 @@ public class Inventory{
     System.out.println();
   }
 
+  // List off all ranged type weapons
   void displayRanged() {
     ArrayList<Item> ranged = inventory.get(4);
     for (Item i : ranged) {
@@ -216,6 +222,7 @@ public class Inventory{
     return counter - 2;
   }
 
+  // Shows off every item in the inventory by item type.
   void listInventory() {
     for (int counter = 0; counter < inventory.size(); ++counter) {
       System.out.print(counter + ". " + labels[counter]);
@@ -245,12 +252,14 @@ public class Inventory{
         System.out.println("a " + curItem + ".\n");
       }
     } else if (individualItems() == 1 && numStimpaks () > 0) { // Grammar stuffs
-      System.out.print("You have " + numStimpaks() + " stimpaks.\n");
+      System.out.print("You have " + numStimpaks() + " Stimpaks.\n");
     } else {
       listInventory();
     }
   }
 
+  // Used in conjunction with acquire. Adds an item to
+  // the list of other items with similar characteristics.
   boolean itemStack(ArrayList<Item> items, Item i) {
     int counter = 0;
     boolean itemFound = false;
@@ -268,6 +277,7 @@ public class Inventory{
     return true;
   }
 
+  // Add an item to the inventory
   boolean acquire(Item item, boolean room) {
     boolean itemFound = false;
     ArrayList<Item> items = inventory.get(0);
@@ -285,6 +295,7 @@ public class Inventory{
     return itemFound;
   }
 
+  // Show items by type. Used for testing
   void levelPrint() {
     for (ArrayList<Item> list : inventory) {
       for (Item i : list) {
@@ -321,6 +332,8 @@ public class Inventory{
     return itemFound;
   }
 
+  // Remove an item from the current list of similar items. Used
+  // in conjunction with drop()
   boolean itemRemove(ArrayList<Item> items, Item i, boolean all) {
     boolean itemFound = false;
     int counter = 0;
@@ -338,7 +351,7 @@ public class Inventory{
           int quantity = curItem.getQuantity();
           if (quantity < 1) {
             items.remove(curItem);            // Remove AFTER drop so the quantity count
-          }                                       // is accurate.
+          }                                   // is accurate.
         }
         itemFound = true;
         break;
@@ -354,6 +367,8 @@ public class Inventory{
     return itemFound;
   }
 
+  // Drop either one instance of an item or all instances
+  // of an item.
   boolean drop(boolean room, Item item, boolean all) {
     boolean itemFound = false;
     ArrayList<Item> items = inventory.get(0);

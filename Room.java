@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Room {
   public static void main(String[] args) {}
 
-  private Inventory loot = new Inventory();
+  private Inventory loot = new Inventory(); // Holds all of the available loot in the room
   private String name = "room";
 
   // Environmental conditions for room descriptions
@@ -31,14 +31,17 @@ public class Room {
     loot.acquire(loot.map, true);
     loot.acquire(loot.flashlight, true);
     for (int i = 0; i < 3; ++i) {
-      loot.acquire(loot.stimpak, true);
+      loot.acquire(loot.Stimpak, true);
     }
 
   }
+
+  // Used for testing
   void tierDisplay() {
     loot.levelPrint();
   }
 
+  // Used to describe the current room.
   void describe(boolean flashlight) {
     if (onShip) {
       System.out.print("We're on the ship.");
@@ -46,7 +49,7 @@ public class Room {
         System.out.println(" Power's out. It's pretty dark in here. May need a flashlight. \n");
       } else if (powerOut && flashlight) {
         if (this.name.toLowerCase().equals("med bay")) {
-          System.out.println(" Lots of equipment thrown about. Looks like the ship went through a rough patch.");
+          System.out.println(" Lots of equipment thrown about. Something isn't right.");
           System.out.println("The walls are a sterile white. Looks like a regular infirmary for the most part.\n");
         }
       }
@@ -62,6 +65,8 @@ public class Room {
     return loot.inventoryNumberPrint();
   }
 
+  // Allows the character to look through all of the items available in the rooms
+  // and take what they please.
   boolean lootRoom(Human h, Scanner reader) {
     System.out.println("Let's see what this room has to offer...\n");
     int numItems = 0;

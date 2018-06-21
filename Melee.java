@@ -21,12 +21,16 @@ public class Melee extends Weapon {
     health -= 2;
   }
 
+
+  // Repair said melee weapon to allow
+  // for further use.
   void repair() {
     Random r = new Random();
     int amount = r.nextInt(MAX_HEALTH);
     health += amount;
   }
 
+  // Attack w/ melee weapon
   void attack(Entity e) {
     System.out.println("Attacking with " + super.getName() + ".\n");
     this.wear();

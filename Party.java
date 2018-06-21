@@ -27,22 +27,21 @@ public class Party{
     ++this.partySize;
   }
 
+  // Add a member to the party
   void addMember(Enemy e) {
     members.add(e);
     ++this.partySize;
   }
 
+  // Return member in question.
+  // Used for turn-by-turn combat to get the
+  // next member to fight.
   Entity getMember(int index) {
     return members.get(index);
   }
 
   // They weren't that cool anyways...
-  void removeMember(Human h) {
-    members.remove(h);
-    --this.partySize;
-  }
-
-  void removeMember(Enemy e) {
+  void removeMember(Entity e) {
     members.remove(e);
     --this.partySize;
   }
@@ -52,9 +51,11 @@ public class Party{
     return this.partySize;
   }
 
+  // Used to discard enemies after protagonist flees
   void empty() {
     members.clear();
   }
+
   // Overview of all active players, their stats, and their inventories.
   void printParty() {
     for (Entity e : this.members) {
@@ -68,6 +69,7 @@ public class Party{
     }
   }
 
+  // Used in combat so the player is aware of the party's status
   void printPartyHealth() {
     for (Entity e : this.members) {
       System.out.print(e.getName() + "'s Health: " + e.getHealth() + "  ");
