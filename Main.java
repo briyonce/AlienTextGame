@@ -64,11 +64,11 @@ public class Main {
 				System.out.println("-------------------------------------");
 				System.out.println("...you open your eyes.\n");
 				System.out.println("\"Computer?\"");
-				System.out.println("....\n");
 				for (int i = 0; i < 3; ++i) {
-					TimeUnit.SECONDS.sleep(2);
-					System.out.println("....\n");
+					narrationText("....\n", 2);
 				}
+				System.out.println("....\n");
+				
 				System.out.println("...you hear something rustling about the room.\n");
 				System.out.println("\"COMPUTER?\"");
 				TimeUnit.SECONDS.sleep(3);
