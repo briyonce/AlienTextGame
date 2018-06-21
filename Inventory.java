@@ -95,6 +95,30 @@ public class Inventory{
     return numItems;
   }
 
+  Item chooseItem(int category, Scanner reader) {
+    ArrayList<Item> items = inventory.get(category);
+    boolean validInput = false;
+    int choice = -1;
+    int counter = 1;
+    while (!validInput) {
+      System.out.println("0. Back.");
+      for (Item i : items) {
+        System.out.println(counter + ". " + i.getName());
+      }
+      System.out.println("What item would you like to drop?");
+      choice = reader.nextInt();
+      reader.nextLine();
+      if (choice >= 0 && choice <= items.size()) {
+        validInput = true;
+      }
+    }
+    if (choice == 0) {
+      return null;
+    } else {
+      return items.get(choice - 1);
+    }
+  }
+
   void displayShootables() {
     ArrayList<Item> shootables = inventory.get(2);
     for (Item i : shootables) {
@@ -111,8 +135,8 @@ public class Inventory{
     ArrayList<Item> shootables = inventory.get(2);
     int counter = 1;
     int choice = 0;
-    boolean valid_input = false;
-    while (!valid_input) {
+    boolean validInput = false;
+    while (!validInput) {
       System.out.println("0. Back.");
       for (Item i : shootables) {
         System.out.println(counter + ". " + i.getName() + ". ");
@@ -126,7 +150,7 @@ public class Inventory{
       choice = reader.nextInt();
       reader.nextLine();
       if (choice >= 0 && choice < shootables.size() + 1) {
-        valid_input = true;
+        validInput = true;
       } else {
         System.out.println("Please choose a valid option.\n");
       }
@@ -159,8 +183,8 @@ public class Inventory{
     ArrayList<Item> melee = inventory.get(2);
     int counter = 2;
     int choice = 0;
-    boolean valid_input = false;
-    while (!valid_input) {
+    boolean validInput = false;
+    while (!validInput) {
       System.out.println("0. Back.");
       System.out.println("1. Fists.");
       for (Item i : melee) {
@@ -175,7 +199,7 @@ public class Inventory{
       choice = reader.nextInt();
       reader.nextLine();
       if (choice >= 0 && choice < melee.size() + 2) {
-        valid_input = true;
+        validInput = true;
       } else {
         System.out.println("Please choose a valid option.\n");
       }
@@ -209,8 +233,8 @@ public class Inventory{
     ArrayList<Item> ranged = inventory.get(4);
     int counter = 1;
     int choice = 0;
-    boolean valid_input = false;
-    while (!valid_input) {
+    boolean validInput = false;
+    while (!validInput) {
       System.out.println("0. Back.");
       for (Item i : ranged) {
         System.out.println(counter + ". " + i.getName() + ". ");
@@ -224,7 +248,7 @@ public class Inventory{
       choice = reader.nextInt();
       reader.nextLine();
       if (choice >= 0 && choice < ranged.size() + 1) {
-        valid_input = true;
+        validInput = true;
       } else {
         System.out.println("Please choose a valid option.\n");
       }

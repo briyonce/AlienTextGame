@@ -173,6 +173,7 @@ public class Human extends Entity {
     boolean validInput = false;
     int choice = -1;
     int result = -1;
+    Item droppable = null;
     while (!validInput) {
       System.out.println("\t --- INVENTORY --- \n");
       inventory.showInventory();
@@ -192,24 +193,25 @@ public class Human extends Entity {
     if (choice == 5) {
       // Do nothing and let the method return.
     } else {
-      if (choice == 0) {
-
-      } else if (choice == 1) {
-
-      } else if (choice == 2) { // Fist
-        result = inventory.chooseShootables(reader, true);
-      } else if (choice == 3) { // Ranged weapons
-        result = inventory.chooseMelee(reader, true);
-      } else if (choice == 4) {
-        result = inventory.chooseRanged(reader, true);
-      }
-      if (result == -1) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
+      droppable = inventory.chooseItem(choice, reader);
+      if (droppable == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
         manageInventory(reader); // Hopefully this won't call an infinite loop
-      } else if (goBack == 0) {
-        this.attack(e);
+      } else {
+        this.drop(droppable);
+      }
+      String decision = "";
+      validInput = false;
+      while (!validInput) {
+        System.out.println("Are you done? Y/N");
+        decision = reader.nextLine().toLowerCase();
+        if (decision.equals("yes") || decision.equals("no") || decision.equals("y") || decision.equals("n")) {
+          validInput = true;
+        }
+      }
+      if (decision.equals("no") || decision.equals("n")) {
+        manageInventory(reader);
       }
     }
-
   }
 
   // The number of stimpaks the character has.

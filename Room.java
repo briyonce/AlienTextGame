@@ -70,17 +70,17 @@ public class Room {
       System.out.println("What do you want? One at a time. ");
       int choice = reader.nextInt();
       reader.nextLine();
-      boolean valid_input = false;
+      boolean validInput = false;
       if (choice < numItems + 2) {
-        valid_input = true;
+        validInput = true;
       }
-      while (!valid_input) {
+      while (!validInput) {
         System.out.println("Sorry, that's not one of the options. Please select from what's available.\n");
         this.display();
         choice = reader.nextInt();
         reader.nextLine();
         if ((choice < numItems + 2) && (choice >= 0)) {
-          valid_input = true;
+          validInput = true;
         }
       }
       if (choice == 0) {

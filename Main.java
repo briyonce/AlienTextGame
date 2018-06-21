@@ -29,18 +29,18 @@ public class Main {
 			playerName = in.nextLine();
 		}
 
-		boolean valid_input = false; // Checks for appropriate user input when the user is prompted.
+		boolean validInput = false; // Checks for appropriate user input when the user is prompted.
 
 		// Gender is only used for pronouns. It may be used later
 		// on for discrimination purposes once the player enters
 		// the wasteland. Just a thought.
-		while (!valid_input) {
+		while (!validInput) {
 			System.out.println("Are you male or female?");
 			if (in.hasNextLine()) {
 				playerGender = in.nextLine();
 			}
 			if (playerGender.toLowerCase().equals("male") || playerGender.toLowerCase().equals("m") || playerGender.toLowerCase().equals("female") || playerGender.toLowerCase().equals("f")){
-				valid_input = true;
+				validInput = true;
 				break;
 			} else {
 				System.out.println("Invalid option! Please choose from the available options\n");
@@ -87,15 +87,15 @@ public class Main {
 
 				System.out.println("QUICK!!!");
 				System.out.println("Your crewmate is being attacked by a " + e1.getName() + "!!!!");
-				valid_input = false;
+				validInput = false;
 				String answer = "";
-				while (!valid_input) {
+				while (!validInput) {
 					System.out.println("Will you run? Y/N");
 					if (in.hasNextLine()) {
 						answer = in.nextLine();
 					}
 					if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n")) {
-						valid_input = true;
+						validInput = true;
 					}
 				}
 
@@ -119,15 +119,15 @@ public class Main {
 						System.out.println("\"Jessie....\" You remember her name.\n");
 						die(player, party, e1);
 						die(jessie, null, e1);
-						valid_input = false;
+						validInput = false;
 						answer = "";
-						while (!valid_input) {
+						while (!validInput) {
 							System.out.println("Try again? Y/N \n");
 							if (in.hasNextLine()) {
 								answer = in.nextLine();
 							}
 							if (answer.toLowerCase().equals("y") || answer.toLowerCase().equals("n") || answer.toLowerCase().equals("yes") || answer.toLowerCase().equals("no")) {
-								valid_input = true;
+								validInput = true;
 							}
 						}
 						answer = answer.toLowerCase();
@@ -266,14 +266,14 @@ public class Main {
 				System.out.println("\t 2. Use Stimpak");
 				System.out.println("\t 3. View Inventory");
 				System.out.println("\t 4. Run!");
-				boolean valid_input = false;
+				boolean validInput = false;
 				String action = "";
-				while (!valid_input) {
+				while (!validInput) {
 					if (in.hasNextLine()) {
 						action = in.nextLine();
 					}
 					if (action.equals("1") || action.equals("2") || action.equals("3") || action.equals("4")){
-						valid_input = true;
+						validInput = true;
 					} else {
 						System.out.println("Invalid option! Please choose a valid course of action\n");
 					}
