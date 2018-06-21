@@ -119,8 +119,8 @@ public class Human extends Entity {
     }
   }
 
-  Weapon chooseWeapon (Scanner reader, Enemy e) {
-    int goBack = 0;
+ void chooseWeapon (Scanner reader, Enemy e) {
+    Weapon weapon = null;
     System.out.println("What type of weapon?");
     System.out.print("\t 1. Shootable: ");
     inventory.displayShootables();
@@ -135,19 +135,24 @@ public class Human extends Entity {
       choice = reader.nextInt();
       reader.nextLine();
     }
-    if (choice == 1) {
-      goBack = inventory.chooseShootables(reader, false);
+    if (choice == 1 || choice == 3) {
+      weapon = (Weapon) inventory.chooseItem(choice + 1, reader, false);
+      if (weapon == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
+        chooseWeapon(reader, e); // Hopefully this won't call an infinite loop
+      } else {
+        weapon.attack();
+      }
     } else if (choice == 2) { // Fist
-      goBack = inventory.chooseMelee(reader, false);
-    } else { // Ranged weapons
-      goBack = inventory.chooseRanged(reader, false);
+      weapon = inventory.chooseMelee(reader);
+      if (weapon == null) {
+        chooseWeapon(reader, e);
+      } else if (weapon instanceof Melee) {
+        Melee m = (Melee) weapon;
+        m.attack();
+      } else {
+        this.attack(e);
+      }
     }
-    if (goBack == -1) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
-      chooseWeapon(reader, e); // Hopefully this won't call an infinite loop
-    } else if (goBack == 0) {
-      this.attack(e);
-    }
-    return null;
   }
   // Heal yo' self
   void heal(Item i) {
@@ -172,11 +177,10 @@ public class Human extends Entity {
   void manageInventory(Scanner reader) {
     boolean validInput = false;
     int choice = -1;
-    int result = -1;
     Item droppable = null;
     while (!validInput) {
       System.out.println("\t --- INVENTORY --- \n");
-      inventory.showInventory();
+      inventory.listInventory();
       System.out.println("5. Back.");
       System.out.println();
       System.out.println("What type of item would you like to get rid of?");
@@ -193,7 +197,7 @@ public class Human extends Entity {
     if (choice == 5) {
       // Do nothing and let the method return.
     } else {
-      droppable = inventory.chooseItem(choice, reader);
+      droppable = inventory.chooseItem(choice, reader, true);
       if (droppable == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
         manageInventory(reader); // Hopefully this won't call an infinite loop
       } else {

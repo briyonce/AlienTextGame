@@ -208,8 +208,8 @@ public class Main {
 						System.out.println("You look up at Jessie. The blood is already soaking through from the massive gash on her forehead.\n");
 						System.out.println("She looks faint.\n");
 						TimeUnit.SECONDS.sleep(3);
-						System.out.print("You: Hey, Jessie. Rest up a bit. I'm going to see if I can find the captain...");
-						System.out.println(" Maybe she knows what's going on. AND " + player.getSpouse().toUpperCase() + "!!?\n");
+						System.out.print("You: \"Hey, Jessie. Rest up a bit. I'm going to see if I can find the captain...");
+						System.out.println(" Maybe she knows what's going on. AND " + player.getSpouse().toUpperCase() + "!!?\"\n");
 						TimeUnit.SECONDS.sleep(3);
 						System.out.println("Oh God, " + player.getSpouse() + ".\n");
 						TimeUnit.SECONDS.sleep(3);
@@ -279,7 +279,7 @@ public class Main {
 					}
 				}
 				if (action.equals("1")) { //Attack
-					Weapon w = h.chooseWeapon(in, e);
+					h.chooseWeapon(in, e);
 					TimeUnit.SECONDS.sleep(3);
 				} else if (action.equals("2")) { //Heal up
 					h.use_stimpak();
