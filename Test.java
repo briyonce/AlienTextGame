@@ -19,7 +19,7 @@ public class Test {
   }
 
   public static void test1 () {
-    Room curRoom = new Room("med bay");
+    Room curRoom = new MedBay();
     curRoom.tierDisplay();
     curRoom.display();
     Human h = new Human();
@@ -30,7 +30,7 @@ public class Test {
   }
 
   static void test2() {
-    Room curRoom = new Room("med bay");
+    Room curRoom = new MedBay();
     player.setName("bri");
     player.setGender("f");
     p.addMember(player);

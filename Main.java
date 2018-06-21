@@ -173,7 +173,7 @@ public class Main {
 					if (party.numMembers() > 1 ) { // Jessie is alive
 						for (int i = 0; i < 10; ++i)
 							System.out.println();
-						Room curRoom = new Room("Med Bay");
+						Room curRoom = new MedBay();
 
 						SequenceText.sequenceTwoMedBay(player);
 
