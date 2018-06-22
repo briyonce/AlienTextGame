@@ -165,7 +165,7 @@ public class Main {
 							System.out.println();
 						Room curRoom = new Room("Med Bay");
 						SequenceText.sequenceTwoWithJessie(player);
-						roomExitSequence(curRoom);
+						roomExitSequence(curRoom, in);
 					} else { // You let her die
 						TimeUnit.SECONDS.sleep(3);
 						SequenceText.sequenceTwoAlone(player);
@@ -330,10 +330,9 @@ public class Main {
 
 	// This is where the player will loot or examine the room.
 	// You can't loot the room until you've cleared it
-	static void roomExitSequence(Room r) {
+	static void roomExitSequence(Room r, Scanner reader) {
 		System.out.println("--- Preparing to leave " + r.getName() + " ---\n");
 		boolean exit = false;
-		Scanner reader = new Scanner(System.in);
 		while (!exit) {
 			System.out.println("What would you like to do?");
 			System.out.println("1. Exit Room");
@@ -364,7 +363,6 @@ public class Main {
 				player.manageInventory(reader);
 			}
 		}
-		reader.close();
 	}
 
  // Remove current human h from the party.
