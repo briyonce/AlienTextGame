@@ -15,12 +15,12 @@ public class Inventory{
      |3| - [ melee weapons ]
      |4| - [ ranged weapons ] */
 
-  public Item map = new Item("Map", 5);
-  public Item flashlight = new Item("Flashlight", 5);
+  public Item map = new Item("Map", 1);
+  public Item flashlight = new Item("Flashlight", 1);
   public Item Stimpak = new Item("Stimpak", 2);
   public Shootable Gun = new Shootable("Gun", 5);
   public Shootable crossbow = new Shootable("Crossbow", 5);
-  public Melee fist = new Melee("Fist", 5);
+  public Melee fist = new Melee("Fist", 0);
   private int maxWeight = 25;
   private int curWeight = 0;
 
