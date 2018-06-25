@@ -20,13 +20,13 @@ public class Human extends Entity {
   private boolean hasFlashlight = false;
 
   public Human () {
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String g) {
     // Random r = new Random();
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
@@ -36,7 +36,7 @@ public class Human extends Entity {
   }
 
   public Human (boolean p) {
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     for (int i = 0; i < STARTING_STIMPAKS; ++i)
       acquire(inventory.Stimpak, true);
     this.isPlayer = true;
@@ -45,7 +45,7 @@ public class Human extends Entity {
 
   public Human (String n, String g) {
     // Random r = new Random();
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     super.name = n;
     this.gender = g;
     if (g.equals("she")) {
@@ -57,7 +57,7 @@ public class Human extends Entity {
 
   public Human (String n, String g, int h) {
     // Random r = new Random();
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     super.name = n;
     super.health = h;
     this.gender = g;
@@ -176,6 +176,11 @@ public class Human extends Entity {
     inventory.showInventory();
   }
 
+  // Used for debugging
+  void listInventory() {
+    inventory.listInventory();
+  }
+
   // Used to drop inventory. Will edit further to add item analysis.
   ArrayList<Item> manageInventory(Scanner reader) {
     ArrayList<Item> dropped = new ArrayList<Item>();
@@ -191,7 +196,8 @@ public class Human extends Entity {
         System.out.println("5. Back.");
         System.out.println();
         System.out.println("What type of item would you like to get rid of?");
-        choice = reader.nextInt();
+        if (reader.hasNextInt())
+          choice = reader.nextInt();
         reader.nextLine();
         if (choice >= 0 && choice < 6) {
           validInput = true;

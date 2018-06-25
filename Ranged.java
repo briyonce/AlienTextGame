@@ -2,8 +2,15 @@
 
 public class Ranged extends Weapon {
 
-  public Ranged(String n) {
-    super.name = n;
+  public Ranged (String n) {
+    super(n);
   }
 
+  public Ranged(String n, int w) {
+    super(n, w);
+  }
+
+  public void attack () {
+    System.out.println("Attacking with ranged weapon.\n");
+  }
 }

@@ -11,13 +11,13 @@ public class Test {
   public static void main(String[] args) {
     // test1();
     // System.out.println("\n\n");
-    // test2();
+    test2();
     // System.out.println("\n\n");
     // test3();
     // System.out.println("\n\n");
     // test4();
     // test5();
-    test6();
+    // test6();
   }
 
   public static void test1 () {
@@ -37,7 +37,8 @@ public class Test {
     player.setGender("f");
     p.addMember(player);
     p.printParty();
-    roomExitSequence(curRoom);
+    player.listInventory();
+    roomExitSequence(curRoom, new Scanner(System.in));
     p.printParty();
   }
 
@@ -85,11 +86,11 @@ public class Test {
     player.setName("bri");
     player.setGender("f");
     player.acquire(new Item("Map"));
-    player.acquire(new Shootable("Gun"));
-    player.acquire(new Shootable("Gun"));
-    player.acquire(new Melee("Bat"));
-    player.acquire(new Ranged("Knives"));
-    player.acquire(new Item("Stimpak"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Melee("Bat"));
+    player.acquire((Item) new Ranged("Knives"));
+    player.acquire((Item) new Item("Stimpak"));
     player.showInventory();
     ArrayList<Item> droppedItems = player.manageInventory(reader);
     for (Item i : droppedItems) {
@@ -97,21 +98,28 @@ public class Test {
     }
   }
 
-  static void roomExitSequence(Room r) {
-		System.out.println("Preparing to leave " + r.getName());
+  // This is where the player will loot or examine the room.
+	// You can't loot the room until you've cleared it
+	static void roomExitSequence(Room r, Scanner reader) {
+		System.out.println("--- Preparing to leave " + r.getName() + " ---\n");
 		boolean exit = false;
-		Scanner reader = new Scanner(System.in);
+    int choice = -1;
 		while (!exit) {
 			System.out.println("What would you like to do?");
-			System.out.println("1. Exit");
+			System.out.println("1. Exit Room");
 			System.out.println("2. Examine Room");
 			System.out.println("3. Loot Room");
-			int choice = reader.nextInt();
+			System.out.println("4. Manage Inventory");
+      if (reader.hasNextInt())
+		    choice = reader.nextInt();
 			reader.nextLine();
-			while (choice < 1 || choice > 3) {
+			System.out.println();
+			while (choice < 1 || choice > 4) {
 				System.out.println("Invalid choice. Please try again.\n");
-				choice = reader.nextInt();
+        if (reader.hasNextInt())
+				    choice = reader.nextInt();
 				reader.nextLine();
+				System.out.println();
 			}
 			if (choice == 1) {
 				exit = true;
@@ -123,9 +131,11 @@ public class Test {
 				}
 			} else if (choice == 3) {
 				r.lootRoom(player, reader);
+			} else if (choice == 4) {
+				// manage inventory
+				player.manageInventory(reader);
 			}
 		}
-		reader.close();
 	}
 
 

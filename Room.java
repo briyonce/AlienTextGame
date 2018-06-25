@@ -70,19 +70,22 @@ public class Room {
   boolean lootRoom(Human h, Scanner reader) {
     System.out.println("Let's see what this room has to offer...\n");
     int numItems = 0;
+    int choice = -1;
     while (!this.loot.isEmpty()) {
       numItems = this.display();
       System.out.println("What do you want? One at a time. ");
-      int choice = reader.nextInt();
+      if (reader.hasNextInt())
+        choice = reader.nextInt();
       reader.nextLine();
       boolean validInput = false;
-      if (choice < numItems + 2) {
+      if (choice < numItems + 2 && choice >= 0) {
         validInput = true;
       }
       while (!validInput) {
         System.out.println("Sorry, that's not one of the options. Please select from what's available.\n");
         this.display();
-        choice = reader.nextInt();
+        if (reader.hasNextInt())
+          choice = reader.nextInt();
         reader.nextLine();
         if ((choice < numItems + 2) && (choice >= 0)) {
           validInput = true;
@@ -101,20 +104,22 @@ public class Room {
   }
 
   // The character loots everything in the room
-  void transfer (Inventory i, Human h) {
+  void transfer (Inventory in, Human h) {
     int counter = 0;
-    while (i.numItems() > 0) {
-      Item item = i.retrieve(counter);
+    int i = in.individualItems();
+    while (i > 0) {
+      Item item = in.retrieve(counter);
       int quantity = item.getQuantity();
-      i.dropAll(item, true);
+      in.dropAll(item, true);
       // Item newItem = new Item(name, quantity); // to be used later upon optimization
       for (int index = 0; index < quantity; ++index) {
         boolean success = h.acquire(item);
         if (!success) {
-          i.acquire(item);
+          in.acquire(item);
           break;
         }
       }
+      --i;
     }
   }
 

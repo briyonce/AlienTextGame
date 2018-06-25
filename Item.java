@@ -44,9 +44,9 @@ public class Item {
     }
   }
 
-  public Item (String n, int q) {
+  public Item (String n, int w) {
     this.name = n;
-    this.quantity = q;
+    this.weight = w;
     if (n.toLowerCase().equals("Stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;

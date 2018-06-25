@@ -15,12 +15,12 @@ public class Inventory{
      |3| - [ melee weapons ]
      |4| - [ ranged weapons ] */
 
-  public Item map = new Item("Map");
-  public Item flashlight = new Item("Flashlight");
-  public Item Stimpak = new Item("Stimpak");
-  public Shootable Gun = new Shootable("Gun");
-  public Shootable crossbow = new Shootable("Crossbow");
-  public Melee fist = new Melee("Fist");
+  public Item map = new Item("Map", 5);
+  public Item flashlight = new Item("Flashlight", 5);
+  public Item Stimpak = new Item("Stimpak", 2);
+  public Shootable Gun = new Shootable("Gun", 5);
+  public Shootable crossbow = new Shootable("Crossbow", 5);
+  public Melee fist = new Melee("Fist", 5);
   private int maxWeight = 25;
   private int curWeight = 0;
 
@@ -104,6 +104,7 @@ public class Inventory{
     int choice = -1;
     int counter = 1;
     while (!validInput) {
+      counter = 1;
       System.out.println("0. Back.");
       for (Item i : items) {
         if (drop) {
@@ -113,14 +114,15 @@ public class Inventory{
         } else {
           System.out.println(counter + ". " + i.getName());
         }
-
+        ++counter;
       }
       System.out.print("Which item would you like");
       if (drop) {
         System.out.print(" to drop");
       }
       System.out.println("?\n");
-      choice = reader.nextInt();
+      if (reader.hasNextInt())
+        choice = reader.nextInt();
       reader.nextLine();
       if (drop && category == 3) {
         if (choice >= 0 && choice <= items.size() - 1) {
@@ -213,7 +215,7 @@ public class Inventory{
       System.out.println("1. ALL.");
       for (ArrayList<Item> list : inventory) {
         for (Item item : list) {
-          System.out.println(counter + ". " + item.getName() + " : " + item.getQuantity());
+          System.out.println(counter + ". " + item.getName() + " [ Quantity - " + item.getQuantity() + " ] : [ Weight - " + item.getWeight() + " ]");
           ++counter;
         }
       }
@@ -224,6 +226,7 @@ public class Inventory{
 
   // Shows off every item in the inventory by item type.
   void listInventory() {
+    System.out.println("CURRENT LOAD: " + getUsage());
     for (int counter = 0; counter < inventory.size(); ++counter) {
       System.out.print(counter + ". " + labels[counter]);
       ArrayList<Item> items = inventory.get(counter);
@@ -234,6 +237,7 @@ public class Inventory{
         } else {
           System.out.print(" ");
         }
+        System.out.print("[" + i.getWeight() * i.getQuantity() + "] ");
       }
       System.out.println();
     }

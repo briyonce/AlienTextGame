@@ -5,7 +5,13 @@ public class Shootable extends Weapon {
   private int ammo = 10; // number of rounds/arrows. etc
 
   public Shootable (String n) {
-    super.name = n;
+    super(n);
+    super.fireRate = 5;
+    super.range = 3;
+  }
+
+  public Shootable (String n, int w) {
+    super(n, w);
     super.fireRate = 5;
     super.range = 3;
   }

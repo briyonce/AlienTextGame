@@ -80,8 +80,6 @@ public class SequenceText {
 	public static void narrationText(String text, boolean newLine) {
 		try {
 			System.out.print(text);
-			if(newLine)
-				System.out.println();
 			TimeUnit.SECONDS.sleep(3);	//default time at 3 seconds
 		} catch(InterruptedException ex) {
 			Thread.currentThread().interrupt();
@@ -91,8 +89,6 @@ public class SequenceText {
 	public static void narrationText(String text, int alternateTime, boolean newLine) {
 		try {
 			System.out.print(text);
-			if(newLine)
-				System.out.println();
 			TimeUnit.SECONDS.sleep(alternateTime);
 		} catch(InterruptedException ex) {
 			Thread.currentThread().interrupt();
