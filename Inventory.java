@@ -30,13 +30,30 @@ public class Inventory{
     }
   }
 
+  void transfer (Inventory i) {
+    int counter = 0;
+    for (ArrayList<Item> list : i.inventory) {
+      System.out.println("IN LOOP : " + labels[counter] + " " + list.size() + " ITEMS!");
+      for (Item item : list) {
+        int total = item.getQuantity();
+        for (int j = 0; j < total; ++j) {
+          if (item.getName().toLowerCase().equals("stimpak")) {
+            System.out.println("Adding stimpak " + j + " in transfer.\n");
+          }
+          acquire(item);
+        }
+      }
+      ++counter;
+    }
+  }
+
   // The number of Stimpaks in the inventory
   int numStimpaks() {
     int ns = 0;
     int counter = 0;
     while (counter < this.inventory.get(1).size()) {
       Item curItem = this.inventory.get(1).get(counter);
-      if (curItem.getName().toLowerCase().equals("Stimpak")) {
+      if (curItem.getName().toLowerCase().equals("stimpak")) {
         ns = curItem.getQuantity();
         break;
       }
@@ -262,16 +279,27 @@ public class Inventory{
     }
   }
 
+  // Show items by type. Used for testing
+  void levelPrint() {
+    for (ArrayList<Item> list : inventory) {
+      for (Item i : list) {
+        System.out.print(i.getName() + " ");
+      }
+      System.out.println();
+    }
+  }
+
   // Used in conjunction with acquire. Adds an item to
   // the list of other items with similar characteristics.
   boolean itemStack(ArrayList<Item> items, Item i) {
     int counter = 0;
     boolean itemFound = false;
     while (!itemFound && counter < items.size()) {
-      if (items.get(counter).getName().equals(i.getName())) {
-        items.get(counter).stack();
+      Item item = items.get(counter);
+      if (item.getName().equals(i.getName())) {
+        item.stack();
         itemFound = true;
-        break;
+        return true;
       }
       ++counter;
     }
@@ -297,16 +325,6 @@ public class Inventory{
     if (!itemFound)
       items.add(item);
     return itemFound;
-  }
-
-  // Show items by type. Used for testing
-  void levelPrint() {
-    for (ArrayList<Item> list : inventory) {
-      for (Item i : list) {
-        System.out.print(i.getName() + " ");
-      }
-      System.out.println();
-    }
   }
 
   // Add an item to the inventory
@@ -406,6 +424,13 @@ public class Inventory{
       itemFound = itemRemove(items, item, all);
     }
     return itemFound;
+  }
+
+  void empty() {
+    for (ArrayList<Item> list : inventory) {
+      list.clear();
+    }
+    this.curWeight = 0;
   }
 
   // You may choose to upgrade your inventory. Pretty sweet imo.

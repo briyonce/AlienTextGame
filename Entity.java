@@ -51,9 +51,11 @@ public class Entity {
           System.out.println("It scurries away before " + noun + " can retaliate.\n");
         }
         if (h.isPlayer()) {
+          System.out.println("The " + this.name + " moves to attack you.");
           System.out.println("You take " + damage + " damage!\n");
         } else {
-          System.out.println(this.name + " takes " + damage + " damage!\n");
+          System.out.println("The " + this.name + " moves to attack " + h.getName() + ".");
+          System.out.println(h.getName() + " takes " + damage + " damage!\n");
         }
       }
     } else { // Human to Enemy

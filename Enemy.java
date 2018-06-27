@@ -41,6 +41,8 @@ public class Enemy extends Entity {
         System.out.println("It scurries away before you can retaliate.\n");
         System.out.println("You've escaped your inevitable death for another brief moment.\n");
         System.out.println("Time to gamble yet again.\n");
+      } else {
+        System.out.println("The " + super.getName() + " missed its attack. Count your blessings.\n");
       }
     }
 }

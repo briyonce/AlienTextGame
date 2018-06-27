@@ -24,6 +24,19 @@ public class Human extends Entity {
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
+  public Human (Human h) {
+    this.name = h.name;
+    this.possesive = h.possesive;
+    this.spouseName = h.spouseName;
+    this.isPlayer = h.isPlayer;
+    System.out.println(inventory.isEmpty());
+    this.inventory.empty();
+    System.out.println(inventory.numItems());
+    this.inventory.transfer(h.inventory);
+    this.cowardice = h.cowardice;
+    System.out.println(inventory.numItems());
+  }
+
   public Human (String g) {
     // Random r = new Random();
     acquire((Item) inventory.fist, true);

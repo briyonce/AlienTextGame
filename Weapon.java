@@ -9,11 +9,18 @@ public class Weapon extends Item {
   public Weapon (String n) {
     super(n);
   }
-  
+
   public Weapon (String n, int w) {
     super(n, w);
   }
 
+  public Weapon (Weapon w) {
+    super((Item) w);
+    this.maxDamage = w.maxDamage;
+    this.range = w.range;
+    this.fireRate = w.fireRate;
+    this.operable = w.operable;
+  }
   boolean isOperable() {
     return this.operable;
   }

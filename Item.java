@@ -1,6 +1,6 @@
 //Item class. Each Item will have its own special attributes
 
-public class Item {
+public class Item implements Cloneable {
   public static void main(String[] args) {}
 
   private String name = "object";
@@ -16,7 +16,7 @@ public class Item {
 
   public Item(String n) {
     this.name = n;
-    if (n.toLowerCase().equals("Stimpak")) {
+    if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
       this.weight = 1;
@@ -26,7 +26,7 @@ public class Item {
   public Item(String n, String c) {
     this.name = n;
     this.color = c;
-    if (n.toLowerCase().equals("Stimpak")) {
+    if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
       this.weight = 1;
@@ -37,7 +37,7 @@ public class Item {
     this.name = n;
     this.color = c;
     this.weight = w;
-    if (n.toLowerCase().equals("Stimpak")) {
+    if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
       this.weight = 1;
@@ -47,11 +47,22 @@ public class Item {
   public Item (String n, int w) {
     this.name = n;
     this.weight = w;
-    if (n.toLowerCase().equals("Stimpak")) {
+    if (n.toLowerCase().equals("stimpak")) {
       this.regenerative = true;
       this.regenAmount = 40;
       this.weight = 1;
     }
+  }
+
+  public Item (Item i) {
+    this.name = i.name;
+    this.color = i.color;
+    this.regenerative = i.regeregenerative;
+    this.regenAmount = i.regenAmount;
+    this.weight = i.weight;
+    this.quantity = i.quantity;
+    this.health = i.health;
+    this.breakable = i.breakable;
   }
 
   String getName() {
@@ -81,7 +92,12 @@ public class Item {
 
   // You got another one. How cool.
   void stack() {
+    if (this.name.toLowerCase().equals("stimpak")) {
+      System.out.print("incrementing stimpak: \n\n");
+    }
+    System.out.print(this.quantity + " to ");
     ++this.quantity;
+    System.out.println(this.quantity);
   }
 
   // Another one bites the dust. Damn rip.

@@ -160,6 +160,7 @@ public class Main {
 
 				SEQUENCE_TWO:
 				while (running) {
+					Human save = new Human(player);
 					if (party.numMembers() > 1 ) { // Jessie is alive
 						for (int i = 0; i < 10; ++i)
 							System.out.println();
@@ -192,19 +193,20 @@ public class Main {
 						}
 					}
 					if (answer.equals("y") || answer.equals("yes")) {
-						Xeno enemy1 = new Xeno ("Xenomorph", 100, 100);
-						Xeno enemy2 = new Xeno ("Xenomorph", 100, 100);
-						Xeno enemy3 = new Xeno ("Xenomorph", 100, 100);
+						Xeno enemy1 = new Xeno ("Xenomorph 1", 100, 100);
+						Xeno enemy2 = new Xeno ("Xenomorph 2", 100, 100);
+						Xeno enemy3 = new Xeno ("Xenomorph 3", 100, 100);
 						party.removeMember(jessie);
 						enemies.addMember(enemy1);
 						enemies.addMember(enemy2);
 						enemies.addMember(enemy3);
 						result = encounter(in);
 						if (result < 0) {
-							die(player, party, (Enemy) enemies.getMember(0));
 							if(endGame(in)) {
 								break;
 							} else {
+								player = save;
+								party.addMember(player);
 								continue SEQUENCE_TWO;
 							}
 						} else {
@@ -214,7 +216,7 @@ public class Main {
 						System.out.println("You turn to go the other direction.\n");
 					}
 				}
-
+				running = false;
 				in.close();
 				break;
 
@@ -314,7 +316,9 @@ public class Main {
 				}
 				// The enemy attacks now
 				e.attack(h);
-
+				if (h.getHealth() < 1) {
+					die(h, party, e);
+				}
 				++enemyCounter;
 				++playerCounter;
 				TimeUnit.SECONDS.sleep(3);
@@ -376,7 +380,7 @@ public class Main {
 		} else if (!h.isPlayer()) {
 			System.out.println("You watch " + h.getName() + " collapse. ");
 			System.out.print(h.getGender() + " breathes " + h.getPossessive() + " last breath.\n");
-		} else if (h.isPlayer() && (e1 != null)){
+		} else if (h.isPlayer() && (e1 != null) && (p.numMembers() > 1)){
 			System.out.print("You collapse and watch as your crewmate");
 			if (party.numMembers() > 2) {
 				System.out.print("s are ");
@@ -389,7 +393,7 @@ public class Main {
 	    System.out.println("...in another time... in another life...\n");
 		}
 		h.die();
-		if (!(p == null))
+		if (p != null)
 			p.removeMember(h);
 	}
 }

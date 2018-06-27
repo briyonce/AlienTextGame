@@ -11,13 +11,14 @@ public class Test {
   public static void main(String[] args) {
     // test1();
     // System.out.println("\n\n");
-    test2();
+    // test2();
     // System.out.println("\n\n");
     // test3();
     // System.out.println("\n\n");
     // test4();
     // test5();
     // test6();
+    test7();
   }
 
   public static void test1 () {
@@ -96,6 +97,36 @@ public class Test {
     for (Item i : droppedItems) {
       System.out.println(i.getName());
     }
+  }
+
+  static void test7 () {
+    player.setName("Bri");
+    player.setGender("f");
+    System.out.println("BRIS INVENTORY############\n");
+    player.showInventory();
+    Human h = new Human (player);
+    System.out.println("\n\n CLONE INVENTORY##############\n");
+    h.showInventory();
+    player.acquire(new Item("Map"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Melee("Bat"));
+    player.acquire((Item) new Ranged("Knives"));
+    Item stimpak = new Item ("Stimpak");
+    player.acquire((Item) stimpak);
+    System.out.println("\n\nBRIS INVENTORY############\n");
+    player.showInventory();
+    System.out.println("\n\n CLONE INVENTORY##############\n");
+    h.showInventory();
+    player = h;
+    System.out.println("\n\nBRIS INVENTORY############\n");
+    player.showInventory();
+    System.out.println("\n\n");
+  }
+
+  static void test8 () {
+    Human h = new Human("bob");
+    Human i = new Human(h);
   }
 
   // This is where the player will loot or examine the room.

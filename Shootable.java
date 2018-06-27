@@ -16,6 +16,11 @@ public class Shootable extends Weapon {
     super.range = 3;
   }
 
+  public Shootable (Shootable s) {
+    super((Item) s);
+    this.ammo = s.ammo;
+  }
+
   void attack() {
     String [] attacks = {"You pull back the hammer and feel the barrel spin into place."};
   }
