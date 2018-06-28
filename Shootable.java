@@ -17,7 +17,7 @@ public class Shootable extends Weapon {
   }
 
   public Shootable (Shootable s) {
-    super((Item) s);
+    super((Weapon) s);
     this.ammo = s.ammo;
   }
 

@@ -40,7 +40,7 @@ public class Inventory{
           if (item.getName().toLowerCase().equals("stimpak")) {
             System.out.println("Adding stimpak " + j + " in transfer.\n");
           }
-          acquire(item);
+          acquire(new Item(item));
         }
       }
       ++counter;

@@ -11,9 +11,9 @@ public class Ranged extends Weapon {
   }
 
   public Ranged(Ranged r) {
-    super((Item) r);
+    super((Weapon) r);
   }
-  
+
   public void attack () {
     System.out.println("Attacking with ranged weapon.\n");
   }
