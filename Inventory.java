@@ -29,6 +29,10 @@ public class Inventory{
       inventory.add(new ArrayList<Item>());
     }
   }
+  
+  public Inventory(Inventory other) {
+	//TODO: implement
+  }
 
   void transfer (Inventory i) {
     int counter = 0;

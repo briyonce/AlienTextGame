@@ -25,16 +25,21 @@ public class Human extends Entity {
   }
 
   public Human (Human h) {
-    this.name = h.name;
-    this.possesive = h.possesive;
-    this.spouseName = h.spouseName;
-    this.isPlayer = h.isPlayer;
-    System.out.println(inventory.isEmpty());
+    this.name       = new String(h.name);
+    this.possesive  = new String(h.possesive);
+    this.spouseName = new String(h.spouseName);
+    this.isPlayer   = h.isPlayer;
+	this.cowardice  = h.cowardice;
+    
+    System.out.println(inventory.isEmpty());	//TODO: remove
+	
+	/*
     this.inventory.empty();
     System.out.println(inventory.numItems());
     this.inventory.transfer(h.inventory);
-    this.cowardice = h.cowardice;
     System.out.println(inventory.numItems());
+	*/
+	this.inventory = new Inventory(h.inventory); //changed to copy constructor; best to leave inventory stuff to the inventory class
   }
 
   public Human (String g) {
