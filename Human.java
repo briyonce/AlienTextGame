@@ -30,9 +30,6 @@ public class Human extends Entity {
     this.spouseName = new String(h.spouseName);
     this.isPlayer   = h.isPlayer;
 	this.cowardice  = h.cowardice;
-    
-    System.out.println(inventory.isEmpty());	//TODO: remove
-	
 	this.inventory = new Inventory(h.inventory); //changed to copy constructor; best to leave inventory stuff to the inventory class
   }
 

@@ -39,19 +39,8 @@ public class Inventory{
     int counter = 0;
     for (int inventoryX = 0; inventoryX < i.inventory.size(); inventoryX++) {
 	  ArrayList<Item> iInventoryList = i.inventory.get(inventoryX);
-      System.out.println("IN LOOP : " + labels[counter] + " " + iInventoryList.size() + " ITEMS!");  //TODO: remove
-	  
 	  ArrayList<Item> copyInventoryList = this.inventory.get(inventoryX);
       for (Item item : iInventoryList) {
-		/*
-        int total = item.getQuantity();
-        for (int j = 0; j < total; ++j) {
-		  if (item.getName().toLowerCase().equals("stimpak")) {
-            System.out.println("Adding stimpak " + j + " in transfer.\n");
-          }
-          acquire(new Item(item));
-        }
-		*/ //since items contain the data for the quantity, just assume that they have been stacked properly (makes sense with weight)
 		copyInventoryList.add(new Item(item));
       }
       ++counter;
