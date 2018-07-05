@@ -1,4 +1,4 @@
-stimpak true 40
+Stimpak true 40
 flashlight false 0
 map false 0
 bandaid true 20

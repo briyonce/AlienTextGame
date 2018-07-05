@@ -2,6 +2,7 @@
 // There may one day be different tiers or classes of humans
 import java.util.Scanner;
 import java.util.Random;
+import java.util.ArrayList;
 
 public class Human extends Entity {
   public static void main(String[] args){}
@@ -19,13 +20,22 @@ public class Human extends Entity {
   private boolean hasFlashlight = false;
 
   public Human () {
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
+  }
+
+  public Human (Human h) {
+    this.name       = new String(h.name);
+    this.possesive  = new String(h.possesive);
+    this.spouseName = new String(h.spouseName);
+    this.isPlayer   = h.isPlayer;
+	this.cowardice  = h.cowardice;
+	this.inventory = new Inventory(h.inventory); //changed to copy constructor; best to leave inventory stuff to the inventory class
   }
 
   public Human (String g) {
     // Random r = new Random();
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     this.gender = g;
     if (g.equals("she")) {
       this.possesive = "her";
@@ -35,16 +45,16 @@ public class Human extends Entity {
   }
 
   public Human (boolean p) {
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     for (int i = 0; i < STARTING_STIMPAKS; ++i)
-      acquire(inventory.stimpak, true);
+      acquire(inventory.Stimpak, true);
     this.isPlayer = true;
     super.maxDamage = r.nextInt(MAX_DAMAGE - (MAX_DAMAGE / 2)) + (MAX_DAMAGE / 2);
   }
 
   public Human (String n, String g) {
     // Random r = new Random();
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     super.name = n;
     this.gender = g;
     if (g.equals("she")) {
@@ -56,7 +66,7 @@ public class Human extends Entity {
 
   public Human (String n, String g, int h) {
     // Random r = new Random();
-    acquire(inventory.fist, true);
+    acquire((Item) inventory.fist, true);
     super.name = n;
     super.health = h;
     this.gender = g;
@@ -124,7 +134,8 @@ public class Human extends Entity {
     }
   }
 
- void chooseWeapon (Scanner reader, Enemy e) {
+  // Used in combat so the player can choose their weapon
+  void chooseWeapon (Scanner reader, Enemy e) {
     Weapon weapon = null;
     System.out.println("What type of weapon?");
     System.out.print("\t 1. Shootable: ");
@@ -153,6 +164,7 @@ public class Human extends Entity {
       }
     }
   }
+
   // Heal yo' self
   void heal(Item i) {
     this.health += i.heal();
@@ -173,54 +185,74 @@ public class Human extends Entity {
     inventory.showInventory();
   }
 
-  void manageInventory(Scanner reader) {
+  // Used for debugging
+  void listInventory() {
+    inventory.listInventory();
+  }
+
+  // Used to drop inventory. Will edit further to add item analysis.
+  ArrayList<Item> manageInventory(Scanner reader) {
+    ArrayList<Item> dropped = new ArrayList<Item>();
     boolean validInput = false;
     int choice = -1;
     Item droppable = null;
-    while (!validInput) {
-      System.out.println("\t --- INVENTORY --- \n");
-      inventory.listInventory();
-      System.out.println("5. Back.");
-      System.out.println();
-      System.out.println("What type of item would you like to get rid of?");
-      choice = reader.nextInt();
-      reader.nextLine();
-      if (choice >= 0 && choice < 6) {
-        validInput = true;
-        break;
-      } else {
-        System.out.println("Invalid option. Please choose from one of the available categories.");
-      }
-      System.out.println();
-    }
-    if (choice == 5) {
-      // Do nothing and let the method return.
-    } else {
-      droppable = inventory.chooseItem(choice, reader, true);
-      if (droppable == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
-        manageInventory(reader); // Hopefully this won't call an infinite loop
-      } else {
-        this.drop(droppable);
-      }
-      String decision = "";
-      validInput = false;
+    boolean running = true;
+    MANAGE:
+    while (running) {
       while (!validInput) {
-        System.out.println("Are you done? Y/N");
-        decision = reader.nextLine().toLowerCase();
-        if (decision.equals("yes") || decision.equals("no") || decision.equals("y") || decision.equals("n")) {
+        System.out.println("\t --- INVENTORY --- \n");
+        inventory.listInventory();
+        System.out.println("5. Back.");
+        System.out.println();
+        System.out.println("What type of item would you like to get rid of?");
+        if (reader.hasNextInt())
+          choice = reader.nextInt();
+        reader.nextLine();
+        if (choice >= 0 && choice < 6) {
           validInput = true;
+          break;
+        } else {
+          System.out.println("Invalid option. Please choose from one of the available categories.");
+        }
+        System.out.println();
+      }
+      if (choice == 5) {
+        // Do nothing and let the method return.
+        running = false;
+      } else {
+        droppable = inventory.chooseItem(choice, reader, true);
+        if (droppable == null) { // -1: Go back, 0: Fists, 1: Use weapon (done.)
+          validInput = false;
+          continue MANAGE;
+        } else {
+          dropped.add(droppable);
+          this.drop(droppable);
+        }
+        String decision = "";
+        validInput = false;
+        while (!validInput) {
+          System.out.println("Are you done? Y/N");
+          decision = reader.nextLine().toLowerCase();
+          if (decision.equals("yes") || decision.equals("no") || decision.equals("y") || decision.equals("n")) {
+            validInput = true;
+          }
+        }
+        if (decision.equals("no") || decision.equals("n")) {
+          validInput = false;
+          continue MANAGE;
+        } else {
+          running = false;
         }
       }
-      if (decision.equals("no") || decision.equals("n")) {
-        manageInventory(reader);
-      }
     }
+
+    return dropped;
   }
 
-  // The number of stimpaks the character has.
+  // The number of Stimpaks the character has.
   // Will be changed later as more health items
   // are introduced into the game.
-  int num_stimpaks() {
+  int num_Stimpaks() {
     return inventory.numStimpaks();
   }
 
@@ -251,17 +283,17 @@ public class Human extends Entity {
   }
 
   // Used in conjunction with heal()... I think. I hope.
-  void use_stimpak() {
-    if (num_stimpaks() > 0) {
+  void use_Stimpak() {
+    if (num_Stimpaks() > 0) {
       if (this.health == 100) {
         System.out.println("Health already full.... Stimpak wasted.\n");
-        drop(inventory.stimpak);
+        drop(inventory.Stimpak);
       } else {
-        heal(inventory.stimpak);
-        drop(inventory.stimpak);
+        heal(inventory.Stimpak);
+        drop(inventory.Stimpak);
       }
     } else {
-      System.out.println("Sorry... no stimpaks available. Good luck! You've got this!\n");
+      System.out.println("Sorry... no Stimpaks available. Good luck! You've got this!\n");
     }
   }
 

@@ -51,9 +51,11 @@ public class Entity {
           System.out.println("It scurries away before " + noun + " can retaliate.\n");
         }
         if (h.isPlayer()) {
+          System.out.println("The " + this.name + " moves to attack you.");
           System.out.println("You take " + damage + " damage!\n");
         } else {
-          System.out.println(this.name + " takes " + damage + " damage!\n");
+          System.out.println("The " + this.name + " moves to attack " + h.getName() + ".");
+          System.out.println(h.getName() + " takes " + damage + " damage!\n");
         }
       }
     } else { // Human to Enemy
@@ -100,7 +102,7 @@ public class Entity {
       } else { // human to enemy
         if (luck > 25) {
           this.landAttack(e);
-          if (luck > 80) { 
+          if (luck > 80) {
             System.out.println("The " + e.getName() + " has become stunned.");
             e.stun();
           }
@@ -138,10 +140,12 @@ public class Entity {
     return this.isStunned;
   }
 
+  // When an Human/Enemy becomes stunned due to an attack.
   void stun() {
     this.isStunned = true;
   }
 
+  // Entities return to normal after 1 turn.
   void unStun() {
     this.isStunned = false;
   }

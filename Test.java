@@ -1,3 +1,5 @@
+// Just used for testing new mechanics and functions
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -15,7 +17,8 @@ public class Test {
     // System.out.println("\n\n");
     // test4();
     // test5();
-    test6();
+    // test6();
+    test7();
   }
 
   public static void test1 () {
@@ -35,7 +38,8 @@ public class Test {
     player.setGender("f");
     p.addMember(player);
     p.printParty();
-    roomExitSequence(curRoom);
+    player.listInventory();
+    roomExitSequence(curRoom, new Scanner(System.in));
     p.printParty();
   }
 
@@ -71,9 +75,9 @@ public class Test {
     player.setGender("f");
     Xeno x = new Xeno();
     player.showInventory();
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Ranged("knives"));
+    player.acquire(new Shootable("Gun"));
+    player.acquire(new Shootable("Gun"));
+    player.acquire(new Ranged("Knives"));
     player.showInventory();
     player.chooseWeapon(reader, x);
   }
@@ -82,31 +86,71 @@ public class Test {
     Scanner reader = new Scanner(System.in);
     player.setName("bri");
     player.setGender("f");
-    player.acquire(new Item("map"));
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Shootable("gun"));
-    player.acquire(new Melee("bat"));
-    player.acquire(new Ranged("knives"));
-    player.acquire(new Item("stimpak"));
+    player.acquire(new Item("Map"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Melee("Bat"));
+    player.acquire((Item) new Ranged("Knives"));
+    player.acquire((Item) new Item("Stimpak"));
     player.showInventory();
-    player.manageInventory(reader);
+    ArrayList<Item> droppedItems = player.manageInventory(reader);
+    for (Item i : droppedItems) {
+      System.out.println(i.getName());
+    }
   }
 
-  static void roomExitSequence(Room r) {
-		System.out.println("Preparing to leave " + r.getName());
+  static void test7 () {
+    player.setName("Bri");
+    player.setGender("f");
+    System.out.println("BRIS INVENTORY############\n");
+    player.showInventory();
+    Human h = new Human (player);
+    System.out.println("\n\n CLONE INVENTORY##############\n");
+    h.showInventory();
+    player.acquire(new Item("Map"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Shootable("Gun"));
+    player.acquire((Item) new Melee("Bat"));
+    player.acquire((Item) new Ranged("Knives"));
+    Item stimpak = new Item ("Stimpak");
+    player.acquire((Item) stimpak);
+    System.out.println("\n\nBRIS INVENTORY############\n");
+    player.showInventory();
+    System.out.println("\n\n CLONE INVENTORY##############\n");
+    h.showInventory();
+    player = h;
+    System.out.println("\n\nBRIS INVENTORY############\n");
+    player.showInventory();
+    System.out.println("\n\n");
+  }
+
+  static void test8 () {
+    Human h = new Human("bob");
+    Human i = new Human(h);
+  }
+
+  // This is where the player will loot or examine the room.
+	// You can't loot the room until you've cleared it
+	static void roomExitSequence(Room r, Scanner reader) {
+		System.out.println("--- Preparing to leave " + r.getName() + " ---\n");
 		boolean exit = false;
-		Scanner reader = new Scanner(System.in);
+    int choice = -1;
 		while (!exit) {
 			System.out.println("What would you like to do?");
-			System.out.println("1. Exit");
+			System.out.println("1. Exit Room");
 			System.out.println("2. Examine Room");
 			System.out.println("3. Loot Room");
-			int choice = reader.nextInt();
+			System.out.println("4. Manage Inventory");
+      if (reader.hasNextInt())
+		    choice = reader.nextInt();
 			reader.nextLine();
-			while (choice < 1 || choice > 3) {
+			System.out.println();
+			while (choice < 1 || choice > 4) {
 				System.out.println("Invalid choice. Please try again.\n");
-				choice = reader.nextInt();
+        if (reader.hasNextInt())
+				    choice = reader.nextInt();
 				reader.nextLine();
+				System.out.println();
 			}
 			if (choice == 1) {
 				exit = true;
@@ -118,9 +162,11 @@ public class Test {
 				}
 			} else if (choice == 3) {
 				r.lootRoom(player, reader);
+			} else if (choice == 4) {
+				// manage inventory
+				player.manageInventory(reader);
 			}
 		}
-		reader.close();
 	}
 
 
