@@ -33,12 +33,6 @@ public class Human extends Entity {
     
     System.out.println(inventory.isEmpty());	//TODO: remove
 	
-	/*
-    this.inventory.empty();
-    System.out.println(inventory.numItems());
-    this.inventory.transfer(h.inventory);
-    System.out.println(inventory.numItems());
-	*/
 	this.inventory = new Inventory(h.inventory); //changed to copy constructor; best to leave inventory stuff to the inventory class
   }
 

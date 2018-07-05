@@ -55,8 +55,8 @@ public class Item implements Cloneable {
   }
 
   public Item (Item i) {
-    this.name = i.name;
-    this.color = i.color;
+    this.name  = new String(i.name);
+    this.color = new String(i.color);
     this.regenerative = i.regenerative;
     this.regenAmount = i.regenAmount;
     this.weight = i.weight;
