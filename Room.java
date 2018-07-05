@@ -165,7 +165,7 @@ class MedBay extends Room {
         loot.acquire(loot.map, true);
         loot.acquire(loot.flashlight, true);
         for (int i = 0; i < 3; ++i) {
-            loot.acquire(loot.stimpak, true);
+            loot.acquire(loot.Stimpak, true);
         }
     }
 

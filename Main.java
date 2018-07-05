@@ -165,10 +165,8 @@ public class Main {
 						for (int i = 0; i < 10; ++i)
 							System.out.println();
 						Room curRoom = new MedBay();
-
-						SequenceText.sequenceTwoMedBay(player);
-
-						roomExitSequence(curRoom);
+						SequenceText.sequenceTwoWithJessie(player);
+						roomExitSequence(curRoom, in);
 					} else { // You let her die
 						TimeUnit.SECONDS.sleep(3);
 						SequenceText.sequenceTwoAlone(player);
