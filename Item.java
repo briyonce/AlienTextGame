@@ -1,8 +1,6 @@
 //Item class. Each Item will have its own special attributes
 
 public class Item implements Cloneable {
-  public static void main(String[] args) {}
-
   private String name = "object";
   private String color = "grey";
   protected int weight = 5;      // Used for inventory mechanic. YOU GOTTA CHOOSE!

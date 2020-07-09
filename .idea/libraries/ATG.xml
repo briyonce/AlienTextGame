@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ATG">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ATG.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

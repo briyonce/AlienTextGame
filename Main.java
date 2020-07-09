@@ -1,11 +1,8 @@
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main {
-
 	static int Stimpak_drop_chance = 60;
 	static Random rand = new Random();
 	static Human player = new Human(true);
